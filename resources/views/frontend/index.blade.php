@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>J.A.R.V.I.S. — Personal AI Assistant</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
     <style>
@@ -22,7 +22,7 @@
             --j-border: rgba(0, 212, 255, 0.12);
             --j-border-hover: rgba(0, 212, 255, 0.3);
             --j-text: #8899b0;
-            --j-text-bright: #e8f0ff;
+            --j-text-bright: #f0f4ff;
             --j-text-dim: #4a5568;
             --j-success: #00ff88;
             --j-warning: #ffaa00;
@@ -38,7 +38,7 @@
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', 'Rajdhani', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--j-bg);
             color: var(--j-text);
             min-height: 100vh;
@@ -156,21 +156,21 @@
         }
 
         .nav-name {
-            font-family: 'Orbitron', monospace;
-            font-size: 1rem;
-            font-weight: 700;
+            font-family: 'Audiowide', cursive;
+            font-size: 1.1rem;
+            font-weight: 400;
             color: var(--j-text-bright);
-            letter-spacing: 4px;
+            letter-spacing: 3px;
         }
 
         .nav-status {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             color: var(--j-success);
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .nav-status .dot {
@@ -224,9 +224,9 @@
         }
 
         .hero-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 4rem;
-            font-weight: 900;
+            font-family: 'Audiowide', cursive;
+            font-size: 3.8rem;
+            font-weight: 400;
             color: var(--j-text-bright);
             line-height: 1.1;
             margin-bottom: 20px;
@@ -346,7 +346,7 @@
         }
 
         .hero-time .time {
-            font-family: 'Orbitron', monospace;
+            font-family: 'Audiowide', cursive;
             font-size: 2rem;
             font-weight: 700;
             color: var(--j-text-bright);
@@ -354,7 +354,7 @@
         }
 
         .hero-time .date {
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
             color: var(--j-blue);
             letter-spacing: 2px;
@@ -378,17 +378,17 @@
             border: 1px solid rgba(0, 212, 255, 0.12);
             border-radius: 30px;
             padding: 6px 16px;
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.65rem;
             color: var(--j-blue);
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             margin-bottom: 16px;
         }
 
         .section-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 2rem;
+            font-family: 'Audiowide', cursive;
+            font-size: 1.8rem;
             font-weight: 800;
             color: var(--j-text-bright);
             margin-bottom: 12px;
@@ -553,7 +553,7 @@
         }
 
         .card-label span {
-            font-family: 'Orbitron', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             font-weight: 600;
             color: var(--j-blue);
@@ -566,7 +566,7 @@
             background: rgba(0, 255, 136, 0.08);
             border: 1px solid rgba(0, 255, 136, 0.15);
             border-radius: 20px;
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.6rem;
             color: var(--j-success);
             letter-spacing: 1px;
@@ -610,9 +610,9 @@
 
         .chat-msg.jarvis .sender {
             color: var(--j-blue);
-            font-family: 'Orbitron', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.6rem;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             margin-bottom: 6px;
         }
 
@@ -625,9 +625,9 @@
 
         .chat-msg.user .sender {
             color: var(--j-purple);
-            font-family: 'Orbitron', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.6rem;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             margin-bottom: 6px;
             text-align: right;
         }
@@ -742,7 +742,7 @@
         }
 
         .sys-label {
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.6rem;
             color: var(--j-blue);
             letter-spacing: 2px;
@@ -750,7 +750,7 @@
         }
 
         .sys-val {
-            font-family: 'Orbitron', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--j-text-bright);
@@ -790,14 +790,14 @@
         }
 
         .weather-temp {
-            font-family: 'Orbitron', monospace;
+            font-family: 'Audiowide', cursive;
             font-size: 2rem;
             font-weight: 700;
             color: var(--j-text-bright);
         }
 
         .weather-meta {
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             color: var(--j-text);
             line-height: 1.8;
@@ -853,7 +853,7 @@
             border: none;
             border-radius: var(--radius-sm);
             color: white;
-            font-family: 'Orbitron', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 2px;
@@ -938,7 +938,7 @@
         }
 
         .footer p {
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             color: var(--j-text-dim);
             letter-spacing: 2px;
