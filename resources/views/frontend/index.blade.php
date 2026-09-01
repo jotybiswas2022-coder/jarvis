@@ -269,100 +269,228 @@
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(0, 212, 255, 0.06);
-            border: 1px solid rgba(0, 212, 255, 0.15);
-            border-radius: 30px;
-            padding: 8px 18px;
-            margin-bottom: 24px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.7rem;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(168, 85, 247, 0.06) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 40px;
+            padding: 10px 22px;
+            margin-bottom: 28px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
             color: var(--j-blue);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            animation: badgeFadeIn 0.8s ease 0.2s both;
+        }
+
+        .hero-badge::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            animation: badgeShine 3s ease-in-out infinite;
+        }
+
+        @keyframes badgeFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes badgeShine {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
         }
 
         .hero-badge .live {
-            width: 6px; height: 6px;
+            width: 7px; height: 7px;
             background: var(--j-success);
             border-radius: 50%;
-            animation: statusBlink 1.5s ease-in-out infinite;
+            animation: livePulse 2s ease-in-out infinite;
+            box-shadow: 0 0 8px var(--j-success);
+        }
+
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.4); }
         }
 
         .hero-title {
             font-family: 'Audiowide', cursive;
-            font-size: 3.8rem;
+            font-size: 4.2rem;
             font-weight: 400;
             color: var(--j-text-bright);
-            line-height: 1.1;
-            margin-bottom: 20px;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            animation: titleReveal 1s ease 0.4s both;
+        }
+
+        @keyframes titleReveal {
+            from { opacity: 0; transform: translateY(30px); filter: blur(8px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        .hero-title .line {
+            display: block;
+            overflow: hidden;
         }
 
         .hero-title .gradient {
-            background: linear-gradient(135deg, var(--j-blue) 0%, var(--j-cyan) 50%, var(--j-purple) 100%);
+            background: linear-gradient(135deg, var(--j-blue) 0%, var(--j-cyan) 40%, var(--j-purple) 80%, var(--j-pink) 100%);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: gradientFlow 4s ease infinite;
+            position: relative;
+        }
+
+        .hero-title .gradient::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--j-blue), var(--j-cyan), var(--j-purple));
+            border-radius: 2px;
+            animation: lineGrow 1s ease 1s both;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes lineGrow {
+            from { width: 0; }
+            to { width: 100%; }
         }
 
         .hero-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--j-text);
-            line-height: 1.7;
-            margin-bottom: 32px;
-            max-width: 480px;
+            line-height: 1.8;
+            margin-bottom: 36px;
+            max-width: 500px;
+            animation: subtitleFade 1s ease 0.6s both;
+        }
+
+        .hero-subtitle .highlight {
+            color: var(--j-blue);
+            font-weight: 500;
+        }
+
+        @keyframes subtitleFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero-actions {
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
+            animation: actionsFade 1s ease 0.8s both;
+        }
+
+        @keyframes actionsFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .btn-primary {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 14px 32px;
+            padding: 16px 36px;
             background: linear-gradient(135deg, var(--j-blue) 0%, var(--j-blue-dark) 100%);
             border: none;
-            border-radius: var(--radius-sm);
+            border-radius: 14px;
             color: white;
             font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
 
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before { left: 100%; }
+
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 35px rgba(0, 212, 255, 0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .btn-primary i {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover i {
+            transform: scale(1.15);
         }
 
         .btn-secondary {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 14px 32px;
-            background: rgba(0, 212, 255, 0.06);
-            border: 1px solid var(--j-border);
-            border-radius: var(--radius-sm);
+            padding: 16px 36px;
+            background: rgba(0, 212, 255, 0.04);
+            border: 1.5px solid rgba(0, 212, 255, 0.15);
+            border-radius: 14px;
             color: var(--j-text-bright);
             font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
 
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(168, 85, 247, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .btn-secondary:hover::before { opacity: 1; }
+
         .btn-secondary:hover {
-            background: rgba(0, 212, 255, 0.12);
-            border-color: var(--j-border-hover);
-            transform: translateY(-2px);
+            border-color: var(--j-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.15);
+        }
+
+        .btn-secondary i {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-secondary:hover i {
+            transform: rotate(15deg) scale(1.1);
         }
 
         .hero-right {
@@ -1088,11 +1216,11 @@
                     NEURAL NETWORK ACTIVE
                 </div>
                 <h1 class="hero-title">
-                    Your Personal<br>
-                    <span class="gradient">AI Assistant</span>
+                    <span class="line">Your Personal</span>
+                    <span class="line"><span class="gradient">AI Assistant</span></span>
                 </h1>
                 <p class="hero-subtitle">
-                    Just A Rather Very Intelligent System. Built with advanced AI to help you with anything — from conversations to system control.
+                    <span class="highlight">Just A Rather Very Intelligent System.</span> Built with advanced AI to help you with anything — from conversations to system control.
                 </p>
                 <div class="hero-actions">
                     <a href="#chat" class="btn-primary">
