@@ -1279,6 +1279,12 @@
         </div>
 
         <div class="hero-content">
+            <div class="hero-right">
+                <div class="model-wrapper">
+                    <div class="model-glow"></div>
+                    <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"></spline-viewer>
+                </div>
+            </div>
             <div class="hero-left">
                 <div class="hero-badge">
                     <div class="live"></div>
@@ -1298,12 +1304,6 @@
                     <a href="#features" class="btn-secondary">
                         <i class="fas fa-compass"></i> Explore Features
                     </a>
-                </div>
-            </div>
-            <div class="hero-right">
-                <div class="model-wrapper">
-                    <div class="model-glow"></div>
-                    <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"></spline-viewer>
                 </div>
             </div>
         </div>
