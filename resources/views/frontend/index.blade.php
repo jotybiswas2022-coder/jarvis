@@ -544,58 +544,42 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            padding: 20px 40px;
-            background: rgba(8, 15, 35, 0.6);
-            border: 1px solid rgba(0, 212, 255, 0.12);
-            border-radius: 16px;
-            backdrop-filter: blur(20px);
-            position: absolute;
+            gap: 6px;
             animation: timeFadeIn 1s ease 0.3s both;
         }
 
-        .hero-time::before {
-            content: '';
-            position: absolute;
-            top: -1px; left: 20%; right: 20%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--j-blue), transparent);
-            border-radius: 2px;
+        .hero-time .time {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--j-text-bright) 0%, var(--j-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+            line-height: 1;
         }
 
-        .hero-time::after {
-            content: '';
-            position: absolute;
-            bottom: -1px; left: 30%; right: 30%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--j-cyan), transparent);
+        .hero-time .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--j-blue), var(--j-cyan), var(--j-blue), transparent);
             border-radius: 2px;
-            opacity: 0.5;
+            margin: 4px 0;
+        }
+
+        .hero-time .date {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--j-text);
+            letter-spacing: 4px;
+            text-transform: uppercase;
         }
 
         @keyframes timeFadeIn {
             from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        .hero-time .time {
-            font-family: 'Josefin Sans', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--j-text-bright);
-            text-shadow: 0 0 20px var(--j-glow);
-            letter-spacing: 3px;
-            line-height: 1;
-        }
-
-        .hero-time .date {
-            font-family: 'Josefin Sans', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--j-blue);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            opacity: 0.8;
         }
 
         /* ========== FEATURES SECTION ========== */
@@ -1268,6 +1252,7 @@
 
         <div class="hero-time">
             <span class="time" id="heroTime">00:00:00</span>
+            <div class="divider"></div>
             <span class="date" id="heroDate">LOADING...</span>
         </div>
     </section>
