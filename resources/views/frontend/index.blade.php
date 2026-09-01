@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>J.A.R.V.I.S. — Personal AI Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
@@ -222,7 +224,7 @@
         }
 
         .nav-name {
-            font-family: 'Audiowide', cursive;
+            font-family: 'Audiowide', 'Orbitron', 'Rajdhani', cursive;
             font-size: 1.1rem;
             font-weight: 400;
             color: var(--j-text-bright);
@@ -318,7 +320,7 @@
         }
 
         .hero-title {
-            font-family: 'Audiowide', cursive;
+            font-family: 'Audiowide', 'Orbitron', 'Rajdhani', cursive;
             font-size: 4.2rem;
             font-weight: 400;
             color: var(--j-text-bright);
@@ -540,7 +542,7 @@
         }
 
         .hero-time .time {
-            font-family: 'Audiowide', cursive;
+            font-family: 'Audiowide', 'Orbitron', 'Rajdhani', cursive;
             font-size: 2rem;
             font-weight: 700;
             color: var(--j-text-bright);
@@ -984,7 +986,7 @@
         }
 
         .weather-temp {
-            font-family: 'Audiowide', cursive;
+            font-family: 'Audiowide', 'Orbitron', 'Rajdhani', cursive;
             font-size: 2rem;
             font-weight: 700;
             color: var(--j-text-bright);
@@ -1459,8 +1461,7 @@
 
     // ========== CLOCK ==========
     function updateClock() {
-        const now = new Date();
-        const t = now.toLocaleTimeString('en-US', { hour12: false });
+        const now = new Date();            const t = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
         const d = now.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase();
         document.getElementById('heroTime').textContent = t;
         document.getElementById('heroDate').textContent = d;
