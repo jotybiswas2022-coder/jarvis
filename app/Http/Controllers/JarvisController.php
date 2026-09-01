@@ -237,7 +237,7 @@ class JarvisController extends Controller
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type' => 'application/json',
             ])->timeout(15)->post('https://api.groq.com/openai/v1/chat/completions', [
-                'model' => 'llama-3.1-8b-instant',
+                'model' => 'openai/gpt-oss-120b',
                 'messages' => [
                     ['role' => 'system', 'content' => $this->getJarvisSystemPrompt()],
                     ['role' => 'user', 'content' => $message],
