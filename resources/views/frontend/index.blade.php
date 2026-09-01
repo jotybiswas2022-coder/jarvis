@@ -689,24 +689,9 @@
             line-height: 1.6;
         }
 
-        /* ========== CHAT + SYSTEM SECTION ========== */
-        .chat-section {
-            padding: 0 60px 80px;
-        }
+        /* removed */
 
-        .chat-layout {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 900px) {
-            .chat-section { padding: 0 24px 60px; }
-            .chat-layout { grid-template-columns: 1fr; }
-        }
-
-        /* Glass Card */
-        .glass-card {
+        /* Glass Card - removed, moved to chat page */
             background: var(--j-card);
             border: 1px solid var(--j-border);
             border-radius: var(--radius);
@@ -1124,8 +1109,6 @@
             box-shadow: 0 8px 25px rgba(0, 212, 255, 0.15);
         }
 
-        .app-item i { font-size: 1.4rem; }
-
         /* ========== FOOTER ========== */
         .footer {
             text-align: center;
@@ -1286,118 +1269,6 @@
                 <div class="feature-icon pink"><i class="fas fa-rocket"></i></div>
                 <div class="feature-title">App Launcher</div>
                 <div class="feature-desc">Launch any application with a single click. Chrome, VS Code, Terminal, and more.</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== SYSTEM + WEATHER ========== -->
-    <section class="chat-section">
-        <div class="chat-layout">
-            <div class="side-cards">
-                <!-- System Monitor -->
-                <div class="glass-card">
-                    <div class="card-header">
-                        <div class="card-label">
-                            <i class="fas fa-microchip"></i>
-                            <span>SYSTEM</span>
-                        </div>
-                        <div class="card-badge">LIVE</div>
-                    </div>
-                    <div class="sys-grid">
-                        <div class="sys-item">
-                            <div class="sys-label">CPU</div>
-                            <div class="sys-val" id="sysCpu">--</div>
-                        </div>
-                        <div class="sys-item">
-                            <div class="sys-label">MEMORY</div>
-                            <div class="sys-val" id="sysMemory">--</div>
-                            <div class="sys-bar"><div class="sys-bar-fill green" id="memBar" style="width:0%"></div></div>
-                        </div>
-                        <div class="sys-item">
-                            <div class="sys-label">DISK</div>
-                            <div class="sys-val" id="sysDisk">--</div>
-                            <div class="sys-bar"><div class="sys-bar-fill blue" id="diskBar" style="width:0%"></div></div>
-                        </div>
-                        <div class="sys-item">
-                            <div class="sys-label">HOST</div>
-                            <div class="sys-val" id="sysUptime" style="font-size:0.75rem;">--</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Weather -->
-                <div class="glass-card">
-                    <div class="card-header">
-                        <div class="card-label">
-                            <i class="fas fa-cloud-sun"></i>
-                            <span>WEATHER</span>
-                        </div>
-                        <div class="card-badge" id="weatherCity">--</div>
-                    </div>
-                    <div class="weather-row" id="weatherContent">
-                        <div class="weather-icon-wrap"><i class="fas fa-cloud"></i></div>
-                        <div>
-                            <div class="weather-temp">--°C</div>
-                            <div class="weather-meta">Loading...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== SEARCH + APPS ========== -->
-    <section class="bottom-section">
-        <div class="bottom-grid">
-            <!-- Search -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <div class="card-label">
-                        <i class="fas fa-search"></i>
-                        <span>WEB SEARCH</span>
-                    </div>
-                </div>
-                <div class="search-row">
-                    <input type="text" class="search-input" id="searchInput" placeholder="Search the web...">
-                    <button class="search-go" onclick="performSearch()">SEARCH</button>
-                </div>
-                <div class="search-links" id="searchLinks"></div>
-            </div>
-
-            <!-- App Launcher -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <div class="card-label">
-                        <i class="fas fa-rocket"></i>
-                        <span>LAUNCHER</span>
-                    </div>
-                </div>
-                <div class="apps-grid">
-                    <button class="app-item" onclick="openApp('chrome')">
-                        <i class="fab fa-chrome"></i> Chrome
-                    </button>
-                    <button class="app-item" onclick="openApp('vscode')">
-                        <i class="fas fa-code"></i> VS Code
-                    </button>
-                    <button class="app-item" onclick="openApp('terminal')">
-                        <i class="fas fa-terminal"></i> Terminal
-                    </button>
-                    <button class="app-item" onclick="openApp('notepad')">
-                        <i class="fas fa-file-alt"></i> Notepad
-                    </button>
-                    <button class="app-item" onclick="openApp('calculator')">
-                        <i class="fas fa-calculator"></i> Calc
-                    </button>
-                    <button class="app-item" onclick="openApp('explorer')">
-                        <i class="fas fa-folder"></i> Files
-                    </button>
-                    <button class="app-item" onclick="openApp('spotify')">
-                        <i class="fab fa-spotify"></i> Spotify
-                    </button>
-                    <button class="app-item" onclick="openApp('discord')">
-                        <i class="fab fa-discord"></i> Discord
-                    </button>
-                </div>
             </div>
         </div>
     </section>

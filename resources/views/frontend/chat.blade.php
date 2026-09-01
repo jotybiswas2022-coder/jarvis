@@ -424,6 +424,79 @@
         }
 
         .weather-meta span { color: var(--j-blue); }
+
+        /* Search in side panel */
+        .search-row {
+            display: flex; gap: 8px; margin-bottom: 12px;
+        }
+
+        .search-input {
+            flex: 1;
+            background: rgba(0, 212, 255, 0.04);
+            border: 1px solid var(--j-border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: var(--j-text-bright);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus { border-color: var(--j-blue); }
+        .search-input::placeholder { color: var(--j-text-dim); }
+
+        .search-go {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, var(--j-blue), var(--j-blue-dark));
+            border: none; border-radius: 10px;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem; font-weight: 600;
+            letter-spacing: 1px; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-go:hover { box-shadow: 0 4px 15px var(--j-glow); }
+
+        .search-links { display: flex; gap: 6px; flex-wrap: wrap; }
+
+        .s-link {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 12px;
+            background: rgba(0, 212, 255, 0.04);
+            border: 1px solid var(--j-border);
+            border-radius: 8px;
+            color: var(--j-text); text-decoration: none;
+            font-size: 0.7rem; transition: all 0.3s ease;
+        }
+
+        .s-link:hover { border-color: var(--j-blue); color: var(--j-blue); }
+
+        /* Apps in side panel */
+        .apps-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+        }
+
+        .app-item {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            padding: 10px 4px;
+            background: rgba(0, 212, 255, 0.03);
+            border: 1px solid var(--j-border);
+            border-radius: 8px;
+            color: var(--j-text); cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.55rem; font-weight: 500;
+            letter-spacing: 0.5px; text-transform: uppercase;
+        }
+
+        .app-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--j-blue); color: var(--j-blue);
+            transform: translateY(-2px);
+        }
+
+        .app-item i { font-size: 1rem; }
     </style>
 </head>
 <body>
@@ -529,6 +602,41 @@
                     <div class="weather-temp">--°C</div>
                     <div class="weather-meta">Loading...</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="side-card">
+            <div class="side-card-header">
+                <div class="side-card-label">
+                    <i class="fas fa-search"></i>
+                    <span>SEARCH</span>
+                </div>
+            </div>
+            <div class="search-row">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search the web...">
+                <button class="search-go" onclick="performSearch()">GO</button>
+            </div>
+            <div class="search-links" id="searchLinks"></div>
+        </div>
+
+        <!-- Launcher -->
+        <div class="side-card">
+            <div class="side-card-header">
+                <div class="side-card-label">
+                    <i class="fas fa-rocket"></i>
+                    <span>LAUNCHER</span>
+                </div>
+            </div>
+            <div class="apps-grid">
+                <button class="app-item" onclick="openApp('chrome')"><i class="fab fa-chrome"></i> Chrome</button>
+                <button class="app-item" onclick="openApp('vscode')"><i class="fas fa-code"></i> VS Code</button>
+                <button class="app-item" onclick="openApp('terminal')"><i class="fas fa-terminal"></i> Terminal</button>
+                <button class="app-item" onclick="openApp('notepad')"><i class="fas fa-file-alt"></i> Notepad</button>
+                <button class="app-item" onclick="openApp('calculator')"><i class="fas fa-calculator"></i> Calc</button>
+                <button class="app-item" onclick="openApp('explorer')"><i class="fas fa-folder"></i> Files</button>
+                <button class="app-item" onclick="openApp('spotify')"><i class="fab fa-spotify"></i> Spotify</button>
+                <button class="app-item" onclick="openApp('discord')"><i class="fab fa-discord"></i> Discord</button>
             </div>
         </div>
     </div>
@@ -658,6 +766,44 @@
                 document.getElementById('diskBar').className = 'sys-bar-fill ' + (i.disk.percent > 90 ? 'red' : i.disk.percent > 70 ? 'orange' : 'blue');
             }
         } catch (e) {}
+    }
+
+    // ========== SEARCH ==========
+    async function performSearch() {
+        const q = document.getElementById('searchInput').value.trim();
+        if (!q) return;
+        try {
+            const r = await fetch('/api/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
+                body: JSON.stringify({ query: q })
+            });
+            const d = await r.json();
+            if (d.success) {
+                document.getElementById('searchLinks').innerHTML = `
+                    <a href="${d.google_url}" target="_blank" class="s-link"><i class="fab fa-google"></i> Google</a>
+                    <a href="${d.youtube_url}" target="_blank" class="s-link"><i class="fab fa-youtube"></i> YouTube</a>
+                    <a href="${d.github_url}" target="_blank" class="s-link"><i class="fab fa-github"></i> GitHub</a>`;
+            }
+        } catch (e) {}
+    }
+
+    document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
+
+    // ========== APP LAUNCHER ==========
+    async function openApp(name) {
+        addMsg(`Opening ${name}...`, 'user');
+        try {
+            const r = await fetch('/api/open-app', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
+                body: JSON.stringify({ app: name })
+            });
+            const d = await r.json();
+            addMsg(d.message, 'jarvis');
+        } catch (e) {
+            addMsg('Unable to launch app.', 'jarvis');
+        }
     }
 
     // ========== INIT ==========
