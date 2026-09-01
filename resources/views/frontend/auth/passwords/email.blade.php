@@ -1,138 +1,262 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Forgot Password | HMD Publishing</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-</head>
-<body>
+<div class="login-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+                <div class="card login-card">
 
-<!-- TOP BAR -->
-<div class="au-topbar">
-    <div class="au-container au-topbar-inner">
-        <div class="au-topbar-tag">Trusted by 10,000+ authors</div>
-        <div class="au-topbar-contacts">
-            <span>📞 UK +44 7888 862764</span>
-            <span>|</span>
-            <span>📞 US +1 888 832 8969</span>
-            <span>|</span>
-            <span>✉️ info@hmdpublishing.com</span>
-        </div>
-    </div>
-</div>
-
-<!-- HEADER -->
-<header class="au-header">
-    <div class="au-container au-header-inner">
-        <a href="/" class="au-brand">HMD <span class="au-brand-light">Publishing</span></a>
-        <nav class="au-nav">
-            <a href="/">Home</a>
-            <a href="/services">Services</a>
-            <a href="/about">About</a>
-            <a href="/contact">Contact</a>
-        </nav>
-    </div>
-</header>
-
-<!-- MAIN -->
-<main class="au-main">
-    <div class="au-container" style="max-width:500px;">
-        <div class="au-card" style="text-align:center;">
-
-            <div class="au-card-header">
-                <div class="au-card-icon"><i class="bi bi-key-fill"></i></div>
-                <h2 class="au-card-title">Reset Password</h2>
-                <p class="au-card-subtitle">Enter your email and we'll send you a reset link</p>
-            </div>
-
-            <div class="au-card-body">
-                @if (session('status'))
-                    <div class="au-alert-success">{{ session('status') }}</div>
-                @endif
-
-                @if ($errors->any())
-                    <input type="hidden" id="pwErrors" value='{{ json_encode($errors->all()) }}'>
-                @endif
-
-                <form method="POST" action="{{ route('password.email') }}">
-                    @csrf
-
-                    <div class="au-input-group">
-                        <label class="au-input-label" for="email">Email Address</label>
-                        <div class="au-input-wrap">
-                            <i class="bi bi-envelope-fill au-input-icon"></i>
-                            <input id="email" type="email" class="au-input @error('email') au-input-error @enderror"
-                                   name="email" value="{{ old('email') }}" placeholder="you@example.com" required autofocus>
-                        </div>
-                        @error('email')<span class="au-error-text">{{ $message }}</span>@enderror
+                    {{-- Header --}}
+                    <div class="card-header login-header text-center">
+                        {{ __('Reset Password') }}
                     </div>
 
-                    <button type="submit" class="au-submit-btn" style="margin-top:8px;">
-                        <span>Send Password Reset Link</span>
-                    </button>
-                </form>
+                    {{-- Body --}}
+                    <div class="card-body login-body">
 
-                <div class="au-signup-row" style="margin-top:22px;">
-                    <a href="{{ route('login') }}" class="au-signup-link">Back to Sign In <i class="bi bi-arrow-right"></i></a>
+                        {{-- Success Alert --}}
+                        @if (session('status'))
+                            <div class="alert alert-success text-center">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+                        {{-- Lock Icon --}}
+                        <div class="lock-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M12 11c1.657 0 3 1.343 3 3v2H9v-2c0-1.657 1.343-3 3-3zm6-2V7a6 6 0 10-12 0v2"/>
+                            </svg>
+                        </div>
+
+                        {{-- Instructions --}}
+                        <p class="text-center instructions">
+                            {{ __('Enter your email address and we will send you a password reset link.') }}
+                        </p>
+
+                        {{-- Form --}}
+                        <form method="POST" action="{{ route('password.email') }}">
+                            @csrf
+
+                            {{-- Email --}}
+                            <div class="mb-4">
+                                <label for="email" class="form-label login-label">
+                                    {{ __('Email') }}
+                                </label><br><br>
+
+                                <input id="email" type="email"
+                                       class="form-control login-input @error('email') is-invalid @enderror"
+                                       name="email"
+                                       placeholder="Enter your email"
+                                       value="{{ old('email') }}"
+                                       required autofocus>
+
+                                @error('email')
+                                    <div class="invalid-feedback d-block">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
+                                @enderror
+                            </div><br><br>
+
+                            {{-- Submit Button --}}
+                            <button type="submit" class="btn login-btn w-100">
+                                {{ __('Send Password Reset Link') }}
+                            </button>
+                        </form>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</main>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const errEl = document.getElementById('pwErrors');
-    if (errEl) { try { const errs = JSON.parse(errEl.value); Swal.fire({icon:'error',title:'Error',text:Array.isArray(errs)?errs.join('\n'):errEl.value,background:'#fff',color:'#111827',confirmButtonColor:'#2563EB',iconColor:'#ef4444'}); } catch(e){} }
-});
-</script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</div>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#111827;line-height:1.6;}
-.au-container{max-width:1200px;margin:auto;}
-.au-topbar{background:#111;color:#fff;padding:10px 5%;font-size:13px;}
-.au-topbar-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
-.au-topbar-contacts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.au-header{background:#fff;padding:20px 5%;border-bottom:1px solid #eee;}
-.au-header-inner{display:flex;align-items:center;justify-content:space-between;gap:30px;}
-.au-brand{text-decoration:none;color:#111;font-size:25px;font-weight:800;letter-spacing:-1px;}
-.au-brand-light{font-weight:400;}
-.au-nav{display:flex;align-items:center;gap:25px;font-size:14px;}
-.au-nav a{text-decoration:none;color:#222;transition:color 0.2s ease;}
-.au-nav a:hover{color:#2563EB;}
-.au-main{background:#f8fafc;padding:60px 5% 80px;min-height:calc(100vh - 120px);display:flex;align-items:center;justify-content:center;}
-.au-card{width:100%;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:40px 36px;box-shadow:0 4px 20px rgba(0,0,0,0.06);}
-.au-card-header{margin-bottom:28px;}
-.au-card-icon{width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:#eff6ff;border:1px solid #bfdbfe;border-radius:50%;margin:0 auto 16px;font-size:28px;color:#2563EB;}
-.au-card-title{font-size:24px;font-weight:800;color:#111827;margin-bottom:6px;letter-spacing:-0.5px;}
-.au-card-subtitle{font-size:14px;color:#6b7280;}
-.au-card-body{text-align:left;}
-.au-alert-success{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669;border-radius:10px;padding:12px 16px;font-size:14px;margin-bottom:20px;text-align:center;}
-.au-input-group{margin-bottom:18px;}
-.au-input-label{display:block;font-size:14px;font-weight:600;color:#374151;margin-bottom:6px;}
-.au-input-wrap{position:relative;}
-.au-input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9ca3af;z-index:2;font-size:16px;transition:all 0.2s ease;}
-.au-input{width:100%;padding:13px 44px 13px 44px;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:15px;color:#111827;outline:none;transition:all 0.2s ease;}
-.au-input::placeholder{color:#9ca3af;}
-.au-input:focus{border-color:#2563EB;background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
-.au-input-wrap:focus-within .au-input-icon{color:#2563EB;}
-.au-input-error{border-color:#ef4444!important;}
-.au-error-text{display:block;color:#ef4444;font-size:13px;margin-top:6px;font-weight:500;}
-.au-submit-btn{width:100%;padding:14px 24px;background:#111827;border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:700;color:#fff;cursor:pointer;transition:all 0.2s ease;}
-.au-submit-btn:hover{background:#2563EB;transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,0.3);}
-.au-signup-row{text-align:center;font-size:14px;color:#6b7280;display:flex;align-items:center;justify-content:center;gap:6px;}
-.au-signup-link{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:#2563EB;text-decoration:none;transition:all 0.2s ease;}
-.au-signup-link:hover{color:#1d4ed8;}
-.au-signup-link i{font-size:13px;transition:transform 0.2s ease;}
-.au-signup-link:hover i{transform:translateX(3px);}
-@media(max-width:600px){.au-topbar{display:none;}.au-header-inner{flex-direction:column;gap:15px;}.au-nav{flex-wrap:wrap;justify-content:center;gap:15px;}.au-card{padding:28px 20px;}}
+/* Body */
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+/* Container */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 12px;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    position: relative;
+}
+
+/* Floating bubbles */
+.login-container::before,
+.login-container::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.login-container::before {
+    top: -150px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    background: rgba(59,130,246,0.08);
+    animation: floatBubble1 8s ease-in-out infinite;
+}
+
+.login-container::after {
+    bottom: -120px;
+    right: -80px;
+    width: 500px;
+    height: 500px;
+    background: rgba(99,102,241,0.06);
+    animation: floatBubble2 10s ease-in-out infinite;
+}
+
+@keyframes floatBubble1 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(30px, 20px) scale(1.05);}
+}
+
+@keyframes floatBubble2 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(-40px, -30px) scale(1.08);}
+}
+
+/* Card */
+.login-card {
+    width: 100%;
+    border-radius: 20px;
+    background: rgba(30,41,59,0.85);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(59,130,246,0.25);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+.login-header {
+    background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(26,39,68,0.9));
+    color: #fff;
+    padding: 22px;
+    font-size: 22px;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(59,130,246,0.25);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+/* Body */
+.login-body {
+    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Instructions */
+.instructions {
+    font-size: 14.5px;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+/* Alert */
+.alert-success {
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.25);
+    color: #60a5fa;
+    border-radius: 12px;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px 12px;
+}
+
+/* Lock Icon */
+.lock-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(59,130,246,0.12);
+    border: 2px solid rgba(59,130,246,0.2);
+    transition: transform .3s;
+}
+
+.lock-icon:hover {
+    transform: scale(1.05);
+}
+
+.lock-icon svg {
+    width: 28px;
+    height: 28px;
+    color: #3b82f6;
+}
+
+/* Label */
+.login-label {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Input */
+.login-input {
+    background: rgba(15,23,42,0.85);
+    color: #e2e8f0;
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 12px;
+    padding: 12px 16px;
+    width: 100%;
+    transition: all .3s ease;
+}
+
+.login-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    background: rgba(12,19,34,0.95);
+    outline: none;
+}
+
+/* Invalid Feedback */
+.invalid-feedback strong {
+    color: #f87171;
+    font-size: 13px;
+}
+
+/* Button */
+.login-btn {
+    background: linear-gradient(135deg,#3b82f6,#2563eb);
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 12px;
+    color: #fff;
+    transition: all .3s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(59,130,246,.35), 0 0 40px rgba(59,130,246,0.1);
+}
+
+/* Mobile */
+@media(max-width:768px) {
+    .login-body {padding: 25px 20px;}
+    .login-label {text-align: left;}
+}
+
+@media(max-width:576px) {
+    .login-header {font-size: 19px; padding: 18px;}
+    .login-body {padding: 20px 15px;}
+}
 </style>
-</body>
-</html>
