@@ -537,25 +537,29 @@
 
         .hero-time {
             position: absolute;
-            bottom: 30px;
-            left: 60px;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
             display: flex;
-            align-items: baseline;
-            gap: 16px;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
         }
 
         .hero-time .time {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 600;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--j-text-bright);
             text-shadow: 0 0 15px var(--j-glow);
+            letter-spacing: 2px;
         }
 
         .hero-time .date {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 500;
             color: var(--j-blue);
             letter-spacing: 2px;
         }
@@ -620,8 +624,7 @@
             .hero-actions { justify-content: center; }
             .hero-right { width: 100%; }
             .model-wrapper { height: 350px; max-width: 100%; }
-            .hero-time { left: 24px; bottom: 20px; }
-            .hero-time .time { font-size: 1.2rem; }
+            .hero-time .time { font-size: 1.1rem; }
             .features { padding: 40px 24px 60px; }
             .top-nav { padding: 16px 24px; }
         }
