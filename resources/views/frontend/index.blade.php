@@ -540,43 +540,54 @@
             top: 100px;
             left: 50%;
             transform: translateX(-50%);
-            text-align: center;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 20px;
             animation: timeFadeIn 1s ease 0.3s both;
         }
 
         .hero-time .time {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 700;
             color: var(--j-text-bright);
-            letter-spacing: 4px;
+            letter-spacing: 2px;
             line-height: 1;
         }
 
-        .hero-time .divider {
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--j-blue), var(--j-cyan), var(--j-blue), transparent);
-            border-radius: 2px;
-            margin: 4px 0;
+        .hero-time .dot-sep {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .hero-time .dot-sep span {
+            width: 4px;
+            height: 4px;
+            background: var(--j-blue);
+            border-radius: 50%;
         }
 
         .hero-time .date {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
+            font-size: 1rem;
+            font-weight: 600;
             color: var(--j-text);
-            letter-spacing: 4px;
-            text-transform: uppercase;
+            letter-spacing: 2px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
         }
 
         @keyframes timeFadeIn {
             from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 700px) {
+            .hero-time { flex-direction: column; gap: 8px; }
+            .hero-time .date { writing-mode: horizontal-tb; font-size: 0.8rem; }
+            .hero-time .dot-sep { flex-direction: row; }
+            .hero-time .time { font-size: 1.6rem; }
         }
 
         /* ========== FEATURES SECTION ========== */
@@ -1249,7 +1260,7 @@
 
         <div class="hero-time">
             <span class="time" id="heroTime">00:00:00</span>
-            <div class="divider"></div>
+            <div class="dot-sep"><span></span><span></span><span></span></div>
             <span class="date" id="heroDate">LOADING...</span>
         </div>
     </section>
