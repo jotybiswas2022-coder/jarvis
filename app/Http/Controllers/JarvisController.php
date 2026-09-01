@@ -25,42 +25,48 @@ class JarvisController extends Controller
         ]);
 
         $message = $request->input('message');
-        $apiKey = config('services.openai.api_key', env('OPENAI_API_KEY'));
-
-        if (!$apiKey) {
+        // Try Groq API first (free, fast)
+        $groqKey = config('services.groq.api_key', env('GROQ_API_KEY'));
+        $groqReply = $this->tryGroqChat($message, $groqKey);
+        if ($groqReply) {
             return response()->json([
                 'success' => true,
-                'reply' => $this->getLocalResponse($message),
-                'source' => 'local'
+                'reply' => $groqReply,
+                'source' => 'groq'
             ]);
         }
 
-        try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $apiKey,
-                'Content-Type' => 'application/json',
-            ])->timeout(30)->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-3.5-turbo',
-                'messages' => [
-                    ['role' => 'system', 'content' => 'You are JARVIS (Just A Rather Very Intelligent System), an advanced AI assistant created by Tony Stark. You are helpful, witty, and slightly sarcastic like the real JARVIS from Iron Man. Respond in a mix of English and casual style. Keep responses concise but friendly.'],
-                    ['role' => 'user', 'content' => $message],
-                ],
-                'max_tokens' => 500,
-                'temperature' => 0.7,
-            ]);
-
-            if ($response->successful()) {
-                $reply = $response->json('choices.0.message.content', 'I apologize, sir. I seem to be having trouble processing that request.');
-                return response()->json([
-                    'success' => true,
-                    'reply' => $reply,
-                    'source' => 'openai'
+        // Try OpenAI API
+        $apiKey = config('services.openai.api_key', env('OPENAI_API_KEY'));
+        if ($apiKey) {
+            try {
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $apiKey,
+                    'Content-Type' => 'application/json',
+                ])->timeout(30)->post('https://api.openai.com/v1/chat/completions', [
+                    'model' => 'gpt-3.5-turbo',
+                    'messages' => [
+                        ['role' => 'system', 'content' => $this->getJarvisSystemPrompt()],
+                        ['role' => 'user', 'content' => $message],
+                    ],
+                    'max_tokens' => 500,
+                    'temperature' => 0.7,
                 ]);
+
+                if ($response->successful()) {
+                    $reply = $response->json('choices.0.message.content', 'I apologize, sir. I seem to be having trouble processing that request.');
+                    return response()->json([
+                        'success' => true,
+                        'reply' => $reply,
+                        'source' => 'openai'
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Fall through to local response
             }
-        } catch (\Exception $e) {
-            // Fall through to local response
         }
 
+        // Fallback to local smart responses
         return response()->json([
             'success' => true,
             'reply' => $this->getLocalResponse($message),
@@ -216,6 +222,39 @@ class JarvisController extends Controller
     }
 
     // ========== PRIVATE HELPER METHODS ==========
+
+    private function getJarvisSystemPrompt()
+    {
+        return 'You are JARVIS (Just A Rather Very Intelligent System), an advanced AI assistant created by Tony Stark. You are helpful, witty, and slightly sarcastic like the real JARVIS from Iron Man. Respond in a mix of English and casual style. Keep responses concise but friendly. You can help with: weather, system info, web search, launching apps, and general conversation.';
+    }
+
+    private function tryGroqChat($message, $apiKey)
+    {
+        if (!$apiKey) return null;
+
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $apiKey,
+                'Content-Type' => 'application/json',
+            ])->timeout(15)->post('https://api.groq.com/openai/v1/chat/completions', [
+                'model' => 'llama-3.1-8b-instant',
+                'messages' => [
+                    ['role' => 'system', 'content' => $this->getJarvisSystemPrompt()],
+                    ['role' => 'user', 'content' => $message],
+                ],
+                'max_tokens' => 500,
+                'temperature' => 0.7,
+            ]);
+
+            if ($response->successful()) {
+                return $response->json('choices.0.message.content', null);
+            }
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        return null;
+    }
 
     private function getLocalResponse($message)
     {
