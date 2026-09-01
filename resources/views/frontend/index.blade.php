@@ -669,6 +669,54 @@
             .hero-time .time { font-size: 1.1rem; }
             .features { padding: 40px 24px 60px; }
             .top-nav { padding: 16px 24px; }
+            .custom-cursor, .cursor-dot, .cursor-trail { display: none; }
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            border: 1.5px solid var(--j-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+
+        .custom-cursor.hover {
+            width: 40px; height: 40px;
+            border-color: var(--j-cyan);
+            background: rgba(0, 255, 242, 0.08);
+        }
+
+        .cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 5px; height: 5px;
+            background: var(--j-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, background 0.2s ease;
+        }
+
+        .cursor-dot.hover {
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 30px; height: 30px;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Feature Card */
@@ -1211,6 +1259,10 @@
 </head>
 <body>
 
+<div class="custom-cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
 <div class="bg-grid"></div>
 <div class="bg-gradient"></div>
 <div class="particles" id="particles"></div>
@@ -1477,6 +1529,50 @@
             addMessage('Unable to launch app.', 'jarvis');
         }
     }
+
+    // ========== CUSTOM CURSOR ==========
+    (function initCursor() {
+        const cursor = document.getElementById('cursor');
+        const dot = document.getElementById('cursorDot');
+        const trail = document.getElementById('cursorTrail');
+        if (!cursor || !dot || !trail) return;
+
+        let mouseX = 0, mouseY = 0;
+        let trailX = 0, trailY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
+        });
+
+        function animateTrail() {
+            trailX += (mouseX - trailX) * 0.15;
+            trailY += (mouseY - trailY) * 0.15;
+            trail.style.left = trailX + 'px';
+            trail.style.top = trailY + 'px';
+            requestAnimationFrame(animateTrail);
+        }
+        animateTrail();
+
+        const hoverTargets = document.querySelectorAll('a, button, .feature-card, .app-item, .s-link, spline-viewer');
+        hoverTargets.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                dot.classList.add('hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+                dot.classList.remove('hover');
+            });
+        });
+
+        document.body.style.cursor = 'none';
+        document.querySelectorAll('a, button').forEach(el => el.style.cursor = 'none');
+    })();
 
     // ========== INIT ==========
     document.addEventListener('DOMContentLoaded', () => {
