@@ -537,7 +537,7 @@
 
         .hero-time {
             position: absolute;
-            top: 70px;
+            top: 100px;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
