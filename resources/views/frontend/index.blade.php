@@ -124,35 +124,101 @@
         }
 
         .nav-logo {
-            width: 40px; height: 40px;
+            width: 48px; height: 48px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .nav-logo .ring {
+        .arc-ring {
             position: absolute;
-            border: 1.5px solid var(--j-blue);
             border-radius: 50%;
-            animation: spin 12s linear infinite;
+            border: 1.5px solid transparent;
         }
 
-        .nav-logo .ring:nth-child(1) { width: 40px; height: 40px; }
-        .nav-logo .ring:nth-child(2) { width: 30px; height: 30px; border-color: var(--j-cyan); animation-direction: reverse; animation-duration: 8s; }
-
-        .nav-logo .core {
-            width: 12px; height: 12px;
-            background: radial-gradient(circle, var(--j-blue) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: corePulse 2s ease-in-out infinite;
-            box-shadow: 0 0 15px var(--j-glow);
+        .arc-ring-1 {
+            width: 48px; height: 48px;
+            border-top-color: var(--j-blue);
+            border-bottom-color: var(--j-blue);
+            animation: arcSpin 3s linear infinite;
         }
 
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes corePulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.3); opacity: 1; }
+        .arc-ring-2 {
+            width: 38px; height: 38px;
+            border-left-color: var(--j-cyan);
+            border-right-color: var(--j-cyan);
+            animation: arcSpin 2.5s linear infinite reverse;
+        }
+
+        .arc-ring-3 {
+            width: 28px; height: 28px;
+            border-top-color: var(--j-purple);
+            border-bottom-color: var(--j-purple);
+            animation: arcSpin 4s linear infinite;
+        }
+
+        .arc-ring-4 {
+            width: 20px; height: 20px;
+            border-left-color: var(--j-pink);
+            border-right-color: var(--j-pink);
+            animation: arcSpin 2s linear infinite reverse;
+        }
+
+        .arc-core {
+            width: 10px; height: 10px;
+            background: radial-gradient(circle, #fff 0%, var(--j-blue) 40%, transparent 70%);
+            border-radius: 50%;
+            animation: arcPulse 1.5s ease-in-out infinite;
+            box-shadow:
+                0 0 8px var(--j-blue),
+                0 0 16px var(--j-glow),
+                0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .arc-orbit {
+            position: absolute;
+            width: 44px; height: 44px;
+            animation: arcSpin 6s linear infinite;
+        }
+
+        .arc-orbit-dot {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: var(--j-cyan);
+            border-radius: 50%;
+            top: -2px; left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 6px var(--j-cyan);
+        }
+
+        .arc-orbit-2 {
+            width: 36px; height: 36px;
+            animation: arcSpin 4s linear infinite reverse;
+        }
+
+        .arc-orbit-2 .arc-orbit-dot {
+            background: var(--j-purple);
+            box-shadow: 0 0 6px var(--j-purple);
+            width: 3px; height: 3px;
+        }
+
+        .arc-glow {
+            position: absolute;
+            width: 60px; height: 60px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: arcGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes arcSpin { 100% { transform: rotate(360deg); } }
+        @keyframes arcPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 8px var(--j-blue), 0 0 16px var(--j-glow); }
+            50% { transform: scale(1.2); box-shadow: 0 0 12px var(--j-blue), 0 0 24px var(--j-glow), 0 0 40px rgba(0, 212, 255, 0.4); }
+        }
+        @keyframes arcGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.15); }
         }
 
         .nav-name {
@@ -998,9 +1064,14 @@
         <nav class="top-nav">
             <div class="nav-brand">
                 <div class="nav-logo">
-                    <div class="ring"></div>
-                    <div class="ring"></div>
-                    <div class="core"></div>
+                    <div class="arc-glow"></div>
+                    <div class="arc-ring arc-ring-1"></div>
+                    <div class="arc-ring arc-ring-2"></div>
+                    <div class="arc-ring arc-ring-3"></div>
+                    <div class="arc-ring arc-ring-4"></div>
+                    <div class="arc-orbit"><div class="arc-orbit-dot"></div></div>
+                    <div class="arc-orbit-2"><div class="arc-orbit-dot"></div></div>
+                    <div class="arc-core"></div>
                 </div>
                 <span class="nav-name">J.A.R.V.I.S.</span>
             </div>
