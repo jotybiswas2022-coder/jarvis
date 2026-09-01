@@ -261,12 +261,13 @@
             display: flex;
             align-items: center;
             padding: 0 60px;
-            gap: 40px;
+            gap: 20px;
         }
 
         .hero-left {
             flex: 1;
-            max-width: 550px;
+            max-width: 480px;
+            margin-right: auto;
         }
 
         .hero-badge {
