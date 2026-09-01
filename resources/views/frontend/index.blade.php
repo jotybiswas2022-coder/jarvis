@@ -581,6 +581,9 @@
             color: var(--j-text);
             letter-spacing: 4px;
             text-transform: uppercase;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            margin-top: 4px;
         }
 
         @keyframes timeFadeIn {
