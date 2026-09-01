@@ -16,7 +16,7 @@ class JarvisController extends Controller
     }
 
     /**
-     * Chat with Jarvis using OpenAI API
+     * Chat with Jarvis using Groq AI (free, fast)
      */
     public function chat(Request $request)
     {
@@ -25,7 +25,8 @@ class JarvisController extends Controller
         ]);
 
         $message = $request->input('message');
-        // Try Groq API first (free, fast)
+
+        // Try Groq API (free, fast)
         $groqKey = config('services.groq.api_key', env('GROQ_API_KEY'));
         $groqReply = $this->tryGroqChat($message, $groqKey);
         if ($groqReply) {
@@ -34,36 +35,6 @@ class JarvisController extends Controller
                 'reply' => $groqReply,
                 'source' => 'groq'
             ]);
-        }
-
-        // Try OpenAI API
-        $apiKey = config('services.openai.api_key', env('OPENAI_API_KEY'));
-        if ($apiKey) {
-            try {
-                $response = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . $apiKey,
-                    'Content-Type' => 'application/json',
-                ])->timeout(30)->post('https://api.openai.com/v1/chat/completions', [
-                    'model' => 'gpt-3.5-turbo',
-                    'messages' => [
-                        ['role' => 'system', 'content' => $this->getJarvisSystemPrompt()],
-                        ['role' => 'user', 'content' => $message],
-                    ],
-                    'max_tokens' => 500,
-                    'temperature' => 0.7,
-                ]);
-
-                if ($response->successful()) {
-                    $reply = $response->json('choices.0.message.content', 'I apologize, sir. I seem to be having trouble processing that request.');
-                    return response()->json([
-                        'success' => true,
-                        'reply' => $reply,
-                        'source' => 'openai'
-                    ]);
-                }
-            } catch (\Exception $e) {
-                // Fall through to local response
-            }
         }
 
         // Fallback to local smart responses
@@ -207,7 +178,6 @@ class JarvisController extends Controller
             $command = $apps[$app][$os] ?? null;
 
             if ($command) {
-                // Windows uses 'start' to launch apps in background
                 if (PHP_OS_FAMILY === 'Windows') {
                     $fullCommand = 'start "" ' . $command;
                 } else {
@@ -278,7 +248,6 @@ class JarvisController extends Controller
             'thank you' => "At your service, sir. Always.",
             'thanks' => "My pleasure, sir. That's what I'm here for.",
             'help' => "I can help you with:\n• 💬 Chat & Conversation\n• 🌤️ Weather Information\n• 💻 System Information\n• 🔍 Web Search\n• 🚀 Launch Applications\n\nJust ask me anything, sir!",
-            'joke' => $this->getRandomJoke(),
             'weather' => "I'll check the weather for you, sir. You can ask me about any city's weather.",
         ];
 
@@ -288,19 +257,7 @@ class JarvisController extends Controller
             }
         }
 
-        return "I understand, sir. For more advanced queries, please configure the OpenAI API key in your .env file. In the meantime, I'm here to help with weather, system info, and more!";
-    }
-
-    private function getRandomJoke()
-    {
-        $jokes = [
-            "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
-            "Why was the JavaScript developer sad? Because he didn't Node how to Express himself! 😄",
-            "What's a computer's favorite snack? Microchips! 🍟",
-            "Why did the developer go broke? Because he used up all his cache! 💸",
-            "How many programmers does it take to change a light bulb? None — that's a hardware problem! 💡",
-        ];
-        return $jokes[array_rand($jokes)];
+        return "I understand, sir. Please set your GROQ_API_KEY in .env file for AI-powered responses.";
     }
 
     private function getUptime()
