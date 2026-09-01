@@ -553,14 +553,16 @@
 
         .hero-time {
             position: absolute;
-            top: 100px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            left: 0;
+            right: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            animation: timeFadeIn 1s ease 0.3s both;
+            gap: 6px;
+            padding-top: 100px;
+            z-index: 5;
+            pointer-events: none;
         }
 
         .hero-time .time {
