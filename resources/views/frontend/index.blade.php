@@ -544,24 +544,58 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 8px;
+            padding: 20px 40px;
+            background: rgba(8, 15, 35, 0.6);
+            border: 1px solid rgba(0, 212, 255, 0.12);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            position: absolute;
+            animation: timeFadeIn 1s ease 0.3s both;
+        }
+
+        .hero-time::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: 20%; right: 20%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--j-blue), transparent);
+            border-radius: 2px;
+        }
+
+        .hero-time::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 30%; right: 30%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--j-cyan), transparent);
+            border-radius: 2px;
+            opacity: 0.5;
+        }
+
+        @keyframes timeFadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
         .hero-time .time {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--j-text-bright);
-            text-shadow: 0 0 15px var(--j-glow);
-            letter-spacing: 2px;
+            text-shadow: 0 0 20px var(--j-glow);
+            letter-spacing: 3px;
+            line-height: 1;
         }
 
         .hero-time .date {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
             color: var(--j-blue);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.8;
         }
 
         /* ========== FEATURES SECTION ========== */
