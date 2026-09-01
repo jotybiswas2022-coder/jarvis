@@ -7,7 +7,7 @@
     <title>J.A.R.V.I.S. — Personal AI Assistant</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
     <style>
@@ -224,8 +224,9 @@
         }
 
         .nav-name {
-            font-family: 'Audiowide', 'Orbitron', 'Rajdhani', cursive;
-            font-size: 1.1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
             font-weight: 400;
             color: var(--j-text-bright);
             letter-spacing: 3px;
@@ -275,12 +276,12 @@
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(168, 85, 247, 0.06) 100%);
             border: 1px solid rgba(0, 212, 255, 0.2);
             border-radius: 40px;
-            padding: 10px 22px;
-            margin-bottom: 28px;
+            padding: 8px 18px;
+            margin-bottom: 24px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--j-blue);
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             position: relative;
             overflow: hidden;
@@ -320,12 +321,12 @@
         }
 
         .hero-title {
-            font-family: 'Audiowide', 'Orbitron', 'Rajdhani', cursive;
-            font-size: 4.2rem;
-            font-weight: 400;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 700;
             color: var(--j-text-bright);
-            line-height: 1.05;
-            margin-bottom: 24px;
+            line-height: 1.1;
+            margin-bottom: 20px;
             animation: titleReveal 1s ease 0.4s both;
         }
 
@@ -371,11 +372,11 @@
         }
 
         .hero-subtitle {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             color: var(--j-text);
-            line-height: 1.8;
-            margin-bottom: 36px;
-            max-width: 500px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            max-width: 460px;
             animation: subtitleFade 1s ease 0.6s both;
         }
 
@@ -405,7 +406,8 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 16px 36px;
+            padding: 14px 30px;
+            font-family: 'Space Grotesk', sans-serif;
             background: linear-gradient(135deg, var(--j-blue) 0%, var(--j-blue-dark) 100%);
             border: none;
             border-radius: 14px;
@@ -454,7 +456,8 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 16px 36px;
+            padding: 14px 30px;
+            font-family: 'Space Grotesk', sans-serif;
             background: rgba(0, 212, 255, 0.04);
             border: 1.5px solid rgba(0, 212, 255, 0.15);
             border-radius: 14px;
@@ -542,8 +545,9 @@
         }
 
         .hero-time .time {
-            font-family: 'Audiowide', 'Orbitron', 'Rajdhani', cursive;
-            font-size: 2rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
             font-weight: 700;
             color: var(--j-text-bright);
             text-shadow: 0 0 15px var(--j-glow);
@@ -583,9 +587,9 @@
         }
 
         .section-title {
-            font-family: 'Audiowide', cursive;
-            font-size: 1.8rem;
-            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
             color: var(--j-text-bright);
             margin-bottom: 12px;
         }
@@ -971,8 +975,9 @@
         }
 
         .weather-temp {
-            font-family: 'Audiowide', 'Orbitron', 'Rajdhani', cursive;
-            font-size: 2rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
             font-weight: 700;
             color: var(--j-text-bright);
         }
