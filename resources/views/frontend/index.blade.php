@@ -1280,6 +1280,11 @@
             </div>
         </nav>
 
+        <div class="hero-time">
+            <span class="time" id="heroTime">00:00:00</span>
+            <span class="date" id="heroDate">LOADING...</span>
+        </div>
+
         <div class="hero-content">
             <div class="hero-left">
                 <div class="hero-badge">
@@ -1308,11 +1313,6 @@
                     <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"></spline-viewer>
                 </div>
             </div>
-        </div>
-
-        <div class="hero-time">
-            <span class="time" id="heroTime">00:00:00</span>
-            <span class="date" id="heroDate">LOADING...</span>
         </div>
     </section>
 
