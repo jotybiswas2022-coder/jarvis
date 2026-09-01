@@ -360,13 +360,13 @@
             letter-spacing: 2px;
         }
 
-        /* ========== SCROLL-LOCKED SECTION ========== */
-        .scroll-locked {
+        /* ========== TRAIN DOOR SCROLL SECTION ========== */
+        .train-section {
             position: relative;
-            height: 400vh;
+            height: 500vh;
         }
 
-        .scroll-sticky {
+        .train-sticky {
             position: sticky;
             top: 0;
             height: 100vh;
@@ -374,115 +374,330 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            background: var(--j-bg);
         }
 
-        .scroll-bg {
+        .train-wrapper {
+            position: relative;
+            width: 700px;
+            max-width: 90vw;
+            height: 480px;
+        }
+
+        /* Train Body */
+        .train-body {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.05) 0%, var(--j-bg) 70%);
+            background: linear-gradient(180deg, #1a1f2e 0%, #0d1117 50%, #1a1f2e 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            box-shadow:
+                0 0 40px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255,255,255,0.05),
+                inset 0 -1px 0 rgba(0,0,0,0.3);
+            overflow: hidden;
         }
 
-        .scroll-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 800px;
-            padding: 0 40px;
-        }
-
-        .scroll-phase {
+        .train-body::before {
+            content: '';
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--j-blue), var(--j-cyan), var(--j-blue), transparent);
+            opacity: 0.6;
+        }
+
+        .train-body::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--j-blue), var(--j-cyan), var(--j-blue), transparent);
+            opacity: 0.4;
+        }
+
+        /* Train Stripe */
+        .train-stripe {
+            position: absolute;
+            top: 50%;
+            left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 5%, var(--j-blue) 20%, var(--j-cyan) 50%, var(--j-blue) 80%, transparent 95%);
+            opacity: 0.3;
+            transform: translateY(-50%);
+        }
+
+        /* Door Frame */
+        .door-frame {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 340px;
+            height: 400px;
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Door Panels */
+        .door-left, .door-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+        .door-left {
+            left: 0;
+            transform: translateX(0);
+            background: linear-gradient(90deg, #1e2538 0%, #2a3348 60%, #1e2538 100%);
+            border-right: 1px solid rgba(0, 212, 255, 0.15);
+        }
+
+        .door-right {
+            right: 0;
+            transform: translateX(0);
+            background: linear-gradient(270deg, #1e2538 0%, #2a3348 60%, #1e2538 100%);
+            border-left: 1px solid rgba(0, 212, 255, 0.15);
+        }
+
+        .door-left.open { transform: translateX(-105%); }
+        .door-right.open { transform: translateX(105%); }
+
+        /* Door Details */
+        .door-panel {
             width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .door-handle {
+            position: absolute;
+            top: 50%;
+            width: 8px;
+            height: 50px;
+            background: linear-gradient(180deg, #4a5568 0%, #718096 50%, #4a5568 100%);
+            border-radius: 4px;
+            transform: translateY(-50%);
+            box-shadow: 0 0 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .door-left .door-handle { right: 12px; }
+        .door-right .door-handle { left: 12px; }
+
+        .door-window {
+            position: absolute;
+            top: 30px;
+            width: 70%;
+            height: 120px;
+            left: 15%;
+            background: linear-gradient(180deg, rgba(0, 212, 255, 0.03) 0%, rgba(0, 0, 0, 0.2) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .door-window::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.03) 45%, transparent 50%);
+            animation: windowShine 4s ease-in-out infinite;
+        }
+
+        @keyframes windowShine {
+            0%, 100% { transform: translateX(-100%) translateY(-100%); }
+            50% { transform: translateX(100%) translateY(100%); }
+        }
+
+        .door-lines {
+            position: absolute;
+            bottom: 40px;
+            left: 15%;
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .door-line {
+            height: 2px;
+            background: rgba(0, 212, 255, 0.08);
+            border-radius: 1px;
+        }
+
+        /* Content Behind Doors */
+        .door-content {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
             text-align: center;
-            padding: 0 40px;
-            opacity: 0;
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            z-index: 1;
         }
 
-        .scroll-phase.active {
+        .door-content .phase-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.6s ease 0.4s;
+        }
+
+        .door-content.visible .phase-icon {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+            transform: scale(1);
         }
 
-        .scroll-phase.exit {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.95);
-        }
-
-        .scroll-phase .big-text {
+        .door-content .phase-big {
             font-family: 'Audiowide', cursive;
-            font-size: 3.5rem;
+            font-size: 2.2rem;
             color: var(--j-text-bright);
-            margin-bottom: 16px;
-            line-height: 1.2;
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease 0.5s;
+            line-height: 1.3;
         }
 
-        .scroll-phase .big-text .glow {
+        .door-content.visible .phase-big {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .door-content .phase-big .glow {
             background: linear-gradient(135deg, var(--j-blue), var(--j-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .scroll-phase .sub-text {
-            font-size: 1.1rem;
+        .door-content .phase-sub {
+            font-size: 0.95rem;
             color: var(--j-text);
-            max-width: 500px;
-            margin: 0 auto;
+            max-width: 380px;
             line-height: 1.7;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.6s ease 0.6s;
         }
 
-        .scroll-phase .counter {
+        .door-content.visible .phase-sub {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .door-content .phase-counter {
             font-family: 'Audiowide', cursive;
-            font-size: 6rem;
+            font-size: 4rem;
             color: var(--j-text-bright);
-            text-shadow: 0 0 30px var(--j-glow);
-            margin-bottom: 12px;
+            text-shadow: 0 0 25px var(--j-glow);
+            margin-bottom: 8px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.6s ease 0.4s;
         }
 
-        .scroll-phase .counter-label {
+        .door-content.visible .phase-counter {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .door-content .phase-label {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--j-blue);
             letter-spacing: 3px;
             text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.6s ease 0.6s;
         }
 
-        .scroll-orbs {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
+        .door-content.visible .phase-label {
+            opacity: 1;
         }
 
-        .scroll-orb {
+        /* Door Indicator */
+        .door-indicator {
             position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .door-dot {
+            width: 8px; height: 8px;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            transition: all 1s ease;
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.4s ease;
         }
 
-        .scroll-orb:nth-child(1) {
-            width: 400px; height: 400px;
+        .door-dot.active {
             background: var(--j-blue);
-            top: 20%; left: 10%;
+            box-shadow: 0 0 10px var(--j-glow);
+            transform: scale(1.3);
         }
 
-        .scroll-orb:nth-child(2) {
-            width: 300px; height: 300px;
-            background: var(--j-purple);
-            top: 60%; right: 15%;
+        .door-dot.done {
+            background: var(--j-success);
+            border-color: var(--j-success);
         }
 
-        .scroll-orb:nth-child(3) {
-            width: 250px; height: 250px;
-            background: var(--j-cyan);
-            bottom: 10%; left: 40%;
+        /* Train Lights */
+        .train-light {
+            position: absolute;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            top: 15px;
         }
+
+        .train-light.left { left: 20px; background: var(--j-success); box-shadow: 0 0 8px var(--j-success); }
+        .train-light.right { right: 20px; background: var(--j-warning); box-shadow: 0 0 8px var(--j-warning); }
+
+        /* Train Number */
+        .train-number {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: rgba(0, 212, 255, 0.4);
+            letter-spacing: 4px;
+        }
+
+        /* Sound Effect Line */
+        .door-sound {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: rgba(0, 212, 255, 0.3);
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .door-sound.show { opacity: 1; }
 
         .scroll-progress {
             position: fixed;
@@ -495,9 +710,11 @@
         }
 
         @media (max-width: 700px) {
-            .scroll-phase .big-text { font-size: 2rem; }
-            .scroll-phase .counter { font-size: 4rem; }
-            .scroll-phase .sub-text { font-size: 0.9rem; }
+            .train-wrapper { height: 380px; }
+            .door-frame { width: 260px; height: 320px; top: 30px; }
+            .door-content .phase-big { font-size: 1.5rem; }
+            .door-content .phase-counter { font-size: 2.8rem; }
+            .door-content .phase-sub { font-size: 0.8rem; }
         }
 
         /* ========== FEATURES SECTION ========== */
@@ -1186,41 +1403,63 @@
         </div>
     </section>
 
-    <!-- ========== SCROLL-LOCKED ANIMATION ========== -->
-    <div class="scroll-locked" id="scrollLocked">
-        <div class="scroll-sticky">
-            <div class="scroll-bg"></div>
-            <div class="scroll-orbs">
-                <div class="scroll-orb" id="orb1"></div>
-                <div class="scroll-orb" id="orb2"></div>
-                <div class="scroll-orb" id="orb3"></div>
-            </div>
+    <!-- ========== TRAIN DOOR SCROLL SECTION ========== -->
+    <div class="train-section" id="trainSection">
+        <div class="train-sticky">
+            <div class="train-wrapper">
+                <div class="train-body">
+                    <div class="train-light left"></div>
+                    <div class="train-light right"></div>
+                    <div class="train-number">J.A.R.V.I.S — NEURAL EXPRESS</div>
+                    <div class="train-stripe"></div>
 
-            <div class="scroll-phase active" id="phase0">
-                <div class="big-text">Welcome to<br><span class="glow">J.A.R.V.I.S.</span></div>
-                <div class="sub-text">Scroll down to explore the future of AI assistance</div>
-            </div>
+                    <div class="door-frame">
+                        <!-- Content Behind Doors -->
+                        <div class="door-content" id="doorContent">
+                            <div class="phase-icon" id="pIcon">🧠</div>
+                            <div class="phase-big" id="pBig">Welcome to<br><span class="glow">J.A.R.V.I.S.</span></div>
+                            <div class="phase-sub" id="pSub">Your personal AI assistant, ready to serve</div>
+                            <div class="phase-counter" id="pCounter" style="display:none;">0</div>
+                            <div class="phase-label" id="pLabel" style="display:none;"></div>
+                        </div>
 
-            <div class="scroll-phase" id="phase1">
-                <div class="counter" id="counter1">0</div>
-                <div class="counter-label">Neural Connections</div>
-                <div class="sub-text" style="margin-top:16px;">Powered by advanced language models with billions of parameters</div>
-            </div>
+                        <!-- Left Door -->
+                        <div class="door-left" id="doorLeft">
+                            <div class="door-panel">
+                                <div class="door-window"></div>
+                                <div class="door-handle"></div>
+                                <div class="door-lines">
+                                    <div class="door-line"></div>
+                                    <div class="door-line"></div>
+                                    <div class="door-line"></div>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="scroll-phase" id="phase2">
-                <div class="big-text"><span class="glow">Lightning Fast</span><br>Responses</div>
-                <div class="sub-text">Groq AI delivers responses in milliseconds, not seconds</div>
-            </div>
+                        <!-- Right Door -->
+                        <div class="door-right" id="doorRight">
+                            <div class="door-panel">
+                                <div class="door-window"></div>
+                                <div class="door-handle"></div>
+                                <div class="door-lines">
+                                    <div class="door-line"></div>
+                                    <div class="door-line"></div>
+                                    <div class="door-line"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="scroll-phase" id="phase3">
-                <div class="counter" id="counter2">0</div>
-                <div class="counter-label">Features Integrated</div>
-                <div class="sub-text" style="margin-top:16px;">Chat, Voice, Weather, System Monitor, Search & App Launcher</div>
-            </div>
+                    <div class="door-sound" id="doorSound">♪ DOORS OPENING ♪</div>
 
-            <div class="scroll-phase" id="phase4">
-                <div class="big-text">Your Personal<br><span class="glow">AI Universe</span></div>
-                <div class="sub-text">Everything you need, always at your command</div>
+                    <div class="door-indicator">
+                        <div class="door-dot active" id="dot0"></div>
+                        <div class="door-dot" id="dot1"></div>
+                        <div class="door-dot" id="dot2"></div>
+                        <div class="door-dot" id="dot3"></div>
+                        <div class="door-dot" id="dot4"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1608,17 +1847,33 @@
         }
     }
 
-    // ========== SCROLL-LOCKED ANIMATION ==========
-    (function initScrollAnimation() {
-        const container = document.getElementById('scrollLocked');
+    // ========== TRAIN DOOR ANIMATION ==========
+    (function initTrainDoors() {
+        const container = document.getElementById('trainSection');
         if (!container) return;
 
-        const phases = document.querySelectorAll('.scroll-phase');
-        const orbs = document.querySelectorAll('.scroll-orb');
+        const doorLeft = document.getElementById('doorLeft');
+        const doorRight = document.getElementById('doorRight');
+        const doorContent = document.getElementById('doorContent');
+        const doorSound = document.getElementById('doorSound');
         const progressBar = document.getElementById('scrollProgress');
-        const counter1 = document.getElementById('counter1');
-        const counter2 = document.getElementById('counter2');
-        let counted1 = false, counted2 = false;
+        const pIcon = document.getElementById('pIcon');
+        const pBig = document.getElementById('pBig');
+        const pSub = document.getElementById('pSub');
+        const pCounter = document.getElementById('pCounter');
+        const pLabel = document.getElementById('pLabel');
+
+        const phases = [
+            { icon: '🧠', big: 'Welcome to<br><span class="glow">J.A.R.V.I.S.</span>', sub: 'Your personal AI assistant, ready to serve', counter: false },
+            { icon: '⚡', big: '', sub: 'Powered by advanced neural networks with billions of parameters', counter: true, countTarget: 17500000000, countLabel: 'Neural Connections' },
+            { icon: '🚀', big: '<span class="glow">Lightning Fast</span><br>Responses', sub: 'Groq AI delivers responses in milliseconds, not seconds', counter: false },
+            { icon: '🎯', big: '', sub: 'Chat, Voice, Weather, System Monitor, Search & App Launcher', counter: true, countTarget: 6, countLabel: 'Features Integrated' },
+            { icon: '🌌', big: 'Your Personal<br><span class="glow">AI Universe</span>', sub: 'Everything you need, always at your command', counter: false }
+        ];
+
+        let currentPhase = -1;
+        let doorsOpen = false;
+        let counted = {};
 
         function animateCounter(el, target, duration) {
             let start = 0;
@@ -1632,46 +1887,89 @@
             update();
         }
 
+        function updateContent(phase) {
+            const p = phases[phase];
+            doorContent.classList.remove('visible');
+
+            setTimeout(() => {
+                pIcon.textContent = p.icon;
+
+                if (p.counter) {
+                    pBig.style.display = 'none';
+                    pSub.style.display = 'none';
+                    pCounter.style.display = 'block';
+                    pLabel.style.display = 'block';
+                    pCounter.textContent = '0';
+                    pLabel.textContent = p.countLabel;
+
+                    if (!counted[phase]) {
+                        counted[phase] = true;
+                        setTimeout(() => animateCounter(pCounter, p.countTarget, 2000), 300);
+                    }
+                } else {
+                    pBig.style.display = 'block';
+                    pSub.style.display = 'block';
+                    pCounter.style.display = 'none';
+                    pLabel.style.display = 'none';
+                    pBig.innerHTML = p.big;
+                    pSub.textContent = p.sub;
+                }
+
+                doorContent.classList.add('visible');
+            }, 400);
+        }
+
+        function openDoors() {
+            if (doorsOpen) return;
+            doorsOpen = true;
+            doorLeft.classList.add('open');
+            doorRight.classList.add('open');
+            doorSound.classList.add('show');
+            setTimeout(() => doorSound.classList.remove('show'), 1500);
+        }
+
+        function closeDoors() {
+            if (!doorsOpen) return;
+            doorsOpen = false;
+            doorLeft.classList.remove('open');
+            doorRight.classList.remove('open');
+        }
+
         window.addEventListener('scroll', () => {
             const rect = container.getBoundingClientRect();
             const scrollHeight = container.offsetHeight - window.innerHeight;
             const scrolled = -rect.top;
             const progress = Math.max(0, Math.min(1, scrolled / scrollHeight));
 
-            // Progress bar
             if (progressBar) progressBar.style.width = (progress * 100) + '%';
 
-            // Determine which phase to show
             const totalPhases = phases.length;
             const phaseIndex = Math.min(Math.floor(progress * totalPhases), totalPhases - 1);
 
-            phases.forEach((phase, i) => {
-                if (i === phaseIndex) {
-                    phase.classList.add('active');
-                    phase.classList.remove('exit');
-                } else {
-                    phase.classList.remove('active');
-                    if (i < phaseIndex) phase.classList.add('exit');
-                    else phase.classList.remove('exit');
-                }
-            });
-
-            // Animate orbs based on scroll
-            if (orbs[0]) orbs[0].style.transform = `translate(${progress * 100}px, ${progress * -50}px) scale(${1 + progress * 0.5})`;
-            if (orbs[1]) orbs[1].style.transform = `translate(${progress * -80}px, ${progress * 60}px) scale(${1 + progress * 0.3})`;
-            if (orbs[2]) orbs[2].style.transform = `translate(${progress * 50}px, ${progress * -40}px) scale(${1 + progress * 0.4})`;
-            orbs.forEach(o => o.style.opacity = 0.15 + progress * 0.25);
-
-            // Counters
-            if (phaseIndex === 1 && !counted1 && counter1) {
-                counted1 = true;
-                animateCounter(counter1, 17500000000, 2000);
+            // Update dots
+            for (let i = 0; i < totalPhases; i++) {
+                const dot = document.getElementById('dot' + i);
+                if (!dot) continue;
+                dot.classList.remove('active', 'done');
+                if (i === phaseIndex) dot.classList.add('active');
+                else if (i < phaseIndex) dot.classList.add('done');
             }
-            if (phaseIndex === 3 && !counted2 && counter2) {
-                counted2 = true;
-                animateCounter(counter2, 6, 1500);
+
+            if (phaseIndex !== currentPhase) {
+                currentPhase = phaseIndex;
+
+                // Close doors first, then open with new content
+                closeDoors();
+                setTimeout(() => {
+                    updateContent(phaseIndex);
+                    setTimeout(openDoors, 300);
+                }, 500);
             }
         });
+
+        // Initial state
+        updateContent(0);
+        setTimeout(openDoors, 800);
     })();
 
     // ========== INIT ==========
