@@ -372,6 +372,7 @@
         }
 
         .hero-subtitle {
+            font-family: 'Josefin Sans', sans-serif;
             font-size: 0.95rem;
             color: var(--j-text);
             line-height: 1.7;
