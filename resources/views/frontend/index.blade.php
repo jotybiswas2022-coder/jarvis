@@ -236,7 +236,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Josefin Sans', sans-serif;
             font-size: 0.7rem;
             color: var(--j-success);
             letter-spacing: 1px;
