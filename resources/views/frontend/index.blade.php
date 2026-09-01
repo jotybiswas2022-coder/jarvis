@@ -535,6 +535,22 @@
             z-index: 2;
         }
 
+        .model-wrapper spline-viewer::part(footer),
+        .model-wrapper spline-viewer::shadow .spline-watermark,
+        .model-wrapper spline-viewer::shadow .credit {
+            display: none !important;
+        }
+
+        .model-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 80px;
+            background: linear-gradient(transparent, var(--j-bg));
+            z-index: 3;
+            pointer-events: none;
+        }
+
         .hero-time {
             position: absolute;
             top: 100px;
