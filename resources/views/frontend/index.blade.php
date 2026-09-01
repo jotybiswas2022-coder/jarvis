@@ -1283,47 +1283,6 @@
 
 
 
-    <!-- ========== FEATURES ========== -->
-    <section class="features" id="features">
-        <div class="section-header">
-            <div class="section-tag"><i class="fas fa-bolt"></i> CAPABILITIES</div>
-            <h2 class="section-title">What I Can Do</h2>
-            <p class="section-desc">Powered by advanced AI with real-time system integration</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card" onclick="document.getElementById('chat').scrollIntoView({behavior:'smooth'})">
-                <div class="feature-icon blue"><i class="fas fa-brain"></i></div>
-                <div class="feature-title">AI Chat</div>
-                <div class="feature-desc">Intelligent conversations powered by Groq AI. Ask anything, get smart responses instantly.</div>
-            </div>
-            <div class="feature-card" onclick="document.getElementById('chat').scrollIntoView({behavior:'smooth'})">
-                <div class="feature-icon purple"><i class="fas fa-microphone"></i></div>
-                <div class="feature-title">Voice Commands</div>
-                <div class="feature-desc">Speak naturally and I'll understand. Hands-free control at your command.</div>
-            </div>
-            <div class="feature-card" onclick="loadWeather('Dhaka')">
-                <div class="feature-icon orange"><i class="fas fa-cloud-sun"></i></div>
-                <div class="feature-title">Weather Station</div>
-                <div class="feature-desc">Real-time weather data for any city worldwide. Temperature, humidity, wind speed.</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon green"><i class="fas fa-microchip"></i></div>
-                <div class="feature-title">System Monitor</div>
-                <div class="feature-desc">Live CPU, memory, and disk usage. Keep your system健康 in check.</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon cyan"><i class="fas fa-search"></i></div>
-                <div class="feature-title">Web Search</div>
-                <div class="feature-desc">Search Google, YouTube, and GitHub instantly from the dashboard.</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon pink"><i class="fas fa-rocket"></i></div>
-                <div class="feature-title">App Launcher</div>
-                <div class="feature-desc">Launch any application with a single click. Chrome, VS Code, Terminal, and more.</div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="footer">
         <p>J.A.R.V.I.S. — Just A Rather Very Intelligent System — Powered by Groq AI</p>
