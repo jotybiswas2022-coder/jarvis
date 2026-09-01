@@ -537,7 +537,7 @@
 
         .hero-time {
             position: absolute;
-            top: 40px;
+            top: 70px;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -549,7 +549,7 @@
 
         .hero-time .time {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--j-text-bright);
             text-shadow: 0 0 15px var(--j-glow);
@@ -558,7 +558,7 @@
 
         .hero-time .date {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             font-weight: 500;
             color: var(--j-blue);
             letter-spacing: 2px;
