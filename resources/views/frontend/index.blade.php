@@ -5,200 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>J.A.R.V.I.S. — Personal AI Assistant</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
     <style>
-        /* ============================================
-           JARVIS - Tony Stark Style AI Interface
-           ============================================ */
-
         :root {
-            --jarvis-blue: #00d4ff;
-            --jarvis-dark-blue: #0088cc;
-            --jarvis-cyan: #00fff2;
-            --jarvis-glow: rgba(0, 212, 255, 0.5);
-            --jarvis-bg: #0a0e17;
-            --jarvis-card: rgba(10, 20, 40, 0.85);
-            --jarvis-border: rgba(0, 212, 255, 0.2);
-            --jarvis-text: #c8d6e5;
-            --jarvis-text-bright: #ffffff;
-            --jarvis-success: #00ff88;
-            --jarvis-warning: #ffaa00;
-            --jarvis-danger: #ff3366;
+            --j-blue: #00d4ff;
+            --j-blue-dark: #0066aa;
+            --j-cyan: #00fff2;
+            --j-glow: rgba(0, 212, 255, 0.4);
+            --j-glow-strong: rgba(0, 212, 255, 0.7);
+            --j-bg: #050810;
+            --j-bg-light: #0a0f1e;
+            --j-card: rgba(8, 15, 35, 0.7);
+            --j-card-hover: rgba(12, 22, 50, 0.85);
+            --j-border: rgba(0, 212, 255, 0.12);
+            --j-border-hover: rgba(0, 212, 255, 0.3);
+            --j-text: #8899b0;
+            --j-text-bright: #e8f0ff;
+            --j-text-dim: #4a5568;
+            --j-success: #00ff88;
+            --j-warning: #ffaa00;
+            --j-danger: #ff3366;
+            --j-purple: #a855f7;
+            --j-pink: #ec4899;
+            --radius: 20px;
+            --radius-sm: 12px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: var(--jarvis-bg);
-            color: var(--jarvis-text);
+            font-family: 'Inter', 'Rajdhani', sans-serif;
+            background: var(--j-bg);
+            color: var(--j-text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Animated Background Grid */
-        body::before {
-            content: '';
+        /* ========== ANIMATED BACKGROUND ========== */
+        .bg-grid {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background:
-                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
             z-index: 0;
-            animation: gridPulse 4s ease-in-out infinite;
         }
 
-        @keyframes gridPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
+        .bg-gradient {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 50%, rgba(168, 85, 247, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 20% 80%, rgba(0, 255, 242, 0.03) 0%, transparent 50%);
+            z-index: 0;
         }
 
-        /* Floating Particles */
         .particles {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 0;
-            overflow: hidden;
         }
 
         .particle {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--jarvis-blue);
+            width: 2px; height: 2px;
+            background: var(--j-blue);
             border-radius: 50%;
-            animation: float 15s infinite linear;
-            box-shadow: 0 0 6px var(--jarvis-blue);
+            animation: pFloat 20s infinite linear;
+            opacity: 0;
         }
 
-        @keyframes float {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) translateX(100px); opacity: 0; }
+        @keyframes pFloat {
+            0% { transform: translateY(100vh); opacity: 0; }
+            5% { opacity: 0.6; }
+            95% { opacity: 0.6; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
 
-        /* Main Container */
-        .jarvis-container {
+        /* ========== MAIN CONTAINER ========== */
+        .jarvis-app {
             position: relative;
             z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
             min-height: 100vh;
-        }
-
-        /* Header */
-        .jarvis-header {
-            text-align: center;
-            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
             position: relative;
+            overflow: hidden;
         }
 
-        .jarvis-logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
+        /* Top Nav Bar */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo {
+            width: 40px; height: 40px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .jarvis-logo .ring {
+        .nav-logo .ring {
             position: absolute;
-            border: 2px solid var(--jarvis-blue);
+            border: 1.5px solid var(--j-blue);
             border-radius: 50%;
-            animation: spin 10s linear infinite;
+            animation: spin 12s linear infinite;
         }
 
-        .jarvis-logo .ring:nth-child(1) {
-            width: 120px;
-            height: 120px;
-            border-color: var(--jarvis-blue);
-        }
+        .nav-logo .ring:nth-child(1) { width: 40px; height: 40px; }
+        .nav-logo .ring:nth-child(2) { width: 30px; height: 30px; border-color: var(--j-cyan); animation-direction: reverse; animation-duration: 8s; }
 
-        .jarvis-logo .ring:nth-child(2) {
-            width: 100px;
-            height: 100px;
-            border-color: var(--jarvis-cyan);
-            animation-direction: reverse;
-            animation-duration: 8s;
-        }
-
-        .jarvis-logo .ring:nth-child(3) {
-            width: 80px;
-            height: 80px;
-            border-style: dashed;
-            animation-duration: 15s;
-        }
-
-        .jarvis-logo .core {
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle, var(--jarvis-blue) 0%, transparent 70%);
+        .nav-logo .core {
+            width: 12px; height: 12px;
+            background: radial-gradient(circle, var(--j-blue) 0%, transparent 70%);
             border-radius: 50%;
             animation: corePulse 2s ease-in-out infinite;
-            box-shadow: 0 0 30px var(--jarvis-glow), 0 0 60px var(--jarvis-glow);
+            box-shadow: 0 0 15px var(--j-glow);
         }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes corePulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; }
         }
 
-        .jarvis-title {
+        .nav-name {
             font-family: 'Orbitron', monospace;
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: 12px;
-            color: var(--jarvis-text-bright);
-            text-shadow: 0 0 20px var(--jarvis-glow), 0 0 40px var(--jarvis-glow);
-            margin-bottom: 8px;
-        }
-
-        .jarvis-subtitle {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.9rem;
-            color: var(--jarvis-blue);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--j-text-bright);
             letter-spacing: 4px;
-            opacity: 0.8;
         }
 
-        .jarvis-status {
-            margin-top: 15px;
+        .nav-status {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            gap: 8px;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--jarvis-success);
+            font-size: 0.7rem;
+            color: var(--j-success);
+            letter-spacing: 2px;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--jarvis-success);
+        .nav-status .dot {
+            width: 6px; height: 6px;
+            background: var(--j-success);
             border-radius: 50%;
             animation: statusBlink 1.5s ease-in-out infinite;
-            box-shadow: 0 0 10px var(--jarvis-success);
+            box-shadow: 0 0 8px var(--j-success);
         }
 
         @keyframes statusBlink {
@@ -206,40 +186,347 @@
             50% { opacity: 0.3; }
         }
 
-        /* Main Grid */
-        .jarvis-grid {
+        /* Hero Content */
+        .hero-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            gap: 40px;
+        }
+
+        .hero-left {
+            flex: 1;
+            max-width: 550px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 212, 255, 0.06);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 30px;
+            padding: 8px 18px;
+            margin-bottom: 24px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--j-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hero-badge .live {
+            width: 6px; height: 6px;
+            background: var(--j-success);
+            border-radius: 50%;
+            animation: statusBlink 1.5s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--j-text-bright);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-title .gradient {
+            background: linear-gradient(135deg, var(--j-blue) 0%, var(--j-cyan) 50%, var(--j-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--j-text);
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 480px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--j-blue) 0%, var(--j-blue-dark) 100%);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            background: rgba(0, 212, 255, 0.06);
+            border: 1px solid var(--j-border);
+            border-radius: var(--radius-sm);
+            color: var(--j-text-bright);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.12);
+            border-color: var(--j-border-hover);
+            transform: translateY(-2px);
+        }
+
+        .hero-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .model-wrapper {
+            width: 100%;
+            max-width: 600px;
+            height: 500px;
+            position: relative;
+        }
+
+        .model-glow {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .model-wrapper spline-viewer {
+            width: 100%; height: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-time {
+            position: absolute;
+            bottom: 30px;
+            left: 60px;
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+        }
+
+        .hero-time .time {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--j-text-bright);
+            text-shadow: 0 0 15px var(--j-glow);
+        }
+
+        .hero-time .date {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--j-blue);
+            letter-spacing: 2px;
+        }
+
+        /* ========== FEATURES SECTION ========== */
+        .features {
+            padding: 60px 60px 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 212, 255, 0.06);
+            border: 1px solid rgba(0, 212, 255, 0.12);
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--j-blue);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--j-text-bright);
+            margin-bottom: 12px;
+        }
+
+        .section-desc {
+            color: var(--j-text);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            margin-top: 20px;
+        }
+
+        @media (max-width: 1100px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 700px) {
+            .features-grid { grid-template-columns: 1fr; }
+            .hero-content { flex-direction: column; padding: 0 24px; }
+            .hero-left { max-width: 100%; text-align: center; }
+            .hero-title { font-size: 2.2rem; }
+            .hero-subtitle { margin: 0 auto 32px; }
+            .hero-actions { justify-content: center; }
+            .hero-right { width: 100%; }
+            .model-wrapper { height: 350px; max-width: 100%; }
+            .hero-time { left: 24px; bottom: 20px; }
+            .hero-time .time { font-size: 1.2rem; }
+            .features { padding: 40px 24px 60px; }
+            .top-nav { padding: 16px 24px; }
+        }
+
+        /* Feature Card */
+        .feature-card {
+            background: var(--j-card);
+            border: 1px solid var(--j-border);
+            border-radius: var(--radius);
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--j-blue), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--j-border-hover);
+            background: var(--j-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 212, 255, 0.05);
+        }
+
+        .feature-card:hover::before { opacity: 1; }
+
+        .feature-icon {
+            width: 52px; height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
+        .feature-icon.blue { background: rgba(0, 212, 255, 0.1); color: var(--j-blue); }
+        .feature-icon.green { background: rgba(0, 255, 136, 0.1); color: var(--j-success); }
+        .feature-icon.purple { background: rgba(168, 85, 247, 0.1); color: var(--j-purple); }
+        .feature-icon.pink { background: rgba(236, 72, 153, 0.1); color: var(--j-pink); }
+        .feature-icon.orange { background: rgba(255, 170, 0, 0.1); color: var(--j-warning); }
+        .feature-icon.cyan { background: rgba(0, 255, 242, 0.1); color: var(--j-cyan); }
+
+        .feature-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--j-text-bright);
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            font-size: 0.85rem;
+            color: var(--j-text);
+            line-height: 1.6;
+        }
+
+        /* ========== CHAT + SYSTEM SECTION ========== */
+        .chat-section {
+            padding: 0 60px 80px;
+        }
+
+        .chat-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 20px;
         }
 
         @media (max-width: 900px) {
-            .jarvis-grid { grid-template-columns: 1fr; }
-            .jarvis-title { font-size: 2rem; letter-spacing: 6px; }
+            .chat-section { padding: 0 24px 60px; }
+            .chat-layout { grid-template-columns: 1fr; }
         }
 
-        /* Cards */
-        .jarvis-card {
-            background: var(--jarvis-card);
-            border: 1px solid var(--jarvis-border);
-            border-radius: 16px;
-            padding: 24px;
+        /* Glass Card */
+        .glass-card {
+            background: var(--j-card);
+            border: 1px solid var(--j-border);
+            border-radius: var(--radius);
+            padding: 28px;
             backdrop-filter: blur(20px);
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
         }
 
-        .jarvis-card::before {
+        .glass-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 2px;
-            background: linear-gradient(90deg, transparent, var(--jarvis-blue), transparent);
-            animation: scanline 3s linear infinite;
+            background: linear-gradient(90deg, transparent, var(--j-blue), transparent);
+            animation: scanline 4s linear infinite;
         }
 
         @keyframes scanline {
@@ -247,146 +534,161 @@
             100% { transform: translateX(100%); }
         }
 
-        .jarvis-card:hover {
-            border-color: var(--jarvis-blue);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
 
-        .card-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--jarvis-blue);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
+        .card-label {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .card-title i {
-            font-size: 1rem;
+        .card-label i {
+            font-size: 0.9rem;
+            color: var(--j-blue);
         }
 
-        /* Chat Section */
-        .chat-card {
-            grid-column: 1 / 2;
-            grid-row: 1 / 4;
-            display: flex;
-            flex-direction: column;
+        .card-label span {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--j-blue);
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
-        @media (max-width: 900px) {
-            .chat-card { grid-column: 1; grid-row: auto; min-height: 500px; }
+        .card-badge {
+            padding: 4px 12px;
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            border-radius: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--j-success);
+            letter-spacing: 1px;
         }
 
+        /* Chat */
         .chat-messages {
-            flex: 1;
+            height: 380px;
             overflow-y: auto;
-            padding: 16px 0;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 500px;
-            min-height: 300px;
+            padding-right: 8px;
+            margin-bottom: 16px;
         }
 
-        .chat-messages::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .chat-messages::-webkit-scrollbar-track {
-            background: rgba(0, 212, 255, 0.05);
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: var(--jarvis-blue);
-            border-radius: 4px;
-        }
+        .chat-messages::-webkit-scrollbar { width: 3px; }
+        .chat-messages::-webkit-scrollbar-track { background: transparent; }
+        .chat-messages::-webkit-scrollbar-thumb { background: var(--j-blue-dark); border-radius: 3px; }
 
         .chat-msg {
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-width: 88%;
             animation: msgSlide 0.3s ease;
-            word-wrap: break-word;
         }
 
         @keyframes msgSlide {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .chat-msg.jarvis {
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.2);
+            background: rgba(0, 212, 255, 0.06);
+            border: 1px solid rgba(0, 212, 255, 0.1);
             align-self: flex-start;
             border-bottom-left-radius: 4px;
         }
 
-        .chat-msg.jarvis .msg-sender {
-            color: var(--jarvis-blue);
+        .chat-msg.jarvis .sender {
+            color: var(--j-blue);
             font-family: 'Orbitron', monospace;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             letter-spacing: 2px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .chat-msg.user {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.2);
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px solid rgba(168, 85, 247, 0.12);
             align-self: flex-end;
             border-bottom-right-radius: 4px;
         }
 
-        .chat-msg.user .msg-sender {
-            color: var(--jarvis-success);
+        .chat-msg.user .sender {
+            color: var(--j-purple);
             font-family: 'Orbitron', monospace;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             letter-spacing: 2px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             text-align: right;
         }
 
-        .chat-input-area {
+        .quick-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .q-btn {
+            padding: 6px 14px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 20px;
+            color: var(--j-text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .q-btn:hover {
+            background: rgba(0, 212, 255, 0.12);
+            border-color: var(--j-blue);
+            color: var(--j-blue);
+        }
+
+        .chat-input-row {
             display: flex;
             gap: 10px;
-            margin-top: 12px;
         }
 
         .chat-input {
             flex: 1;
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid var(--jarvis-border);
-            border-radius: 12px;
+            background: rgba(0, 212, 255, 0.04);
+            border: 1px solid var(--j-border);
+            border-radius: var(--radius-sm);
             padding: 14px 18px;
-            color: var(--jarvis-text-bright);
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
+            color: var(--j-text-bright);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
             outline: none;
             transition: all 0.3s ease;
         }
 
         .chat-input:focus {
-            border-color: var(--jarvis-blue);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            border-color: var(--j-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
         }
 
-        .chat-input::placeholder {
-            color: rgba(200, 214, 229, 0.4);
-        }
+        .chat-input::placeholder { color: var(--j-text-dim); }
 
-        .chat-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            border: 1px solid var(--jarvis-border);
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--jarvis-blue);
-            font-size: 1.2rem;
+        .icon-btn {
+            width: 48px; height: 48px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--j-border);
+            background: rgba(0, 212, 255, 0.06);
+            color: var(--j-blue);
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
@@ -394,107 +696,132 @@
             justify-content: center;
         }
 
-        .chat-btn:hover {
-            background: var(--jarvis-blue);
-            color: var(--jarvis-bg);
-            box-shadow: 0 0 20px var(--jarvis-glow);
+        .icon-btn:hover {
+            background: var(--j-blue);
+            color: var(--j-bg);
+            box-shadow: 0 0 20px var(--j-glow);
         }
 
-        .chat-btn.voice-active {
-            background: var(--jarvis-danger);
-            border-color: var(--jarvis-danger);
+        .icon-btn.active {
+            background: var(--j-danger);
+            border-color: var(--j-danger);
             color: white;
             animation: voicePulse 1s ease-in-out infinite;
         }
 
         @keyframes voicePulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
-            50% { box-shadow: 0 0 30px rgba(255, 51, 102, 0.8); }
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 51, 102, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(255, 51, 102, 0.7); }
         }
 
-        /* Weather Card */
-        .weather-content {
+        /* System + Weather Cards */
+        .side-cards {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 20px;
         }
 
-        .weather-icon {
-            font-size: 3rem;
-            color: var(--jarvis-warning);
-            text-shadow: 0 0 20px rgba(255, 170, 0, 0.5);
-        }
-
-        .weather-temp {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--jarvis-text-bright);
-        }
-
-        .weather-details {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--jarvis-text);
-            line-height: 1.8;
-        }
-
-        .weather-details span {
-            color: var(--jarvis-blue);
-        }
-
-        /* System Info Card */
-        .system-grid {
+        .sys-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         .sys-item {
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            border-radius: 10px;
-            padding: 14px;
+            background: rgba(0, 212, 255, 0.03);
+            border: 1px solid rgba(0, 212, 255, 0.06);
+            border-radius: var(--radius-sm);
+            padding: 16px;
             text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .sys-item:hover {
+            border-color: rgba(0, 212, 255, 0.15);
+            background: rgba(0, 212, 255, 0.06);
         }
 
         .sys-label {
-            font-family: 'Orbitron', monospace;
-            font-size: 0.65rem;
-            color: var(--jarvis-blue);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--j-blue);
             letter-spacing: 2px;
             margin-bottom: 6px;
         }
 
-        .sys-value {
+        .sys-val {
             font-family: 'Orbitron', monospace;
             font-size: 1.1rem;
             font-weight: 700;
-            color: var(--jarvis-text-bright);
+            color: var(--j-text-bright);
         }
 
         .sys-bar {
             width: 100%;
-            height: 4px;
-            background: rgba(0, 212, 255, 0.1);
-            border-radius: 4px;
+            height: 3px;
+            background: rgba(0, 212, 255, 0.08);
+            border-radius: 3px;
             margin-top: 8px;
             overflow: hidden;
         }
 
         .sys-bar-fill {
             height: 100%;
-            border-radius: 4px;
+            border-radius: 3px;
             transition: width 1s ease;
         }
 
-        .sys-bar-fill.green { background: var(--jarvis-success); }
-        .sys-bar-fill.blue { background: var(--jarvis-blue); }
-        .sys-bar-fill.orange { background: var(--jarvis-warning); }
-        .sys-bar-fill.red { background: var(--jarvis-danger); }
+        .sys-bar-fill.green { background: var(--j-success); }
+        .sys-bar-fill.blue { background: var(--j-blue); }
+        .sys-bar-fill.orange { background: var(--j-warning); }
+        .sys-bar-fill.red { background: var(--j-danger); }
 
-        /* Search Card */
-        .search-input-wrapper {
+        /* Weather */
+        .weather-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .weather-icon-wrap {
+            font-size: 2.5rem;
+            color: var(--j-warning);
+            text-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
+        }
+
+        .weather-temp {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--j-text-bright);
+        }
+
+        .weather-meta {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--j-text);
+            line-height: 1.8;
+        }
+
+        .weather-meta span { color: var(--j-blue); }
+
+        /* ========== SEARCH + APPS SECTION ========== */
+        .bottom-section {
+            padding: 0 60px 80px;
+        }
+
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .bottom-section { padding: 0 24px 60px; }
+            .bottom-grid { grid-template-columns: 1fr; }
+        }
+
+        .search-row {
             display: flex;
             gap: 10px;
             margin-bottom: 16px;
@@ -502,856 +829,609 @@
 
         .search-input {
             flex: 1;
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid var(--jarvis-border);
-            border-radius: 10px;
+            background: rgba(0, 212, 255, 0.04);
+            border: 1px solid var(--j-border);
+            border-radius: var(--radius-sm);
             padding: 12px 16px;
-            color: var(--jarvis-text-bright);
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
+            color: var(--j-text-bright);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
             outline: none;
             transition: all 0.3s ease;
         }
 
         .search-input:focus {
-            border-color: var(--jarvis-blue);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            border-color: var(--j-blue);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
         }
 
-        .search-btn {
+        .search-input::placeholder { color: var(--j-text-dim); }
+
+        .search-go {
             padding: 12px 24px;
-            background: linear-gradient(135deg, var(--jarvis-blue) 0%, var(--jarvis-dark-blue) 100%);
+            background: linear-gradient(135deg, var(--j-blue) 0%, var(--j-blue-dark) 100%);
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             color: white;
             font-family: 'Orbitron', monospace;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 2px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .search-btn:hover {
+        .search-go:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px var(--jarvis-glow);
+            box-shadow: 0 5px 20px var(--j-glow);
         }
 
         .search-links {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
-        .search-link {
+        .s-link {
             display: flex;
             align-items: center;
             gap: 8px;
             padding: 10px 16px;
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid var(--jarvis-border);
-            border-radius: 10px;
-            color: var(--jarvis-text);
+            background: rgba(0, 212, 255, 0.04);
+            border: 1px solid var(--j-border);
+            border-radius: var(--radius-sm);
+            color: var(--j-text);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
         }
 
-        .search-link:hover {
-            border-color: var(--jarvis-blue);
-            color: var(--jarvis-blue);
+        .s-link:hover {
+            border-color: var(--j-blue);
+            color: var(--j-blue);
             transform: translateY(-2px);
         }
 
-        .search-link i {
-            font-size: 1.1rem;
-        }
-
-        /* App Launcher */
-        .app-grid {
+        .apps-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
         }
 
         @media (max-width: 500px) {
-            .app-grid { grid-template-columns: repeat(3, 1fr); }
+            .apps-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
-        .app-btn {
+        .app-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-            padding: 14px 8px;
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid var(--jarvis-border);
-            border-radius: 12px;
-            color: var(--jarvis-text);
+            gap: 8px;
+            padding: 18px 8px;
+            background: rgba(0, 212, 255, 0.03);
+            border: 1px solid var(--j-border);
+            border-radius: var(--radius-sm);
+            color: var(--j-text);
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.7rem;
+            font-weight: 500;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        .app-btn:hover {
-            background: rgba(0, 212, 255, 0.15);
-            border-color: var(--jarvis-blue);
-            color: var(--jarvis-blue);
+        .app-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--j-blue);
+            color: var(--j-blue);
             transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.15);
         }
 
-        .app-btn i {
-            font-size: 1.4rem;
-        }
+        .app-item i { font-size: 1.4rem; }
 
-        /* Time Widget */
-        .time-card {
+        /* ========== FOOTER ========== */
+        .footer {
             text-align: center;
+            padding: 30px 40px;
+            border-top: 1px solid var(--j-border);
         }
 
-        .time-display {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.8rem;
-            font-weight: 900;
-            color: var(--jarvis-text-bright);
-            text-shadow: 0 0 20px var(--jarvis-glow);
-            letter-spacing: 4px;
-        }
-
-        .date-display {
+        .footer p {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--jarvis-blue);
-            margin-top: 8px;
+            font-size: 0.7rem;
+            color: var(--j-text-dim);
             letter-spacing: 2px;
         }
 
-        /* Loading Animation */
-        .typing-indicator {
+        /* ========== TYPING INDICATOR ========== */
+        .typing-ind {
             display: inline-flex;
             gap: 4px;
             padding: 8px 0;
         }
 
-        .typing-indicator span {
-            width: 6px;
-            height: 6px;
-            background: var(--jarvis-blue);
+        .typing-ind span {
+            width: 5px; height: 5px;
+            background: var(--j-blue);
             border-radius: 50%;
-            animation: typing 1.4s infinite ease-in-out;
+            animation: typingDot 1.4s infinite ease-in-out;
         }
 
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        .typing-ind span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-ind span:nth-child(3) { animation-delay: 0.4s; }
 
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-8px); opacity: 1; }
+        @keyframes typingDot {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+            30% { transform: translateY(-6px); opacity: 1; }
         }
 
-        /* Quick Actions */
-        .quick-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .quick-btn {
-            padding: 6px 14px;
-            background: rgba(0, 212, 255, 0.08);
-            border: 1px solid rgba(0, 212, 255, 0.15);
-            border-radius: 20px;
-            color: var(--jarvis-text);
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quick-btn:hover {
-            background: rgba(0, 212, 255, 0.2);
-            border-color: var(--jarvis-blue);
-            color: var(--jarvis-blue);
-        }
-
-        /* Corner Decorations */
+        /* ========== CORNER DECORATIONS ========== */
         .corner {
             position: fixed;
-            width: 60px;
-            height: 60px;
+            width: 50px; height: 50px;
             z-index: 2;
             pointer-events: none;
         }
 
-        .corner-tl { top: 10px; left: 10px; border-top: 2px solid var(--jarvis-blue); border-left: 2px solid var(--jarvis-blue); }
-        .corner-tr { top: 10px; right: 10px; border-top: 2px solid var(--jarvis-blue); border-right: 2px solid var(--jarvis-blue); }
-        .corner-bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--jarvis-blue); border-left: 2px solid var(--jarvis-blue); }
-        .corner-br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--jarvis-blue); border-right: 2px solid var(--jarvis-blue); }
-
-        /* 3D Model Section */
-        .model-section {
-            margin-bottom: 24px;
-        }
-
-        .model-card {
-            background: var(--jarvis-card);
-            border: 1px solid var(--jarvis-border);
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            min-height: 500px;
-        }
-
-        .model-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--jarvis-blue), var(--jarvis-cyan), transparent);
-            animation: scanline 3s linear infinite;
-            z-index: 2;
-        }
-
-        .model-content {
-            flex: 1;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .model-3d {
-            flex: 1;
-            position: relative;
-            min-height: 400px;
-        }
-
-        .model-3d spline-viewer {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Spotlight Effect */
-        .spotlight-wrapper {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .spotlight {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 0;
-            filter: blur(40px);
-        }
-
-        .spotlight-wrapper:hover .spotlight {
-            opacity: 1;
-        }
-
-        .model-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--jarvis-text-bright);
-            text-shadow: 0 0 20px var(--jarvis-glow);
-            margin-bottom: 16px;
-            line-height: 1.2;
-        }
-
-        .model-desc {
-            font-size: 1.1rem;
-            color: var(--jarvis-text);
-            line-height: 1.7;
-            max-width: 400px;
-        }
-
-        .model-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            border-radius: 20px;
-            padding: 8px 16px;
-            margin-top: 20px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--jarvis-blue);
-        }
-
-        .model-badge .pulse {
-            width: 8px;
-            height: 8px;
-            background: var(--jarvis-success);
-            border-radius: 50%;
-            animation: statusBlink 1.5s ease-in-out infinite;
-        }
-
-        @media (max-width: 900px) {
-            .model-card { flex-direction: column; }
-            .model-content { padding: 24px; }
-            .model-3d { min-height: 300px; }
-            .model-title { font-size: 1.8rem; }
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--jarvis-bg); }
-        ::-webkit-scrollbar-thumb { background: var(--jarvis-dark-blue); border-radius: 3px; }
+        .c-tl { top: 8px; left: 8px; border-top: 1.5px solid rgba(0,212,255,0.3); border-left: 1.5px solid rgba(0,212,255,0.3); }
+        .c-tr { top: 8px; right: 8px; border-top: 1.5px solid rgba(0,212,255,0.3); border-right: 1.5px solid rgba(0,212,255,0.3); }
+        .c-bl { bottom: 8px; left: 8px; border-bottom: 1.5px solid rgba(0,212,255,0.3); border-left: 1.5px solid rgba(0,212,255,0.3); }
+        .c-br { bottom: 8px; right: 8px; border-bottom: 1.5px solid rgba(0,212,255,0.3); border-right: 1.5px solid rgba(0,212,255,0.3); }
     </style>
 </head>
 <body>
 
-<!-- Particles -->
+<div class="bg-grid"></div>
+<div class="bg-gradient"></div>
 <div class="particles" id="particles"></div>
 
-<!-- Corner Decorations -->
-<div class="corner corner-tl"></div>
-<div class="corner corner-tr"></div>
-<div class="corner corner-bl"></div>
-<div class="corner corner-br"></div>
+<div class="corner c-tl"></div>
+<div class="corner c-tr"></div>
+<div class="corner c-bl"></div>
+<div class="corner c-br"></div>
 
-<div class="jarvis-container">
+<div class="jarvis-app">
 
-    <!-- Header -->
-    <header class="jarvis-header">
-        <div class="jarvis-logo">
-            <div class="ring"></div>
-            <div class="ring"></div>
-            <div class="ring"></div>
-            <div class="core"></div>
-        </div>
-        <h1 class="jarvis-title">J.A.R.V.I.S.</h1>
-        <p class="jarvis-subtitle">Just A Rather Very Intelligent System</p>
-        <div class="jarvis-status">
-            <div class="status-dot"></div>
-            <span id="statusText">ALL SYSTEMS OPERATIONAL</span>
-        </div>
-    </header>
-
-    <!-- 3D Model Section -->
-    <div class="model-section">
-        <div class="model-card spotlight-wrapper" id="modelCard">
-            <div class="spotlight" id="spotlight"></div>
-            <div class="model-content">
-                <div class="model-badge">
-                    <div class="pulse"></div>
-                    AI NEURAL NETWORK ACTIVE
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+        <nav class="top-nav">
+            <div class="nav-brand">
+                <div class="nav-logo">
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                    <div class="core"></div>
                 </div>
-                <h2 class="model-title">Interactive 3D AI</h2>
-                <p class="model-desc">
-                    Bring your UI to life with beautiful 3D scenes. Create immersive experiences 
-                    that capture attention and enhance your design. Drag to interact with the model.
+                <span class="nav-name">J.A.R.V.I.S.</span>
+            </div>
+            <div class="nav-status">
+                <div class="dot"></div>
+                <span id="statusText">ALL SYSTEMS ONLINE</span>
+            </div>
+        </nav>
+
+        <div class="hero-content">
+            <div class="hero-left">
+                <div class="hero-badge">
+                    <div class="live"></div>
+                    NEURAL NETWORK ACTIVE
+                </div>
+                <h1 class="hero-title">
+                    Your Personal<br>
+                    <span class="gradient">AI Assistant</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Just A Rather Very Intelligent System. Built with advanced AI to help you with anything — from conversations to system control.
                 </p>
-            </div>
-            <div class="model-3d">
-                <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"></spline-viewer>
-            </div>
-        </div>
-    </div>
-
-    <!-- Time Widget -->
-    <div style="text-align:center; margin-bottom:20px;">
-        <div class="jarvis-card time-card" style="display:inline-block; min-width:300px;">
-            <div class="time-display" id="currentTime">00:00:00</div>
-            <div class="date-display" id="currentDate">Loading...</div>
-        </div>
-    </div>
-
-    <!-- Main Grid -->
-    <div class="jarvis-grid">
-
-        <!-- Chat Section -->
-        <div class="jarvis-card chat-card">
-            <div class="card-title">
-                <i class="fas fa-comments"></i>
-                COMMUNICATION CHANNEL
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <div class="chat-msg jarvis">
-                    <div class="msg-sender">J.A.R.V.I.S.</div>
-                    Good day, sir. I am JARVIS, your personal AI assistant. All systems are online and operational. How may I be of service?
+                <div class="hero-actions">
+                    <a href="#chat" class="btn-primary">
+                        <i class="fas fa-comments"></i> Start Chat
+                    </a>
+                    <a href="#features" class="btn-secondary">
+                        <i class="fas fa-compass"></i> Explore Features
+                    </a>
                 </div>
             </div>
-            <div class="quick-actions">
-                <button class="quick-btn" onclick="sendQuick('What time is it?')">🕐 Time</button>
-                <button class="quick-btn" onclick="sendQuick('Tell me a joke')">😄 Joke</button>
-                <button class="quick-btn" onclick="sendQuick('What can you do?')">❓ Help</button>
-                <button class="quick-btn" onclick="sendQuick('How are you?')">👋 Status</button>
-                <button class="quick-btn" onclick="loadWeather('Dhaka')">🌤 Weather</button>
-            </div>
-            <div class="chat-input-area">
-                <input type="text" class="chat-input" id="chatInput" placeholder="Speak or type your command, sir..." autocomplete="off">
-                <button class="chat-btn" id="voiceBtn" onclick="toggleVoice()" title="Voice Command">
-                    <i class="fas fa-microphone"></i>
-                </button>
-                <button class="chat-btn" onclick="sendMessage()" title="Send">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
+            <div class="hero-right">
+                <div class="model-wrapper">
+                    <div class="model-glow"></div>
+                    <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"></spline-viewer>
+                </div>
             </div>
         </div>
 
-        <!-- Weather Card -->
-        <div class="jarvis-card">
-            <div class="card-title">
-                <i class="fas fa-cloud-sun"></i>
-                WEATHER STATION
+        <div class="hero-time">
+            <span class="time" id="heroTime">00:00:00</span>
+            <span class="date" id="heroDate">LOADING...</span>
+        </div>
+    </section>
+
+    <!-- ========== FEATURES ========== -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <div class="section-tag"><i class="fas fa-bolt"></i> CAPABILITIES</div>
+            <h2 class="section-title">What I Can Do</h2>
+            <p class="section-desc">Powered by advanced AI with real-time system integration</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card" onclick="document.getElementById('chat').scrollIntoView({behavior:'smooth'})">
+                <div class="feature-icon blue"><i class="fas fa-brain"></i></div>
+                <div class="feature-title">AI Chat</div>
+                <div class="feature-desc">Intelligent conversations powered by Groq AI. Ask anything, get smart responses instantly.</div>
             </div>
-            <div class="weather-content" id="weatherContent">
-                <div>
-                    <div class="weather-icon"><i class="fas fa-cloud"></i></div>
+            <div class="feature-card" onclick="document.getElementById('chat').scrollIntoView({behavior:'smooth'})">
+                <div class="feature-icon purple"><i class="fas fa-microphone"></i></div>
+                <div class="feature-title">Voice Commands</div>
+                <div class="feature-desc">Speak naturally and I'll understand. Hands-free control at your command.</div>
+            </div>
+            <div class="feature-card" onclick="loadWeather('Dhaka')">
+                <div class="feature-icon orange"><i class="fas fa-cloud-sun"></i></div>
+                <div class="feature-title">Weather Station</div>
+                <div class="feature-desc">Real-time weather data for any city worldwide. Temperature, humidity, wind speed.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon green"><i class="fas fa-microchip"></i></div>
+                <div class="feature-title">System Monitor</div>
+                <div class="feature-desc">Live CPU, memory, and disk usage. Keep your system健康 in check.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon cyan"><i class="fas fa-search"></i></div>
+                <div class="feature-title">Web Search</div>
+                <div class="feature-desc">Search Google, YouTube, and GitHub instantly from the dashboard.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon pink"><i class="fas fa-rocket"></i></div>
+                <div class="feature-title">App Launcher</div>
+                <div class="feature-desc">Launch any application with a single click. Chrome, VS Code, Terminal, and more.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CHAT + SYSTEM ========== -->
+    <section class="chat-section" id="chat">
+        <div class="chat-layout">
+            <!-- Chat Card -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-label">
+                        <i class="fas fa-comments"></i>
+                        <span>COMMUNICATION</span>
+                    </div>
+                    <div class="card-badge">ONLINE</div>
                 </div>
-                <div>
-                    <div class="weather-temp">--°C</div>
-                    <div class="weather-details">
-                        Loading weather data...
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-msg jarvis">
+                        <div class="sender">J.A.R.V.I.S.</div>
+                        Good day, sir. I am JARVIS, your personal AI assistant. All systems are online. How may I be of service?
+                    </div>
+                </div>
+                <div class="quick-row">
+                    <button class="q-btn" onclick="sendQuick('What time is it?')">🕐 Time</button>
+                    <button class="q-btn" onclick="sendQuick('Tell me a joke')">😄 Joke</button>
+                    <button class="q-btn" onclick="sendQuick('What can you do?')">❓ Help</button>
+                    <button class="q-btn" onclick="sendQuick('How are you?')">👋 Status</button>
+                </div>
+                <div class="chat-input-row">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your command..." autocomplete="off">
+                    <button class="icon-btn" id="voiceBtn" onclick="toggleVoice()" title="Voice">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="icon-btn" onclick="sendMessage()" title="Send">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Side Cards -->
+            <div class="side-cards">
+                <!-- System Monitor -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-label">
+                            <i class="fas fa-microchip"></i>
+                            <span>SYSTEM</span>
+                        </div>
+                        <div class="card-badge">LIVE</div>
+                    </div>
+                    <div class="sys-grid">
+                        <div class="sys-item">
+                            <div class="sys-label">CPU</div>
+                            <div class="sys-val" id="sysCpu">--</div>
+                        </div>
+                        <div class="sys-item">
+                            <div class="sys-label">MEMORY</div>
+                            <div class="sys-val" id="sysMemory">--</div>
+                            <div class="sys-bar"><div class="sys-bar-fill green" id="memBar" style="width:0%"></div></div>
+                        </div>
+                        <div class="sys-item">
+                            <div class="sys-label">DISK</div>
+                            <div class="sys-val" id="sysDisk">--</div>
+                            <div class="sys-bar"><div class="sys-bar-fill blue" id="diskBar" style="width:0%"></div></div>
+                        </div>
+                        <div class="sys-item">
+                            <div class="sys-label">HOST</div>
+                            <div class="sys-val" id="sysUptime" style="font-size:0.75rem;">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-label">
+                            <i class="fas fa-cloud-sun"></i>
+                            <span>WEATHER</span>
+                        </div>
+                        <div class="card-badge" id="weatherCity">--</div>
+                    </div>
+                    <div class="weather-row" id="weatherContent">
+                        <div class="weather-icon-wrap"><i class="fas fa-cloud"></i></div>
+                        <div>
+                            <div class="weather-temp">--°C</div>
+                            <div class="weather-meta">Loading...</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- System Info Card -->
-        <div class="jarvis-card">
-            <div class="card-title">
-                <i class="fas fa-microchip"></i>
-                SYSTEM MONITOR
+    <!-- ========== SEARCH + APPS ========== -->
+    <section class="bottom-section">
+        <div class="bottom-grid">
+            <!-- Search -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-label">
+                        <i class="fas fa-search"></i>
+                        <span>WEB SEARCH</span>
+                    </div>
+                </div>
+                <div class="search-row">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search the web...">
+                    <button class="search-go" onclick="performSearch()">SEARCH</button>
+                </div>
+                <div class="search-links" id="searchLinks"></div>
             </div>
-            <div class="system-grid" id="systemInfo">
-                <div class="sys-item">
-                    <div class="sys-label">CPU</div>
-                    <div class="sys-value" id="sysCpu">--</div>
+
+            <!-- App Launcher -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-label">
+                        <i class="fas fa-rocket"></i>
+                        <span>LAUNCHER</span>
+                    </div>
                 </div>
-                <div class="sys-item">
-                    <div class="sys-label">MEMORY</div>
-                    <div class="sys-value" id="sysMemory">--</div>
-                    <div class="sys-bar"><div class="sys-bar-fill green" id="memBar" style="width:0%"></div></div>
-                </div>
-                <div class="sys-item">
-                    <div class="sys-label">DISK</div>
-                    <div class="sys-value" id="sysDisk">--</div>
-                    <div class="sys-bar"><div class="sys-bar-fill blue" id="diskBar" style="width:0%"></div></div>
-                </div>
-                <div class="sys-item">
-                    <div class="sys-label">UPTIME</div>
-                    <div class="sys-value" id="sysUptime">--</div>
+                <div class="apps-grid">
+                    <button class="app-item" onclick="openApp('chrome')">
+                        <i class="fab fa-chrome"></i> Chrome
+                    </button>
+                    <button class="app-item" onclick="openApp('vscode')">
+                        <i class="fas fa-code"></i> VS Code
+                    </button>
+                    <button class="app-item" onclick="openApp('terminal')">
+                        <i class="fas fa-terminal"></i> Terminal
+                    </button>
+                    <button class="app-item" onclick="openApp('notepad')">
+                        <i class="fas fa-file-alt"></i> Notepad
+                    </button>
+                    <button class="app-item" onclick="openApp('calculator')">
+                        <i class="fas fa-calculator"></i> Calc
+                    </button>
+                    <button class="app-item" onclick="openApp('explorer')">
+                        <i class="fas fa-folder"></i> Files
+                    </button>
+                    <button class="app-item" onclick="openApp('spotify')">
+                        <i class="fab fa-spotify"></i> Spotify
+                    </button>
+                    <button class="app-item" onclick="openApp('discord')">
+                        <i class="fab fa-discord"></i> Discord
+                    </button>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Search Card -->
-        <div class="jarvis-card">
-            <div class="card-title">
-                <i class="fas fa-search"></i>
-                WEB SEARCH
-            </div>
-            <div class="search-input-wrapper">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search the web, sir...">
-                <button class="search-btn" onclick="performSearch()">SEARCH</button>
-            </div>
-            <div class="search-links" id="searchLinks"></div>
-        </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>J.A.R.V.I.S. — Just A Rather Very Intelligent System — Powered by Groq AI</p>
+    </footer>
 
-        <!-- App Launcher -->
-        <div class="jarvis-card">
-            <div class="card-title">
-                <i class="fas fa-rocket"></i>
-                APPLICATION LAUNCHER
-            </div>
-            <div class="app-grid">
-                <button class="app-btn" onclick="openApp('chrome')">
-                    <i class="fab fa-chrome"></i>
-                    Chrome
-                </button>
-                <button class="app-btn" onclick="openApp('vscode')">
-                    <i class="fas fa-code"></i>
-                    VS Code
-                </button>
-                <button class="app-btn" onclick="openApp('terminal')">
-                    <i class="fas fa-terminal"></i>
-                    Terminal
-                </button>
-                <button class="app-btn" onclick="openApp('notepad')">
-                    <i class="fas fa-file-alt"></i>
-                    Notepad
-                </button>
-                <button class="app-btn" onclick="openApp('calculator')">
-                    <i class="fas fa-calculator"></i>
-                    Calculator
-                </button>
-                <button class="app-btn" onclick="openApp('explorer')">
-                    <i class="fas fa-folder"></i>
-                    Explorer
-                </button>
-                <button class="app-btn" onclick="openApp('spotify')">
-                    <i class="fab fa-spotify"></i>
-                    Spotify
-                </button>
-                <button class="app-btn" onclick="openApp('discord')">
-                    <i class="fab fa-discord"></i>
-                    Discord
-                </button>
-            </div>
-        </div>
-
-    </div>
 </div>
 
 <script>
-    // ============================================
-    // JARVIS - JavaScript Engine
-    // ============================================
-
     const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     // ========== PARTICLES ==========
-    (function createParticles() {
-        const container = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
-            particle.style.animationDelay = (Math.random() * 10) + 's';
-            particle.style.width = particle.style.height = (Math.random() * 3 + 1) + 'px';
-            container.appendChild(particle);
+    (function() {
+        const c = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (Math.random() * 20 + 12) + 's';
+            p.style.animationDelay = (Math.random() * 15) + 's';
+            p.style.width = p.style.height = (Math.random() * 2.5 + 0.5) + 'px';
+            c.appendChild(p);
         }
     })();
 
     // ========== CLOCK ==========
     function updateClock() {
         const now = new Date();
-        const time = now.toLocaleTimeString('en-US', { hour12: false });
-        const date = now.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-        document.getElementById('currentTime').textContent = time;
-        document.getElementById('currentDate').textContent = date.toUpperCase();
+        const t = now.toLocaleTimeString('en-US', { hour12: false });
+        const d = now.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase();
+        document.getElementById('heroTime').textContent = t;
+        document.getElementById('heroDate').textContent = d;
     }
     setInterval(updateClock, 1000);
     updateClock();
 
     // ========== CHAT ==========
     function addMessage(text, type) {
-        const messages = document.getElementById('chatMessages');
-        const div = document.createElement('div');
-        div.className = `chat-msg ${type}`;
-
-        if (type === 'jarvis') {
-            div.innerHTML = `<div class="msg-sender">J.A.R.V.I.S.</div>${text}`;
-        } else {
-            div.innerHTML = `<div class="msg-sender">YOU</div>${text}`;
-        }
-
-        messages.appendChild(div);
-        messages.scrollTop = messages.scrollHeight;
+        const m = document.getElementById('chatMessages');
+        const d = document.createElement('div');
+        d.className = `chat-msg ${type}`;
+        d.innerHTML = type === 'jarvis'
+            ? `<div class="sender">J.A.R.V.I.S.</div>${text}`
+            : `<div class="sender">YOU</div>${text}`;
+        m.appendChild(d);
+        m.scrollTop = m.scrollHeight;
     }
 
-    function addTypingIndicator() {
-        const messages = document.getElementById('chatMessages');
-        const div = document.createElement('div');
-        div.className = 'chat-msg jarvis';
-        div.id = 'typingIndicator';
-        div.innerHTML = `
-            <div class="msg-sender">J.A.R.V.I.S.</div>
-            <div class="typing-indicator">
-                <span></span><span></span><span></span>
-            </div>
-        `;
-        messages.appendChild(div);
-        messages.scrollTop = messages.scrollHeight;
+    function addTyping() {
+        const m = document.getElementById('chatMessages');
+        const d = document.createElement('div');
+        d.className = 'chat-msg jarvis';
+        d.id = 'typing';
+        d.innerHTML = `<div class="sender">J.A.R.V.I.S.</div><div class="typing-ind"><span></span><span></span><span></span></div>`;
+        m.appendChild(d);
+        m.scrollTop = m.scrollHeight;
     }
 
-    function removeTypingIndicator() {
-        const el = document.getElementById('typingIndicator');
+    function removeTyping() {
+        const el = document.getElementById('typing');
         if (el) el.remove();
     }
 
     async function sendMessage() {
         const input = document.getElementById('chatInput');
-        const message = input.value.trim();
-        if (!message) return;
-
-        addMessage(message, 'user');
+        const msg = input.value.trim();
+        if (!msg) return;
+        addMessage(msg, 'user');
         input.value = '';
-        addTypingIndicator();
-
+        addTyping();
         try {
-            const response = await fetch('/api/chat', {
+            const r = await fetch('/api/chat', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': CSRF_TOKEN,
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({ message })
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN, 'Accept': 'application/json' },
+                body: JSON.stringify({ message: msg })
             });
-
-            const data = await response.json();
-            removeTypingIndicator();
-
-            if (data.success) {
-                addMessage(data.reply, 'jarvis');
-            } else {
-                addMessage('I apologize, sir. I seem to be experiencing a malfunction.', 'jarvis');
-            }
-        } catch (error) {
-            removeTypingIndicator();
-            addMessage('Connection error, sir. Please check your network.', 'jarvis');
+            const d = await r.json();
+            removeTyping();
+            addMessage(d.success ? d.reply : 'Malfunction detected, sir.', 'jarvis');
+        } catch (e) {
+            removeTyping();
+            addMessage('Connection error, sir.', 'jarvis');
         }
     }
 
-    function sendQuick(text) {
-        document.getElementById('chatInput').value = text;
-        sendMessage();
-    }
+    function sendQuick(t) { document.getElementById('chatInput').value = t; sendMessage(); }
+    document.getElementById('chatInput').addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+    document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 
-    document.getElementById('chatInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') sendMessage();
-    });
-
-    document.getElementById('searchInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') performSearch();
-    });
-
-    // ========== VOICE COMMAND ==========
-    let recognition = null;
-    let isListening = false;
-
-    function toggleVoice() {
-        if (isListening) {
-            stopVoice();
-        } else {
-            startVoice();
-        }
-    }
+    // ========== VOICE ==========
+    let recognition = null, listening = false;
+    function toggleVoice() { listening ? stopVoice() : startVoice(); }
 
     function startVoice() {
         if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-            addMessage('Voice recognition is not supported in this browser, sir. Please use Chrome.', 'jarvis');
-            return;
+            addMessage('Voice not supported. Use Chrome.', 'jarvis'); return;
         }
-
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SpeechRecognition();
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SR();
         recognition.continuous = false;
         recognition.interimResults = false;
         recognition.lang = 'en-US';
-
-        recognition.onstart = function() {
-            isListening = true;
-            document.getElementById('voiceBtn').classList.add('voice-active');
-            document.getElementById('statusText').textContent = 'LISTENING...';
-        };
-
-        recognition.onresult = function(event) {
-            const transcript = event.results[0][0].transcript;
-            document.getElementById('chatInput').value = transcript;
-            sendMessage();
-        };
-
-        recognition.onerror = function() {
-            stopVoice();
-            addMessage('I could not hear you clearly, sir. Please try again.', 'jarvis');
-        };
-
-        recognition.onend = function() {
-            stopVoice();
-        };
-
+        recognition.onstart = () => { listening = true; document.getElementById('voiceBtn').classList.add('active'); document.getElementById('statusText').textContent = 'LISTENING...'; };
+        recognition.onresult = (e) => { document.getElementById('chatInput').value = e.results[0][0].transcript; sendMessage(); };
+        recognition.onerror = () => { stopVoice(); addMessage('Could not hear you, sir.', 'jarvis'); };
+        recognition.onend = () => stopVoice();
         recognition.start();
     }
 
     function stopVoice() {
-        isListening = false;
-        document.getElementById('voiceBtn').classList.remove('voice-active');
-        document.getElementById('statusText').textContent = 'ALL SYSTEMS OPERATIONAL';
-        if (recognition) {
-            recognition.stop();
-            recognition = null;
-        }
+        listening = false;
+        document.getElementById('voiceBtn').classList.remove('active');
+        document.getElementById('statusText').textContent = 'ALL SYSTEMS ONLINE';
+        if (recognition) { recognition.stop(); recognition = null; }
     }
 
     // ========== WEATHER ==========
     async function loadWeather(city = 'Dhaka') {
         try {
-            const response = await fetch('/api/weather', {
+            const r = await fetch('/api/weather', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': CSRF_TOKEN,
-                    'Accept': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN, 'Accept': 'application/json' },
                 body: JSON.stringify({ city })
             });
-
-            const data = await response.json();
-            if (data.success) {
-                const iconMap = {
-                    '01d': 'fa-sun', '01n': 'fa-moon',
-                    '02d': 'fa-cloud-sun', '02n': 'fa-cloud-moon',
-                    '03d': 'fa-cloud', '03n': 'fa-cloud',
-                    '04d': 'fa-cloud', '04n': 'fa-cloud',
-                    '09d': 'fa-cloud-rain', '09n': 'fa-cloud-rain',
-                    '10d': 'fa-cloud-sun-rain', '10n': 'fa-cloud-moon-rain',
-                    '11d': 'fa-bolt', '11n': 'fa-bolt',
-                    '13d': 'fa-snowflake', '13n': 'fa-snowflake',
-                    '50d': 'fa-smog', '50n': 'fa-smog',
-                };
-
-                const icon = iconMap[data.icon] || 'fa-cloud';
-
+            const d = await r.json();
+            if (d.success) {
+                const icons = { '01d':'fa-sun','01n':'fa-moon','02d':'fa-cloud-sun','02n':'fa-cloud-moon','03d':'fa-cloud','03n':'fa-cloud','04d':'fa-cloud','04n':'fa-cloud','09d':'fa-cloud-rain','09n':'fa-cloud-rain','10d':'fa-cloud-sun-rain','10n':'fa-cloud-moon-rain','11d':'fa-bolt','11n':'fa-bolt','13d':'fa-snowflake','13n':'fa-snowflake','50d':'fa-smog','50n':'fa-smog' };
+                document.getElementById('weatherCity').textContent = d.city.toUpperCase();
                 document.getElementById('weatherContent').innerHTML = `
+                    <div class="weather-icon-wrap"><i class="fas ${icons[d.icon]||'fa-cloud'}"></i></div>
                     <div>
-                        <div class="weather-icon"><i class="fas ${icon}"></i></div>
-                    </div>
-                    <div>
-                        <div class="weather-temp">${data.temp}°C</div>
-                        <div class="weather-details">
-                            <strong>${data.city}, ${data.country}</strong><br>
-                            <span>Feels like:</span> ${data.feels_like}°C<br>
-                            <span>Humidity:</span> ${data.humidity}%<br>
-                            <span>Wind:</span> ${data.wind_speed} m/s<br>
-                            <span>${data.description}</span>
+                        <div class="weather-temp">${d.temp}°C</div>
+                        <div class="weather-meta">
+                            <span>${d.city}, ${d.country}</span><br>
+                            Feels ${d.feels_like}°C · ${d.humidity}% · ${d.wind_speed}m/s<br>
+                            ${d.description}
                         </div>
-                    </div>
-                `;
+                    </div>`;
             }
-        } catch (error) {
-            document.getElementById('weatherContent').innerHTML = '<div style="color: var(--jarvis-danger);">Unable to fetch weather data.</div>';
-        }
+        } catch (e) {}
     }
 
     // ========== SYSTEM INFO ==========
     async function loadSystemInfo() {
         try {
-            const response = await fetch('/api/system-info', {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': CSRF_TOKEN,
-                }
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                const info = data.data;
-                document.getElementById('sysCpu').textContent = info.php_version;
-                document.getElementById('sysMemory').textContent = `${info.memory.percent}%`;
-                document.getElementById('memBar').style.width = info.memory.percent + '%';
-                document.getElementById('sysDisk').textContent = `${info.disk.percent}%`;
-                document.getElementById('diskBar').style.width = info.disk.percent + '%';
-                document.getElementById('sysUptime').textContent = info.hostname;
-
-                // Color code bars
-                const memBar = document.getElementById('memBar');
-                memBar.className = 'sys-bar-fill ' + (info.memory.percent > 80 ? 'red' : info.memory.percent > 60 ? 'orange' : 'green');
-
-                const diskBar = document.getElementById('diskBar');
-                diskBar.className = 'sys-bar-fill ' + (info.disk.percent > 90 ? 'red' : info.disk.percent > 70 ? 'orange' : 'blue');
+            const r = await fetch('/api/system-info', { headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN } });
+            const d = await r.json();
+            if (d.success) {
+                const i = d.data;
+                document.getElementById('sysCpu').textContent = 'PHP ' + i.php_version;
+                document.getElementById('sysMemory').textContent = i.memory.percent + '%';
+                document.getElementById('memBar').style.width = i.memory.percent + '%';
+                document.getElementById('sysDisk').textContent = i.disk.percent + '%';
+                document.getElementById('diskBar').style.width = i.disk.percent + '%';
+                document.getElementById('sysUptime').textContent = i.hostname;
+                document.getElementById('memBar').className = 'sys-bar-fill ' + (i.memory.percent > 80 ? 'red' : i.memory.percent > 60 ? 'orange' : 'green');
+                document.getElementById('diskBar').className = 'sys-bar-fill ' + (i.disk.percent > 90 ? 'red' : i.disk.percent > 70 ? 'orange' : 'blue');
             }
-        } catch (error) {
-            console.error('System info error:', error);
-        }
+        } catch (e) {}
     }
 
-    // ========== WEB SEARCH ==========
+    // ========== SEARCH ==========
     async function performSearch() {
-        const query = document.getElementById('searchInput').value.trim();
-        if (!query) return;
-
+        const q = document.getElementById('searchInput').value.trim();
+        if (!q) return;
         try {
-            const response = await fetch('/api/search', {
+            const r = await fetch('/api/search', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': CSRF_TOKEN,
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({ query })
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN, 'Accept': 'application/json' },
+                body: JSON.stringify({ query: q })
             });
-
-            const data = await response.json();
-            if (data.success) {
+            const d = await r.json();
+            if (d.success) {
                 document.getElementById('searchLinks').innerHTML = `
-                    <a href="${data.google_url}" target="_blank" class="search-link">
-                        <i class="fab fa-google"></i> Google
-                    </a>
-                    <a href="${data.youtube_url}" target="_blank" class="search-link">
-                        <i class="fab fa-youtube"></i> YouTube
-                    </a>
-                    <a href="${data.github_url}" target="_blank" class="search-link">
-                        <i class="fab fa-github"></i> GitHub
-                    </a>
-                `;
+                    <a href="${d.google_url}" target="_blank" class="s-link"><i class="fab fa-google"></i> Google</a>
+                    <a href="${d.youtube_url}" target="_blank" class="s-link"><i class="fab fa-youtube"></i> YouTube</a>
+                    <a href="${d.github_url}" target="_blank" class="s-link"><i class="fab fa-github"></i> GitHub</a>`;
             }
-        } catch (error) {
-            console.error('Search error:', error);
-        }
+        } catch (e) {}
     }
 
     // ========== APP LAUNCHER ==========
-    async function openApp(appName) {
-        addMessage(`Opening ${appName}...`, 'user');
-
+    async function openApp(name) {
+        addMessage(`Opening ${name}...`, 'user');
         try {
-            const response = await fetch('/api/open-app', {
+            const r = await fetch('/api/open-app', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': CSRF_TOKEN,
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({ app: appName })
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN, 'Accept': 'application/json' },
+                body: JSON.stringify({ app: name })
             });
-
-            const data = await response.json();
-            addMessage(data.message, 'jarvis');
-        } catch (error) {
-            addMessage('Unable to launch application, sir.', 'jarvis');
+            const d = await r.json();
+            addMessage(d.message, 'jarvis');
+        } catch (e) {
+            addMessage('Unable to launch app.', 'jarvis');
         }
     }
 
-    // ========== SPOTLIGHT EFFECT ==========
-    (function initSpotlight() {
-        const wrapper = document.getElementById('modelCard');
-        const spotlight = document.getElementById('spotlight');
-        if (!wrapper || !spotlight) return;
-
-        wrapper.addEventListener('mousemove', (e) => {
-            const rect = wrapper.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            spotlight.style.left = x + 'px';
-            spotlight.style.top = y + 'px';
-        });
-    })();
-
     // ========== INIT ==========
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', () => {
         loadWeather();
         loadSystemInfo();
-
-        // Refresh system info every 30 seconds
         setInterval(loadSystemInfo, 30000);
     });
 </script>
