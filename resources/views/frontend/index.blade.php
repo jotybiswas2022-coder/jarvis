@@ -7,6 +7,7 @@
     <title>J.A.R.V.I.S. — Personal AI Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
     <style>
         /* ============================================
            JARVIS - Tony Stark Style AI Interface
@@ -693,6 +694,124 @@
         .corner-bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--jarvis-blue); border-left: 2px solid var(--jarvis-blue); }
         .corner-br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--jarvis-blue); border-right: 2px solid var(--jarvis-blue); }
 
+        /* 3D Model Section */
+        .model-section {
+            margin-bottom: 24px;
+        }
+
+        .model-card {
+            background: var(--jarvis-card);
+            border: 1px solid var(--jarvis-border);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            min-height: 500px;
+        }
+
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--jarvis-blue), var(--jarvis-cyan), transparent);
+            animation: scanline 3s linear infinite;
+            z-index: 2;
+        }
+
+        .model-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .model-3d {
+            flex: 1;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .model-3d spline-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Spotlight Effect */
+        .spotlight-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spotlight {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+            filter: blur(40px);
+        }
+
+        .spotlight-wrapper:hover .spotlight {
+            opacity: 1;
+        }
+
+        .model-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--jarvis-text-bright);
+            text-shadow: 0 0 20px var(--jarvis-glow);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .model-desc {
+            font-size: 1.1rem;
+            color: var(--jarvis-text);
+            line-height: 1.7;
+            max-width: 400px;
+        }
+
+        .model-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            margin-top: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--jarvis-blue);
+        }
+
+        .model-badge .pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--jarvis-success);
+            border-radius: 50%;
+            animation: statusBlink 1.5s ease-in-out infinite;
+        }
+
+        @media (max-width: 900px) {
+            .model-card { flex-direction: column; }
+            .model-content { padding: 24px; }
+            .model-3d { min-height: 300px; }
+            .model-title { font-size: 1.8rem; }
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--jarvis-bg); }
@@ -727,6 +846,27 @@
             <span id="statusText">ALL SYSTEMS OPERATIONAL</span>
         </div>
     </header>
+
+    <!-- 3D Model Section -->
+    <div class="model-section">
+        <div class="model-card spotlight-wrapper" id="modelCard">
+            <div class="spotlight" id="spotlight"></div>
+            <div class="model-content">
+                <div class="model-badge">
+                    <div class="pulse"></div>
+                    AI NEURAL NETWORK ACTIVE
+                </div>
+                <h2 class="model-title">Interactive 3D AI</h2>
+                <p class="model-desc">
+                    Bring your UI to life with beautiful 3D scenes. Create immersive experiences 
+                    that capture attention and enhance your design. Drag to interact with the model.
+                </p>
+            </div>
+            <div class="model-3d">
+                <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"></spline-viewer>
+            </div>
+        </div>
+    </div>
 
     <!-- Time Widget -->
     <div style="text-align:center; margin-bottom:20px;">
@@ -1190,6 +1330,21 @@
             addMessage('Unable to launch application, sir.', 'jarvis');
         }
     }
+
+    // ========== SPOTLIGHT EFFECT ==========
+    (function initSpotlight() {
+        const wrapper = document.getElementById('modelCard');
+        const spotlight = document.getElementById('spotlight');
+        if (!wrapper || !spotlight) return;
+
+        wrapper.addEventListener('mousemove', (e) => {
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            spotlight.style.left = x + 'px';
+            spotlight.style.top = y + 'px';
+        });
+    })();
 
     // ========== INIT ==========
     document.addEventListener('DOMContentLoaded', function() {
