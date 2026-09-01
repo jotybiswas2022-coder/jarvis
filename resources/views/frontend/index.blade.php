@@ -360,6 +360,146 @@
             letter-spacing: 2px;
         }
 
+        /* ========== SCROLL-LOCKED SECTION ========== */
+        .scroll-locked {
+            position: relative;
+            height: 400vh;
+        }
+
+        .scroll-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .scroll-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.05) 0%, var(--j-bg) 70%);
+        }
+
+        .scroll-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 40px;
+        }
+
+        .scroll-phase {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            text-align: center;
+            padding: 0 40px;
+            opacity: 0;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .scroll-phase.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .scroll-phase.exit {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        .scroll-phase .big-text {
+            font-family: 'Audiowide', cursive;
+            font-size: 3.5rem;
+            color: var(--j-text-bright);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .scroll-phase .big-text .glow {
+            background: linear-gradient(135deg, var(--j-blue), var(--j-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .scroll-phase .sub-text {
+            font-size: 1.1rem;
+            color: var(--j-text);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .scroll-phase .counter {
+            font-family: 'Audiowide', cursive;
+            font-size: 6rem;
+            color: var(--j-text-bright);
+            text-shadow: 0 0 30px var(--j-glow);
+            margin-bottom: 12px;
+        }
+
+        .scroll-phase .counter-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--j-blue);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .scroll-orbs {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
+
+        .scroll-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            transition: all 1s ease;
+        }
+
+        .scroll-orb:nth-child(1) {
+            width: 400px; height: 400px;
+            background: var(--j-blue);
+            top: 20%; left: 10%;
+        }
+
+        .scroll-orb:nth-child(2) {
+            width: 300px; height: 300px;
+            background: var(--j-purple);
+            top: 60%; right: 15%;
+        }
+
+        .scroll-orb:nth-child(3) {
+            width: 250px; height: 250px;
+            background: var(--j-cyan);
+            bottom: 10%; left: 40%;
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--j-blue), var(--j-cyan));
+            z-index: 100;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px var(--j-glow);
+        }
+
+        @media (max-width: 700px) {
+            .scroll-phase .big-text { font-size: 2rem; }
+            .scroll-phase .counter { font-size: 4rem; }
+            .scroll-phase .sub-text { font-size: 0.9rem; }
+        }
+
         /* ========== FEATURES SECTION ========== */
         .features {
             padding: 60px 60px 80px;
@@ -1046,6 +1186,46 @@
         </div>
     </section>
 
+    <!-- ========== SCROLL-LOCKED ANIMATION ========== -->
+    <div class="scroll-locked" id="scrollLocked">
+        <div class="scroll-sticky">
+            <div class="scroll-bg"></div>
+            <div class="scroll-orbs">
+                <div class="scroll-orb" id="orb1"></div>
+                <div class="scroll-orb" id="orb2"></div>
+                <div class="scroll-orb" id="orb3"></div>
+            </div>
+
+            <div class="scroll-phase active" id="phase0">
+                <div class="big-text">Welcome to<br><span class="glow">J.A.R.V.I.S.</span></div>
+                <div class="sub-text">Scroll down to explore the future of AI assistance</div>
+            </div>
+
+            <div class="scroll-phase" id="phase1">
+                <div class="counter" id="counter1">0</div>
+                <div class="counter-label">Neural Connections</div>
+                <div class="sub-text" style="margin-top:16px;">Powered by advanced language models with billions of parameters</div>
+            </div>
+
+            <div class="scroll-phase" id="phase2">
+                <div class="big-text"><span class="glow">Lightning Fast</span><br>Responses</div>
+                <div class="sub-text">Groq AI delivers responses in milliseconds, not seconds</div>
+            </div>
+
+            <div class="scroll-phase" id="phase3">
+                <div class="counter" id="counter2">0</div>
+                <div class="counter-label">Features Integrated</div>
+                <div class="sub-text" style="margin-top:16px;">Chat, Voice, Weather, System Monitor, Search & App Launcher</div>
+            </div>
+
+            <div class="scroll-phase" id="phase4">
+                <div class="big-text">Your Personal<br><span class="glow">AI Universe</span></div>
+                <div class="sub-text">Everything you need, always at your command</div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-progress" id="scrollProgress"></div>
+
     <!-- ========== FEATURES ========== -->
     <section class="features" id="features">
         <div class="section-header">
@@ -1427,6 +1607,72 @@
             addMessage('Unable to launch app.', 'jarvis');
         }
     }
+
+    // ========== SCROLL-LOCKED ANIMATION ==========
+    (function initScrollAnimation() {
+        const container = document.getElementById('scrollLocked');
+        if (!container) return;
+
+        const phases = document.querySelectorAll('.scroll-phase');
+        const orbs = document.querySelectorAll('.scroll-orb');
+        const progressBar = document.getElementById('scrollProgress');
+        const counter1 = document.getElementById('counter1');
+        const counter2 = document.getElementById('counter2');
+        let counted1 = false, counted2 = false;
+
+        function animateCounter(el, target, duration) {
+            let start = 0;
+            const step = target / (duration / 16);
+            function update() {
+                start += step;
+                if (start >= target) { el.textContent = target.toLocaleString(); return; }
+                el.textContent = Math.floor(start).toLocaleString();
+                requestAnimationFrame(update);
+            }
+            update();
+        }
+
+        window.addEventListener('scroll', () => {
+            const rect = container.getBoundingClientRect();
+            const scrollHeight = container.offsetHeight - window.innerHeight;
+            const scrolled = -rect.top;
+            const progress = Math.max(0, Math.min(1, scrolled / scrollHeight));
+
+            // Progress bar
+            if (progressBar) progressBar.style.width = (progress * 100) + '%';
+
+            // Determine which phase to show
+            const totalPhases = phases.length;
+            const phaseIndex = Math.min(Math.floor(progress * totalPhases), totalPhases - 1);
+
+            phases.forEach((phase, i) => {
+                if (i === phaseIndex) {
+                    phase.classList.add('active');
+                    phase.classList.remove('exit');
+                } else {
+                    phase.classList.remove('active');
+                    if (i < phaseIndex) phase.classList.add('exit');
+                    else phase.classList.remove('exit');
+                }
+            });
+
+            // Animate orbs based on scroll
+            if (orbs[0]) orbs[0].style.transform = `translate(${progress * 100}px, ${progress * -50}px) scale(${1 + progress * 0.5})`;
+            if (orbs[1]) orbs[1].style.transform = `translate(${progress * -80}px, ${progress * 60}px) scale(${1 + progress * 0.3})`;
+            if (orbs[2]) orbs[2].style.transform = `translate(${progress * 50}px, ${progress * -40}px) scale(${1 + progress * 0.4})`;
+            orbs.forEach(o => o.style.opacity = 0.15 + progress * 0.25);
+
+            // Counters
+            if (phaseIndex === 1 && !counted1 && counter1) {
+                counted1 = true;
+                animateCounter(counter1, 17500000000, 2000);
+            }
+            if (phaseIndex === 3 && !counted2 && counter2) {
+                counted2 = true;
+                animateCounter(counter2, 6, 1500);
+            }
+        });
+    })();
 
     // ========== INIT ==========
     document.addEventListener('DOMContentLoaded', () => {
