@@ -557,8 +557,9 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 8px;
             animation: timeFadeIn 1s ease 0.3s both;
         }
 
@@ -571,27 +572,13 @@
             line-height: 1;
         }
 
-        .hero-time .dot-sep {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .hero-time .dot-sep span {
-            width: 4px;
-            height: 4px;
-            background: var(--j-blue);
-            border-radius: 50%;
-        }
-
         .hero-time .date {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            font-weight: 500;
             color: var(--j-text);
-            letter-spacing: 2px;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
+            letter-spacing: 4px;
+            text-transform: uppercase;
         }
 
         @keyframes timeFadeIn {
@@ -600,9 +587,6 @@
         }
 
         @media (max-width: 700px) {
-            .hero-time { flex-direction: column; gap: 8px; }
-            .hero-time .date { writing-mode: horizontal-tb; font-size: 0.8rem; }
-            .hero-time .dot-sep { flex-direction: row; }
             .hero-time .time { font-size: 1.6rem; }
         }
 
@@ -1328,7 +1312,6 @@
 
         <div class="hero-time">
             <span class="time" id="heroTime">00:00:00</span>
-            <div class="dot-sep"><span></span><span></span><span></span></div>
             <span class="date" id="heroDate">LOADING...</span>
         </div>
     </section>
