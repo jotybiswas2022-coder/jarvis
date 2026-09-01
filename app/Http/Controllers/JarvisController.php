@@ -207,7 +207,14 @@ class JarvisController extends Controller
             $command = $apps[$app][$os] ?? null;
 
             if ($command) {
-                exec($command . ' > /dev/null 2>&1 &');
+                // Windows uses 'start' to launch apps in background
+                if (PHP_OS_FAMILY === 'Windows') {
+                    $fullCommand = 'start "" ' . $command;
+                } else {
+                    $fullCommand = $command . ' > /dev/null 2>&1 &';
+                }
+
+                exec($fullCommand);
                 return response()->json([
                     'success' => true,
                     'message' => "Opening {$app}, sir.",
