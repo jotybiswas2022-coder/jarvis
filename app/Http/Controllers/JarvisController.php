@@ -15,6 +15,11 @@ class JarvisController extends Controller
         return view('frontend.index');
     }
 
+    public function chatPage()
+    {
+        return view('frontend.chat');
+    }
+
     /**
      * Chat with Jarvis using Groq AI (free, fast)
      */

@@ -1225,7 +1225,7 @@
                     <span class="highlight">Just A Rather Very Intelligent System.</span> Built with advanced AI to help you with anything — from conversations to system control.
                 </p>
                 <div class="hero-actions">
-                    <a href="#chat" class="btn-primary">
+                    <a href="/chat" class="btn-primary">
                         <i class="fas fa-comments"></i> Start Chat
                     </a>
                     <a href="#features" class="btn-secondary">
@@ -1290,42 +1290,9 @@
         </div>
     </section>
 
-    <!-- ========== CHAT + SYSTEM ========== -->
-    <section class="chat-section" id="chat">
+    <!-- ========== SYSTEM + WEATHER ========== -->
+    <section class="chat-section">
         <div class="chat-layout">
-            <!-- Chat Card -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <div class="card-label">
-                        <i class="fas fa-comments"></i>
-                        <span>COMMUNICATION</span>
-                    </div>
-                    <div class="card-badge">ONLINE</div>
-                </div>
-                <div class="chat-messages" id="chatMessages">
-                    <div class="chat-msg jarvis">
-                        <div class="sender">J.A.R.V.I.S.</div>
-                        Good day, sir. I am JARVIS, your personal AI assistant. All systems are online. How may I be of service?
-                    </div>
-                </div>
-                <div class="quick-row">
-                    <button class="q-btn" onclick="sendQuick('What time is it?')">🕐 Time</button>
-                    <button class="q-btn" onclick="sendQuick('Tell me a joke')">😄 Joke</button>
-                    <button class="q-btn" onclick="sendQuick('What can you do?')">❓ Help</button>
-                    <button class="q-btn" onclick="sendQuick('How are you?')">👋 Status</button>
-                </div>
-                <div class="chat-input-row">
-                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your command..." autocomplete="off">
-                    <button class="icon-btn" id="voiceBtn" onclick="toggleVoice()" title="Voice">
-                        <i class="fas fa-microphone"></i>
-                    </button>
-                    <button class="icon-btn" onclick="sendMessage()" title="Send">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Side Cards -->
             <div class="side-cards">
                 <!-- System Monitor -->
                 <div class="glass-card">

@@ -8,6 +8,7 @@ use App\Http\Controllers\JarvisController;
 // ========== JARVIS ROUTES ==========
 Route::controller(JarvisController::class)->group(function () {
     Route::get('/', 'index')->name('jarvis.home');
+    Route::get('/chat', 'chatPage')->name('jarvis.chat');
     Route::post('/api/chat', 'chat')->name('jarvis.chat');
     Route::post('/api/weather', 'weather')->name('jarvis.weather');
     Route::get('/api/system-info', 'systemInfo')->name('jarvis.system');
