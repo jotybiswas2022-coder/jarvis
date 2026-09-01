@@ -552,10 +552,7 @@
             font-family: 'Josefin Sans', sans-serif;
             font-size: 2.2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--j-text-bright) 0%, var(--j-blue) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--j-text-bright);
             letter-spacing: 4px;
             line-height: 1;
         }
