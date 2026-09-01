@@ -1233,17 +1233,7 @@
         }
 
         /* ========== CORNER DECORATIONS ========== */
-        .corner {
-            position: fixed;
-            width: 50px; height: 50px;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .c-tl { top: 8px; left: 8px; border-top: 1.5px solid rgba(0,212,255,0.3); border-left: 1.5px solid rgba(0,212,255,0.3); }
-        .c-tr { top: 8px; right: 8px; border-top: 1.5px solid rgba(0,212,255,0.3); border-right: 1.5px solid rgba(0,212,255,0.3); }
-        .c-bl { bottom: 8px; left: 8px; border-bottom: 1.5px solid rgba(0,212,255,0.3); border-left: 1.5px solid rgba(0,212,255,0.3); }
-        .c-br { bottom: 8px; right: 8px; border-bottom: 1.5px solid rgba(0,212,255,0.3); border-right: 1.5px solid rgba(0,212,255,0.3); }
+        /* corners removed */
     </style>
 </head>
 <body>
@@ -1256,10 +1246,7 @@
 <div class="bg-gradient"></div>
 <div class="particles" id="particles"></div>
 
-<div class="corner c-tl"></div>
-<div class="corner c-tr"></div>
-<div class="corner c-bl"></div>
-<div class="corner c-br"></div>
+
 
 <div class="jarvis-app">
 
