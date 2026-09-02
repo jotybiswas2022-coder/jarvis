@@ -260,7 +260,7 @@
             flex: 1;
             display: flex;
             align-items: center;
-            padding: 0 60px 0 10px;
+            padding: 0 60px 0 0px;
             gap: 20px;
         }
 
@@ -268,6 +268,7 @@
             flex: 1;
             max-width: 480px;
             margin-right: auto;
+            margin-left: -20px;
         }
 
         .hero-badge {
