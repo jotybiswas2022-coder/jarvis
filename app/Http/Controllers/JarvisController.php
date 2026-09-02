@@ -30,11 +30,27 @@ class JarvisController extends Controller
         ]);
 
         $message = $request->input('message');
+        $history = $request->input('history', []);
+
+        // Store conversation in session
+        $conversation = $request->session()->get('conversation', []);
+        $conversation[] = ['role' => 'user', 'content' => $message];
+
+        // Keep only last 20 messages to avoid token limits
+        if (count($conversation) > 20) {
+            $conversation = array_slice($conversation, -20);
+        }
+
+        $request->session()->put('conversation', $conversation);
 
         // Try Groq API (free, fast)
         $groqKey = config('services.groq.api_key', env('GROQ_API_KEY'));
-        $groqReply = $this->tryGroqChat($message, $groqKey);
+        $groqReply = $this->tryGroqChat($conversation, $groqKey);
         if ($groqReply) {
+            // Store AI reply in session
+            $conversation[] = ['role' => 'assistant', 'content' => $groqReply];
+            $request->session()->put('conversation', $conversation);
+
             return response()->json([
                 'success' => true,
                 'reply' => $groqReply,
@@ -210,20 +226,23 @@ class JarvisController extends Controller
         return 'You are JARVIS (Just A Rather Very Intelligent System), an advanced AI assistant created by Tony Stark. You are helpful, witty, and slightly sarcastic like the real JARVIS from Iron Man. Respond in a mix of English and casual style. Keep responses concise but friendly. You can help with: weather, system info, web search, launching apps, and general conversation.';
     }
 
-    private function tryGroqChat($message, $apiKey)
+    private function tryGroqChat($conversation, $apiKey)
     {
         if (!$apiKey) return null;
 
         try {
+            // Build messages array with system prompt + full conversation history
+            $messages = array_merge(
+                [['role' => 'system', 'content' => $this->getJarvisSystemPrompt()]],
+                $conversation
+            );
+
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type' => 'application/json',
             ])->timeout(15)->post('https://api.groq.com/openai/v1/chat/completions', [
                 'model' => 'openai/gpt-oss-120b',
-                'messages' => [
-                    ['role' => 'system', 'content' => $this->getJarvisSystemPrompt()],
-                    ['role' => 'user', 'content' => $message],
-                ],
+                'messages' => $messages,
                 'max_tokens' => 500,
                 'temperature' => 0.7,
             ]);

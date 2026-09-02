@@ -646,6 +646,7 @@
 
 <script>
     const CSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    let chatHistory = [];
 
     // ========== CHAT ==========
     function addMsg(text, type) {
@@ -681,15 +682,23 @@
         addMsg(msg, 'user');
         input.value = '';
         addTyping();
+
+        // Store user message in local history
+        chatHistory.push({ role: 'user', content: msg });
+
         try {
             const r = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
-                body: JSON.stringify({ message: msg })
+                body: JSON.stringify({ message: msg, history: chatHistory.slice(-20) })
             });
             const d = await r.json();
             removeTyping();
-            addMsg(d.success ? d.reply : 'Malfunction detected, sir.', 'jarvis');
+            const reply = d.success ? d.reply : 'Malfunction detected, sir.';
+            addMsg(reply, 'jarvis');
+
+            // Store AI reply in local history
+            chatHistory.push({ role: 'assistant', content: reply });
         } catch (e) {
             removeTyping();
             addMsg('Connection error, sir.', 'jarvis');
