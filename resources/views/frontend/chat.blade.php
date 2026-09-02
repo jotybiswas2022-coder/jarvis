@@ -168,6 +168,29 @@
         .copy-btn:hover { background: rgba(0, 212, 255, 0.15); color: var(--j-blue); border-color: var(--j-blue); }
         .copy-btn.copied { color: var(--j-success); border-color: var(--j-success); background: rgba(0, 255, 136, 0.08); opacity: 1; }
         .msg.jarvis { padding-right: 52px; }
+        .code-copy-btn {
+            position: absolute; top: 8px; right: 8px; z-index: 2;
+            width: 26px; height: 26px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0, 212, 255, 0.08); border: 1px solid rgba(0, 212, 255, 0.15);
+            color: var(--j-cyan); font-size: 0.68rem; cursor: pointer;
+            opacity: 0; transition: all 0.3s ease;
+        }
+        pre:hover .code-copy-btn { opacity: 1; }
+        .code-copy-btn:hover { background: rgba(0, 212, 255, 0.18); }
+        .code-copy-btn.copied { color: var(--j-success); border-color: var(--j-success); }
+
+        #selectionTooltip {
+            position: fixed; z-index: 9999; display: none; align-items: center; gap: 6px;
+            background: #0d1630; border: 1px solid var(--j-blue); color: var(--j-text-bright);
+            font-family: 'Belanosima', sans-serif; font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.5px; padding: 7px 14px; border-radius: 10px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5); cursor: pointer;
+            user-select: none;
+        }
+        #selectionTooltip:hover { border-color: var(--j-cyan); color: var(--j-cyan); }
+        .msg::selection { background: rgba(0, 212, 255, 0.3); }
+        .msg ::selection { background: rgba(0, 212, 255, 0.3); }
         @keyframes msgSlide {
             from { opacity: 0; transform: translateY(16px) scale(0.97); }
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -592,6 +615,8 @@
 
 </div>
 
+<div id="selectionTooltip"><i class="fas fa-copy"></i> Copy</div>
+
 <script>
     const CSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const API_BASE = {{ Js::from(url('/api')) }};
@@ -664,7 +689,30 @@
             : `<div class="sender">YOU</div>${rendered}<div class="msg-time">${getTimeString()}</div>`;
         if (type === 'jarvis') d.setAttribute('data-text', text);
         m.appendChild(d);
+        attachCodeCopy(d);
         m.scrollTop = m.scrollHeight;
+    }
+
+    function attachCodeCopy(container) {
+        const blocks = container.querySelectorAll('pre');
+        blocks.forEach(pre => {
+            if (pre.querySelector('.code-copy-btn')) return;
+            const btn = document.createElement('button');
+            btn.className = 'code-copy-btn';
+            btn.title = 'Copy code';
+            btn.innerHTML = '<i class="fas fa-copy"></i>';
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                const codeText = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+                navigator.clipboard.writeText(codeText).then(() => {
+                    btn.innerHTML = '<i class="fas fa-check"></i>';
+                    btn.classList.add('copied');
+                    setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i>'; btn.classList.remove('copied'); }, 1500);
+                }).catch(() => {});
+            };
+            pre.style.position = 'relative';
+            pre.appendChild(btn);
+        });
     }
 
     function copyMessage(btn, type) {
@@ -795,7 +843,45 @@
     document.addEventListener('DOMContentLoaded', () => {
         loadWeather(); loadSystemInfo(); setInterval(loadSystemInfo, 30000);
         document.getElementById('chatInput').focus();
+        setupSelectionCopy();
     });
+
+    function setupSelectionCopy() {
+        const tooltip = document.getElementById('selectionTooltip');
+        const chatMsgs = document.getElementById('chatMessages');
+        let hideTimer = null;
+
+        function getSelectionRect() {
+            const sel = window.getSelection();
+            if (!sel || sel.isCollapsed || !sel.toString().trim()) return null;
+            const range = sel.getRangeAt(0);
+            const msgEl = range.startContainer.parentElement ? range.startContainer.parentElement.closest('.msg') : null;
+            if (!msgEl) return null;
+            const rect = range.getBoundingClientRect();
+            return { rect, msgEl, text: sel.toString() };
+        }
+
+        chatMsgs.addEventListener('mouseup', (e) => {
+            clearTimeout(hideTimer);
+            const info = getSelectionRect();
+            if (!info) { tooltip.style.display = 'none'; return; }
+            const isCode = !!e.target.closest('pre');
+            if (isCode) return; // code uses its own copy button
+            tooltip.style.display = 'flex';
+            tooltip.style.left = (info.rect.left + info.rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = (info.rect.top - 40) + 'px';
+            tooltip.onclick = () => {
+                navigator.clipboard.writeText(info.text).then(() => {
+                    tooltip.innerHTML = '<i class="fas fa-check"></i> Copied';
+                    setTimeout(() => { tooltip.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 1500);
+                }).catch(() => {});
+            };
+        });
+
+        document.addEventListener('mousedown', () => { hideTimer = setTimeout(() => { tooltip.style.display = 'none'; }, 200); });
+        tooltip.addEventListener('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); });
+        document.addEventListener('mouseup', (e) => { if (e.target === tooltip) { clearTimeout(hideTimer); } });
+    }
 </script>
 </body>
 </html>
