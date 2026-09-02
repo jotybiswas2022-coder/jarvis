@@ -38,28 +38,50 @@
             flex-direction: column;
         }
 
-        /* Background */
-        .bg-grid {
+        /* Background - Elegant Dark Pattern */
+        .bg-elegant {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,212,255,0.015) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0,212,255,0.015) 1px, transparent 1px);
-            background-size: 80px 80px; z-index: 0;
+            z-index: 0; overflow: hidden;
         }
-        .bg-glow {
-            position: fixed; top: -30%; left: -10%; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.04) 0%, transparent 70%);
-            border-radius: 50%; z-index: 0; pointer-events: none;
-            animation: bgFloat 20s ease-in-out infinite;
+        .bg-elegant-base {
+            position: absolute; inset: 0;
+            background: radial-gradient(100% 100% at 0% 0%, rgb(46, 46, 46) 0%, rgb(0, 0, 0) 100%);
+            mask: radial-gradient(125% 100% at 0% 0%, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.22) 88%, rgba(0, 0, 0, 0) 100%);
+            -webkit-mask: radial-gradient(125% 100% at 0% 0%, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.22) 88%, rgba(0, 0, 0, 0) 100%);
         }
-        .bg-glow-2 {
-            position: fixed; bottom: -20%; right: -5%; width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.03) 0%, transparent 70%);
-            border-radius: 50%; z-index: 0; pointer-events: none;
-            animation: bgFloat 25s ease-in-out infinite reverse;
+        .bg-streak {
+            position: absolute; inset: 0; opacity: 0.2;
+            background: linear-gradient(rgb(0, 207, 255) 0%, rgba(0, 207, 255, 0) 100%);
+            transform: skewX(45deg);
         }
-        @keyframes bgFloat {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(40px, -30px); }
+        .bg-streak-1 {
+            mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 20%, rgba(0,0,0,0) 36%, rgb(0,0,0) 55%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 78%, rgba(0,0,0,0) 97%);
+            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 20%, rgba(0,0,0,0) 36%, rgb(0,0,0) 55%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 78%, rgba(0,0,0,0) 97%);
+        }
+        .bg-streak-2 {
+            mask: linear-gradient(90deg, rgba(0,0,0,0) 11%, rgb(0,0,0) 25%, rgba(0,0,0,0.55) 41%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 78%, rgba(0,0,0,0) 97%);
+            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 11%, rgb(0,0,0) 25%, rgba(0,0,0,0.55) 41%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 78%, rgba(0,0,0,0) 97%);
+        }
+        .bg-streak-3 {
+            mask: linear-gradient(90deg, rgba(0,0,0,0) 9%, rgb(0,0,0) 20%, rgba(0,0,0,0.55) 28%, rgba(0,0,0,0.42) 40%, rgb(0,0,0) 48%, rgba(0,0,0,0.27) 54%, rgba(0,0,0,0.13) 78%, rgb(0,0,0) 88%, rgba(0,0,0,0) 97%);
+            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 9%, rgb(0,0,0) 20%, rgba(0,0,0,0.55) 28%, rgba(0,0,0,0.42) 40%, rgb(0,0,0) 48%, rgba(0,0,0,0.27) 54%, rgba(0,0,0,0.13) 78%, rgb(0,0,0) 88%, rgba(0,0,0,0) 97%);
+        }
+        .bg-streak-4 {
+            mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 17%, rgba(0,0,0,0.55) 26%, rgb(0,0,0) 35%, rgba(0,0,0,0) 47%, rgba(0,0,0,0.13) 69%, rgb(0,0,0) 79%, rgba(0,0,0,0) 97%);
+            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 17%, rgba(0,0,0,0.55) 26%, rgb(0,0,0) 35%, rgba(0,0,0,0) 47%, rgba(0,0,0,0.13) 69%, rgb(0,0,0) 79%, rgba(0,0,0,0) 97%);
+        }
+        .bg-streak-5 {
+            mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 20%, rgba(0,0,0,0.55) 27%, rgb(0,0,0) 42%, rgba(0,0,0,0) 48%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 74%, rgb(0,0,0) 82%, rgba(0,0,0,0.47) 88%, rgba(0,0,0,0) 97%);
+            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 20%, rgba(0,0,0,0.55) 27%, rgb(0,0,0) 42%, rgba(0,0,0,0) 48%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 74%, rgb(0,0,0) 82%, rgba(0,0,0,0.47) 88%, rgba(0,0,0,0) 97%);
+        }
+        .bg-dots {
+            position: absolute; inset: 0; opacity: 0.15;
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .bg-radial {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 20% 20%, rgba(30, 40, 60, 0.3) 0%, transparent 60%);
         }
 
         /* Topbar */
@@ -482,9 +504,16 @@
     </style>
 </head>
 <body>
-<div class="bg-grid"></div>
-<div class="bg-glow"></div>
-<div class="bg-glow-2"></div>
+<div class="bg-elegant">
+    <div class="bg-elegant-base"></div>
+    <div class="bg-streak bg-streak-1"></div>
+    <div class="bg-streak bg-streak-2"></div>
+    <div class="bg-streak bg-streak-3"></div>
+    <div class="bg-streak bg-streak-4"></div>
+    <div class="bg-streak bg-streak-5"></div>
+    <div class="bg-dots"></div>
+    <div class="bg-radial"></div>
+</div>
 
 <!-- Top Bar -->
 <div class="topbar">
