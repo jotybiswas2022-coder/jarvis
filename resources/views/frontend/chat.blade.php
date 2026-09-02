@@ -95,6 +95,7 @@
             border-radius: 10px;
             color: var(--j-text);
             text-decoration: none;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.8rem;
             font-weight: 500;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -131,9 +132,9 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .topbar-name {
-            font-family: 'Josefin Sans', sans-serif;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--j-text-bright);
             letter-spacing: 4px;
         }
@@ -155,7 +156,7 @@
         }
 
         .topbar-status span {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.6rem;
             color: var(--j-success);
             letter-spacing: 1.5px;
@@ -227,11 +228,12 @@
         .msg.jarvis .sender {
             display: flex; align-items: center; gap: 6px;
             color: var(--j-blue);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.58rem;
             letter-spacing: 2.5px;
             margin-bottom: 10px;
             text-transform: uppercase;
+            font-weight: 600;
         }
 
         .msg.jarvis .sender::before {
@@ -258,11 +260,12 @@
         .msg.user .sender {
             display: flex; align-items: center; justify-content: flex-end; gap: 6px;
             color: var(--j-purple);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.58rem;
             letter-spacing: 2.5px;
             margin-bottom: 10px;
             text-transform: uppercase;
+            font-weight: 600;
         }
 
         .msg.user .sender::after {
@@ -275,7 +278,7 @@
 
         /* Timestamp */
         .msg-time {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.55rem;
             color: var(--j-text-dim);
             margin-top: 8px;
@@ -391,7 +394,7 @@
             border: 1px solid rgba(0, 212, 255, 0.08);
             border-radius: 24px;
             color: var(--j-text);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.78rem;
             font-weight: 500;
             cursor: pointer;
@@ -435,7 +438,7 @@
             border: none;
             padding: 14px 8px;
             color: var(--j-text-bright);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.95rem;
             outline: none;
         }
@@ -558,11 +561,11 @@
         }
 
         .side-card-label span {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.52rem;
             color: var(--j-blue);
             letter-spacing: 2.5px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .side-badge {
@@ -570,7 +573,7 @@
             background: rgba(0, 255, 136, 0.06);
             border: 1px solid rgba(0, 255, 136, 0.12);
             border-radius: 20px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.5rem;
             color: var(--j-success);
             letter-spacing: 1.5px;
@@ -596,7 +599,7 @@
         }
 
         .sys-label {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.45rem;
             color: var(--j-blue);
             letter-spacing: 2px;
@@ -605,7 +608,7 @@
         }
 
         .sys-val {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--j-text-bright);
@@ -646,14 +649,14 @@
         }
 
         .weather-temp {
-            font-family: 'Josefin Sans', sans-serif;
+            font-family: 'Belanosima', sans-serif;
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--j-text-bright);
         }
 
         .weather-meta {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.55rem;
             color: var(--j-text);
             line-height: 1.8;
@@ -673,7 +676,7 @@
             border-radius: 10px;
             padding: 10px 14px;
             color: var(--j-text-bright);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.78rem;
             outline: none;
             transition: all 0.3s ease;
@@ -687,7 +690,7 @@
             background: linear-gradient(135deg, var(--j-blue), var(--j-blue-dark));
             border: none; border-radius: 10px;
             color: white;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.6rem; font-weight: 600;
             letter-spacing: 1px; cursor: pointer;
             transition: all 0.3s ease;
@@ -705,6 +708,7 @@
             border: 1px solid var(--j-border);
             border-radius: 10px;
             color: var(--j-text); text-decoration: none;
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.7rem; font-weight: 500;
             transition: all 0.3s ease;
         }
@@ -729,7 +733,8 @@
             border-radius: 12px;
             color: var(--j-text); cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.45rem; font-weight: 500;
+            font-family: 'Belanosima', sans-serif;
+            font-size: 0.45rem; font-weight: 600;
             letter-spacing: 0.5px; text-transform: uppercase;
         }
 
@@ -768,15 +773,16 @@
         }
 
         .welcome-title {
-            font-family: 'Josefin Sans', sans-serif;
+            font-family: 'Belanosima', sans-serif;
             font-size: 1.6rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--j-text-bright);
             margin-bottom: 12px;
             letter-spacing: 1px;
         }
 
         .welcome-sub {
+            font-family: 'Belanosima', sans-serif;
             font-size: 0.9rem;
             color: var(--j-text);
             max-width: 400px;
