@@ -200,7 +200,7 @@
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 212, 255, 0.02));
             border: 1px solid rgba(0, 212, 255, 0.08); align-self: flex-start;
             border-bottom-left-radius: 6px;
-            max-height: 60vh; overflow-y: auto;
+            max-height: 30vh; overflow-y: auto;
         }
         .msg.jarvis::-webkit-scrollbar { width: 4px; }
         .msg.jarvis::-webkit-scrollbar-track { background: transparent; }
