@@ -512,7 +512,6 @@
     <div class="bg-streak bg-streak-4"></div>
     <div class="bg-streak bg-streak-5"></div>
     <div class="bg-dots"></div>
-    <div class="bg-radial"></div>
 </div>
 
 <!-- Top Bar -->
