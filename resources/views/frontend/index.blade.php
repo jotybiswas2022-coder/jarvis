@@ -410,13 +410,13 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 14px 30px;
+            padding: 18px 40px;
             background: linear-gradient(135deg, var(--j-blue) 0%, var(--j-blue-dark) 100%);
             border: none;
             border-radius: 14px;
             color: white;
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 0.9rem;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -424,6 +424,20 @@
             text-decoration: none;
             position: relative;
             overflow: hidden;
+        }
+
+        .glass-btn {
+            background: rgba(0, 212, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .glass-btn:hover {
+            background: rgba(0, 212, 255, 0.25);
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.4), inset 0 1px 0 rgba(255,255,255,0.15);
         }
 
         .btn-primary::before {
@@ -1313,11 +1327,8 @@
                     <span class="highlight">Just A Rather Very Intelligent System.</span> Built with advanced AI to help you with anything — from conversations to system control.
                 </p>
                 <div class="hero-actions">
-                    <a href="/chat" class="btn-primary">
+                    <a href="/chat" class="btn-primary glass-btn">
                         <i class="fas fa-comments"></i> Start Chat
-                    </a>
-                    <a href="#features" class="btn-secondary">
-                        <i class="fas fa-compass"></i> Explore Features
                     </a>
                 </div>
             </div>
