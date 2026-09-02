@@ -1123,7 +1123,7 @@
     }
 
     // ========== WEATHER ==========
-    async function loadWeather(city = 'Dhaka') {
+    async function loadWeather(city = 'Khulna') {
         try {
             const r = await fetch('/api/weather', {
                 method: 'POST',

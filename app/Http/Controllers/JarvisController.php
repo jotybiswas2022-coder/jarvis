@@ -71,7 +71,7 @@ class JarvisController extends Controller
      */
     public function weather(Request $request)
     {
-        $city = $request->input('city', 'Dhaka');
+        $city = $request->input('city', 'Khulna');
         $apiKey = config('services.weather.api_key', env('WEATHER_API_KEY'));
 
         if ($apiKey) {
