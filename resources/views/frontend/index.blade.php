@@ -513,6 +513,9 @@
             height: 500px;
             position: relative;
             margin-left: -240px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: inset 0 0 120px 60px var(--j-bg);
         }
 
         .model-glow {
@@ -541,6 +544,16 @@
         .model-wrapper spline-viewer::shadow .spline-watermark,
         .model-wrapper spline-viewer::shadow .credit {
             display: none !important;
+        }
+
+        .model-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 120px;
+            background: linear-gradient(to top, transparent 0%, var(--j-bg) 100%);
+            z-index: 3;
+            pointer-events: none;
         }
 
         .model-wrapper::after {
