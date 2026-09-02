@@ -266,10 +266,11 @@
             background: linear-gradient(90deg, transparent, var(--j-blue), transparent);
             opacity: 0.4;
         }
-        .sp-box.sys { flex: 2; }
-        .sp-box.weather { flex: 1; }
-        .sp-box.search { flex: 0.6; }
-        .sp-box.launcher { flex: 1.2; }
+        .sp-divider {
+            height: 1px;
+            background: rgba(0, 212, 255, 0.06);
+            margin: 6px 0;
+        }
 
         /* Section Header */
         .sp-head {
@@ -548,8 +549,8 @@
 
     <!-- Side Panel -->
     <div class="side-panel">
-        <!-- SYSTEM -->
-        <div class="sp-box sys">
+        <div class="sp-box">
+            <!-- SYSTEM -->
             <div class="sp-head">
                 <div class="sp-head-left"><i class="fas fa-microchip"></i> <span>SYSTEM</span></div>
                 <div class="sp-badge">LIVE</div>
@@ -574,10 +575,11 @@
                     <div class="sp-sys-val" id="sysUptime" style="font-size:0.6rem;">--</div>
                 </div>
             </div>
-        </div>
 
-        <!-- WEATHER -->
-        <div class="sp-box weather">
+            <!-- Divider -->
+            <div class="sp-divider"></div>
+
+            <!-- WEATHER -->
             <div class="sp-head">
                 <div class="sp-head-left"><i class="fas fa-cloud-sun"></i> <span>WEATHER</span></div>
                 <div class="sp-badge" id="weatherCity">--</div>
@@ -589,10 +591,11 @@
                     <div class="sp-weather-meta">Loading...</div>
                 </div>
             </div>
-        </div>
 
-        <!-- SEARCH -->
-        <div class="sp-box search">
+            <!-- Divider -->
+            <div class="sp-divider"></div>
+
+            <!-- SEARCH -->
             <div class="sp-head">
                 <div class="sp-head-left"><i class="fas fa-search"></i> <span>SEARCH</span></div>
             </div>
@@ -601,10 +604,11 @@
                 <button class="sp-search-go" onclick="performSearch()">GO</button>
             </div>
             <div class="sp-search-links" id="searchLinks"></div>
-        </div>
 
-        <!-- LAUNCHER -->
-        <div class="sp-box launcher">
+            <!-- Divider -->
+            <div class="sp-divider"></div>
+
+            <!-- LAUNCHER -->
             <div class="sp-head">
                 <div class="sp-head-left"><i class="fas fa-rocket"></i> <span>LAUNCHER</span></div>
             </div>
