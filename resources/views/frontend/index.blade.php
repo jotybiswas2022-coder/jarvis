@@ -260,7 +260,7 @@
             flex: 1;
             display: flex;
             align-items: center;
-            padding: 0 60px;
+            padding: 0 60px 0 10px;
             gap: 20px;
         }
 
