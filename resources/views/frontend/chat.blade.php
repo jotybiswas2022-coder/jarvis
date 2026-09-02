@@ -496,15 +496,15 @@
         /* ===== SIDE PANEL ===== */
         .side-panel {
             flex: 0 0 30%;
-            background: rgba(5, 8, 16, 0.5);
-            border-left: 1px solid var(--j-border);
+            background: linear-gradient(180deg, rgba(5, 10, 25, 0.6) 0%, rgba(3, 6, 16, 0.8) 100%);
+            border-left: 1px solid rgba(0, 212, 255, 0.06);
             padding: 16px 14px;
             display: flex;
             flex-direction: column;
             gap: 12px;
             overflow-y: auto;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px) saturate(1.2);
+            -webkit-backdrop-filter: blur(24px) saturate(1.2);
         }
 
         .side-panel::-webkit-scrollbar { width: 3px; }
@@ -519,26 +519,46 @@
         }
 
         .side-card {
-            background: var(--j-card);
-            border: 1px solid var(--j-border);
-            border-radius: 14px;
-            padding: 14px;
+            background: linear-gradient(145deg, rgba(12, 20, 48, 0.8) 0%, rgba(6, 12, 30, 0.9) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            box-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
 
         .side-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
+            top: 0; left: 20%; right: 20%;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.25), transparent);
+        }
+
+        .side-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 60px;
+            background: linear-gradient(180deg, rgba(0, 212, 255, 0.02) 0%, transparent 100%);
+            border-radius: 16px 16px 0 0;
+            pointer-events: none;
         }
 
         .side-card:hover {
-            border-color: var(--j-border-hover);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 212, 255, 0.2);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(0, 212, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            transform: translateY(-2px);
         }
 
         .side-card-header {
@@ -585,17 +605,19 @@
         }
 
         .sys-item {
-            background: rgba(0, 212, 255, 0.02);
-            border: 1px solid rgba(0, 212, 255, 0.05);
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.04) 0%, rgba(0, 212, 255, 0.01) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.07);
             border-radius: 10px;
             padding: 10px 8px;
             text-align: center;
             transition: all 0.3s ease;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .sys-item:hover {
-            background: rgba(0, 212, 255, 0.04);
-            border-color: rgba(0, 212, 255, 0.1);
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.02) 100%);
+            border-color: rgba(0, 212, 255, 0.15);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .sys-label {
@@ -643,9 +665,10 @@
             text-shadow: 0 0 12px rgba(255, 170, 0, 0.3);
             width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
-            background: rgba(255, 170, 0, 0.06);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 170, 0, 0.1);
+            background: linear-gradient(145deg, rgba(255, 170, 0, 0.1) 0%, rgba(255, 170, 0, 0.03) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 170, 0, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .weather-temp {
@@ -728,9 +751,10 @@
         .app-item {
             display: flex; flex-direction: column; align-items: center; gap: 4px;
             padding: 9px 3px;
-            background: rgba(0, 212, 255, 0.02);
-            border: 1px solid rgba(0, 212, 255, 0.05);
-            border-radius: 12px;
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.04) 0%, rgba(0, 212, 255, 0.01) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.07);
+            border-radius: 10px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 2px 6px rgba(0, 0, 0, 0.15);
             color: var(--j-text); cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: 'Belanosima', sans-serif;
