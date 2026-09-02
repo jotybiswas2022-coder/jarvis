@@ -565,6 +565,11 @@
             transform: translateY(-2px);
         }
 
+        .side-panel .side-card:nth-child(1) { flex: 1.8; }
+        .side-panel .side-card:nth-child(2) { flex: 1; }
+        .side-panel .side-card:nth-child(3) { flex: 0.6; }
+        .side-panel .side-card:nth-child(4) { flex: 1.2; }
+
         .side-card-header {
             display: flex; align-items: center; justify-content: space-between;
             margin-bottom: 6px;
