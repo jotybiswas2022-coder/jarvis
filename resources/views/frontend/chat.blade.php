@@ -581,6 +581,7 @@
 
 <script>
     const CSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const API_BASE = {{ Js::from(url('/api')) }};
     let chatHistory = [];
     let firstMessage = true;
 
@@ -669,17 +670,22 @@
         showChat(); addMsg(msg, 'user'); input.value = ''; addTyping();
         chatHistory.push({ role: 'user', content: msg });
         try {
-            const r = await fetch('/api/chat', {
+            const r = await fetch(API_BASE + '/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
                 body: JSON.stringify({ message: msg, history: chatHistory.slice(-20) })
             });
+            if (!r.ok) {
+                let detail = 'HTTP ' + r.status;
+                try { const e = await r.json(); detail = e.message || e.error || detail; } catch (_) {}
+                throw new Error(detail);
+            }
             const d = await r.json();
             removeTyping();
-            const reply = d.success ? d.reply : 'Malfunction detected, sir.';
-            addMsg(reply, 'jarvis');
-            chatHistory.push({ role: 'assistant', content: reply });
-        } catch (e) { removeTyping(); addMsg('Connection error, sir.', 'jarvis'); }
+            if (!d.success) throw new Error(d.reply || 'Malfunction detected, sir.');
+            addMsg(d.reply, 'jarvis');
+            chatHistory.push({ role: 'assistant', content: d.reply });
+        } catch (e) { removeTyping(); addMsg('Connection error, sir — ' + (e.message || ''), 'jarvis'); }
     }
 
     function sendQuick(t) { document.getElementById('chatInput').value = t; sendMessage(); }
@@ -704,7 +710,7 @@
 
     async function loadWeather(city = 'Khulna') {
         try {
-            const r = await fetch('/api/weather', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }, body: JSON.stringify({ city }) });
+            const r = await fetch(API_BASE + '/weather', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }, body: JSON.stringify({ city }) });
             const d = await r.json();
             if (d.success) {
                 const icons = { '01d':'fa-sun','01n':'fa-moon','02d':'fa-cloud-sun','02n':'fa-cloud-moon','03d':'fa-cloud','03n':'fa-cloud','09d':'fa-cloud-rain','09n':'fa-cloud-rain','10d':'fa-cloud-sun-rain','11d':'fa-bolt','13d':'fa-snowflake','50d':'fa-smog' };
@@ -716,7 +722,7 @@
 
     async function loadSystemInfo() {
         try {
-            const r = await fetch('/api/system-info', { headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF } });
+            const r = await fetch(API_BASE + '/system-info', { headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF } });
             const d = await r.json();
             if (d.success) {
                 const i = d.data;
@@ -736,7 +742,7 @@
         const q = document.getElementById('searchInput').value.trim();
         if (!q) return;
         try {
-            const r = await fetch('/api/search', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }, body: JSON.stringify({ query: q }) });
+            const r = await fetch(API_BASE + '/search', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }, body: JSON.stringify({ query: q }) });
             const d = await r.json();
             if (d.success) {
                 document.getElementById('searchLinks').innerHTML = `<a href="${d.google_url}" target="_blank" class="sp-link"><i class="fab fa-google"></i> Google</a><a href="${d.youtube_url}" target="_blank" class="sp-link"><i class="fab fa-youtube"></i> YouTube</a><a href="${d.github_url}" target="_blank" class="sp-link"><i class="fab fa-github"></i> GitHub</a>`;
@@ -748,7 +754,7 @@
     async function openApp(name) {
         showChat(); addMsg(`Opening ${name}...`, 'user');
         try {
-            const r = await fetch('/api/open-app', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }, body: JSON.stringify({ app: name }) });
+            const r = await fetch(API_BASE + '/open-app', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }, body: JSON.stringify({ app: name }) });
             const d = await r.json(); addMsg(d.message, 'jarvis');
         } catch (e) { addMsg('Unable to launch app.', 'jarvis'); }
     }
