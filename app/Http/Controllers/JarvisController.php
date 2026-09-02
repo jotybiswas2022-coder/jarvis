@@ -848,6 +848,24 @@ class JarvisController extends Controller
             }
         }
 
+        // Romanized (ASCII phonetic) Bangla detection — e.g. "apni kemon achen"
+        $romanized = [
+            'apni kemon achen' => "আমি ভালো আছি স্যার, সর্বদা আপনার সেবায়। আপনাকে কীভাবে সাহায্য করতে পারি?",
+            'kemon achen' => "ভালো আছি স্যার, ধন্যবাদ। আপনাকে কীভাবে সাহায্য করতে পারি?",
+            'kemon ach' => "ভালো আছি স্যার, ধন্যবাদ।",
+            'tumi ke' => "আমি জার্ভিস (JARVIS) — আপনার ব্যক্তিগত AI সহকারী, স্যার।",
+            'tomar nam' => "আমার নাম জার্ভিস (JARVIS), স্যার।",
+            'dhonnobad' => "আপনার সেবায় সদা প্রস্তুত, স্যার।",
+            'abhawa' => "আবহাওয়া জানতে চাইলে যেকোনো শহরের নাম বলুন স্যার।",
+            'avoba' => "আবহাওয়া জানতে চাইলে যেকোনো শহরের নাম বলুন স্যার।",
+        ];
+
+        foreach ($romanized as $key => $response) {
+            if (mb_strpos($message, $key) !== false) {
+                return $response;
+            }
+        }
+
         $responses = [
             'hello' => "Good day, sir. How may I assist you today?",
             'hi' => "Hello, sir. What can I do for you?",
