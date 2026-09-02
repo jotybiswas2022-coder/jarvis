@@ -55,6 +55,18 @@ class JarvisController extends Controller
             ]);
         }
 
+        // Check if the user is asking about time/date (Bangladesh timezone)
+        $timeReply = $this->handleTimeIntent($message);
+        if ($timeReply !== null) {
+            $conversation[] = ['role' => 'assistant', 'content' => $timeReply];
+            $request->session()->put('conversation', $conversation);
+            return response()->json([
+                'success' => true,
+                'reply' => $timeReply,
+                'source' => 'time'
+            ]);
+        }
+
         // Try OpenAI API
         $openaiKey = config('services.openai.api_key') ?? env('OPENAI_API_KEY') ?? $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY');
         $openaiReply = $this->tryOpenAIChat($conversation, $openaiKey);
@@ -307,6 +319,49 @@ class JarvisController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * Detect if the message asks for time or date, return Bangladesh time, or null.
+     */
+    private function handleTimeIntent($message)
+    {
+        $lower = mb_strtolower(trim($message), 'UTF-8');
+
+        $timeKw = ['what time', "what's the time", 'what is the time', 'current time', 'time now', 'সময়', 'সময়', 'কয়টা', 'কয়টা', 'ঘড়িতে', 'ঘড়ি'];
+        $dateKw = ['what date', "what's the date", 'what is the date', 'current date', "today's date", 'today date', 'তারিখ', 'কত তারিখ'];
+
+        $askTime = false;
+        foreach ($timeKw as $kw) {
+            if (mb_strpos($lower, $kw) !== false) { $askTime = true; break; }
+        }
+        $askDate = false;
+        foreach ($dateKw as $kw) {
+            if (mb_strpos($lower, $kw) !== false) { $askDate = true; break; }
+        }
+
+        // "what time is it" & "what date" edge: "time" alone shouldn't trigger (e.g. "one more time")
+        if (mb_strpos($lower, 'what time') === false
+            && mb_strpos($lower, "what's the time") === false
+            && mb_strpos($lower, 'current time') === false
+            && preg_match('/\btime\b/', $lower) && preg_match('/\?$/', trim($lower))) {
+            $askTime = true;
+        }
+
+        if (!$askTime && !$askDate) {
+            return null;
+        }
+
+        $now = now();
+        $bd = $now->setTimezone('Asia/Dhaka');
+
+        if ($askTime && $askDate) {
+            return "🕐 It is **{$bd->format('h:i A')}** on **{$bd->format('l, F j, Y')}**, Bangladesh Standard Time (GMT+6), sir.";
+        }
+        if ($askTime) {
+            return "🕐 The current time in Bangladesh is **{$bd->format('h:i A')}** (GMT+6), sir.";
+        }
+        return "📅 Today's date is **{$bd->format('l, F j, Y')}** in Bangladesh, sir.";
     }
 
     /**
