@@ -44,7 +44,7 @@ class JarvisController extends Controller
         $request->session()->put('conversation', $conversation);
 
         // Try Groq API (free, fast)
-        $groqKey = config('services.groq.api_key', env('GROQ_API_KEY'));
+        $groqKey = config('services.groq.api_key') ?? env('GROQ_API_KEY') ?? $_ENV['GROQ_API_KEY'] ?? getenv('GROQ_API_KEY');
         $groqReply = $this->tryGroqChat($conversation, $groqKey);
         if ($groqReply) {
             // Store AI reply in session
