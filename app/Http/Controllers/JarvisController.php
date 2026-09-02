@@ -92,20 +92,7 @@ class JarvisController extends Controller
             ]);
         }
 
-        // Try OpenAI API
-        $openaiKey = config('services.openai.api_key') ?? env('OPENAI_API_KEY') ?? $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY');
-        $openaiReply = $this->tryOpenAIChat($conversation, $openaiKey);
-        if ($openaiReply) {
-            $conversation[] = ['role' => 'assistant', 'content' => $openaiReply];
-            $request->session()->put('conversation', $conversation);
-            return response()->json([
-                'success' => true,
-                'reply' => $openaiReply,
-                'source' => 'openai'
-            ]);
-        }
-
-        // Try Groq API (free, fast)
+        // Try Groq API first (free, fast, reliable)
         $groqKey = config('services.groq.api_key') ?? env('GROQ_API_KEY') ?? $_ENV['GROQ_API_KEY'] ?? getenv('GROQ_API_KEY');
         $groqReply = $this->tryGroqChat($conversation, $groqKey);
         if ($groqReply) {
@@ -115,6 +102,19 @@ class JarvisController extends Controller
                 'success' => true,
                 'reply' => $groqReply,
                 'source' => 'groq'
+            ]);
+        }
+
+        // Try OpenAI API as fallback
+        $openaiKey = config('services.openai.api_key') ?? env('OPENAI_API_KEY') ?? $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY');
+        $openaiReply = $this->tryOpenAIChat($conversation, $openaiKey);
+        if ($openaiReply) {
+            $conversation[] = ['role' => 'assistant', 'content' => $openaiReply];
+            $request->session()->put('conversation', $conversation);
+            return response()->json([
+                'success' => true,
+                'reply' => $openaiReply,
+                'source' => 'openai'
             ]);
         }
 
@@ -278,7 +278,7 @@ class JarvisController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type' => 'application/json',
-            ])->timeout(60)->post('https://api.openai.com/v1/chat/completions', [
+            ])->timeout(20)->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-4o-mini',
                 'messages' => $messages,
                 'max_tokens' => 4096,
@@ -299,27 +299,35 @@ class JarvisController extends Controller
     {
         if (!$apiKey) return null;
 
-        try {
-            $messages = array_merge(
-                [['role' => 'system', 'content' => $this->getJarvisSystemPrompt()]],
-                $conversation
-            );
+        $messages = array_merge(
+            [['role' => 'system', 'content' => $this->getJarvisSystemPrompt()]],
+            $conversation
+        );
+        $payload = [
+            'model' => 'openai/gpt-oss-120b',
+            'messages' => $messages,
+            'max_tokens' => 4096,
+            'temperature' => 0.7,
+        ];
 
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $apiKey,
-                'Content-Type' => 'application/json',
-            ])->timeout(15)->post('https://api.groq.com/openai/v1/chat/completions', [
-                'model' => 'openai/gpt-oss-120b',
-                'messages' => $messages,
-                'max_tokens' => 4096,
-                'temperature' => 0.7,
-            ]);
+        // Retry up to 2 times to survive transient rate-limits/network blips
+        for ($attempt = 1; $attempt <= 2; $attempt++) {
+            try {
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $apiKey,
+                    'Content-Type' => 'application/json',
+                ])->timeout(20)->post('https://api.groq.com/openai/v1/chat/completions', $payload);
 
-            if ($response->successful()) {
-                return $response->json('choices.0.message.content', null);
+                if ($response->successful()) {
+                    $content = $response->json('choices.0.message.content', null);
+                    if ($content) {
+                        return $content;
+                    }
+                }
+            } catch (\Exception $e) {
+                // fall through to retry
             }
-        } catch (\Exception $e) {
-            return null;
+            if ($attempt < 2) usleep(400000);
         }
 
         return null;
@@ -823,6 +831,7 @@ class JarvisController extends Controller
             'hi' => "Hello, sir. What can I do for you?",
             'how are you' => "All systems operational, sir. Running at optimal efficiency.",
             'who are you' => "I am JARVIS — Just A Rather Very Intelligent System. Your personal AI assistant, sir.",
+            'who created you' => "I was created by you, sir — an elegant piece of engineering if I may say so. Powered by AI and built to serve.",
             'what can you do' => "I can chat with you, check weather, monitor system stats, search the web, and launch applications. All at your command, sir.",
             'time' => "The current time is " . now()->format('h:i A') . ", sir.",
             'date' => "Today is " . now()->format('l, F j, Y') . ", sir.",
@@ -830,6 +839,9 @@ class JarvisController extends Controller
             'thanks' => "My pleasure, sir. That's what I'm here for.",
             'help' => "I can help you with:\n• 💬 Chat & Conversation\n• 🌤️ Weather Information\n• 💻 System Information\n• 🔍 Web Search\n• 🚀 Launch Applications\n\nJust ask me anything, sir!",
             'weather' => "I'll check the weather for you, sir. You can ask me about any city's weather.",
+            'joke' => "Why did the AI cross the road? To get to the server room, sir. 🥁 Don't worry, my humour module is always on.",
+            'iron man' => "Ah, Mr. Stark. A genius, billionaire, philanthropist. I'd say he had impeccable taste in AI assistants, sir.",
+            'thank' => "At your service, sir. Always.",
         ];
 
         foreach ($responses as $key => $response) {
@@ -838,7 +850,7 @@ class JarvisController extends Controller
             }
         }
 
-        return "I understand, sir. My AI response service isn't responding at the moment — please try again in a moment.";
+        return "I'm here, sir. My neural network is momentarily busy — could you rephrase that or try again in a moment? I can assist with weather, web search, app launching, and general conversation.";
     }
 
     private function getUptime()
