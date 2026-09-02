@@ -7,9 +7,16 @@
     <title>J.A.R.V.I.S. — Chat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* Bengali script → Hind Siliguri, English → Belanosima */
+        @font-face {
+            font-family: 'Belanosima';
+            src: local('Hind Siliguri');
+            unicode-range: U+0980-09FF, U+0964-0965, U+200C-200D, U+20B9, U+0966-096F;
+        }
+
         :root {
             --j-blue: #00d4ff;
             --j-blue-dark: #0066aa;
@@ -29,7 +36,7 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Belanosima', sans-serif;
+            font-family: 'Belanosima', 'Hind Siliguri', sans-serif;
             background: var(--j-bg);
             color: var(--j-text);
             height: 100vh;
@@ -151,6 +158,7 @@
 
         .msg {
             max-width: 72%; padding: 18px 22px; border-radius: 20px;
+            font-family: 'Hind Siliguri', 'Belanosima', sans-serif;
             font-size: 0.92rem; line-height: 1.75;
             animation: msgSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -198,7 +206,7 @@
         .q-btn {
             padding: 9px 18px; background: rgba(0, 212, 255, 0.03);
             border: 1px solid rgba(0, 212, 255, 0.08); border-radius: 24px;
-            color: var(--j-text); font-family: 'Belanosima', sans-serif;
+            color: var(--j-text); font-family: 'Belanosima', 'Hind Siliguri', sans-serif;
             font-size: 0.78rem; font-weight: 500; cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -224,7 +232,7 @@
         }
         .chat-input {
             flex: 1; background: transparent; border: none; padding: 14px 8px;
-            color: var(--j-text-bright); font-family: 'Belanosima', sans-serif;
+            color: var(--j-text-bright); font-family: 'Belanosima', 'Hind Siliguri', sans-serif;
             font-size: 0.95rem; outline: none;
         }
         .chat-input::placeholder { color: var(--j-text-dim); }
