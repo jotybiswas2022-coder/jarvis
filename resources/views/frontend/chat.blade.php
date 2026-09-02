@@ -498,10 +498,10 @@
             flex: 0 0 20%;
             background: linear-gradient(180deg, rgba(5, 10, 25, 0.6) 0%, rgba(3, 6, 16, 0.8) 100%);
             border-left: 1px solid rgba(0, 212, 255, 0.06);
-            padding: 16px 14px;
+            padding: 10px 8px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
             overflow-y: auto;
             backdrop-filter: blur(24px) saturate(1.2);
             -webkit-backdrop-filter: blur(24px) saturate(1.2);
@@ -521,8 +521,8 @@
         .side-card {
             background: linear-gradient(145deg, rgba(12, 20, 48, 0.8) 0%, rgba(6, 12, 30, 0.9) 100%);
             border: 1px solid rgba(0, 212, 255, 0.1);
-            border-radius: 16px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 10px 12px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
@@ -563,52 +563,52 @@
 
         .side-card-header {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .side-card-label {
-            display: flex; align-items: center; gap: 8px;
+            display: flex; align-items: center; gap: 6px;
         }
 
         .side-card-label i {
             color: var(--j-blue);
-            font-size: 0.7rem;
-            width: 24px; height: 24px;
+            font-size: 0.6rem;
+            width: 20px; height: 20px;
             display: flex; align-items: center; justify-content: center;
             background: rgba(0, 212, 255, 0.06);
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid rgba(0, 212, 255, 0.1);
         }
 
         .side-card-label span {
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.52rem;
+            font-size: 0.48rem;
             color: var(--j-blue);
-            letter-spacing: 2.5px;
+            letter-spacing: 2px;
             font-weight: 600;
         }
 
         .side-badge {
-            padding: 3px 10px;
+            padding: 2px 8px;
             background: rgba(0, 255, 136, 0.06);
             border: 1px solid rgba(0, 255, 136, 0.12);
             border-radius: 20px;
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.5rem;
+            font-size: 0.45rem;
             color: var(--j-success);
             letter-spacing: 1.5px;
         }
 
         /* System Grid */
         .sys-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 5px;
         }
 
         .sys-item {
             background: linear-gradient(145deg, rgba(0, 212, 255, 0.04) 0%, rgba(0, 212, 255, 0.01) 100%);
             border: 1px solid rgba(0, 212, 255, 0.07);
-            border-radius: 10px;
-            padding: 10px 8px;
+            border-radius: 8px;
+            padding: 6px 5px;
             text-align: center;
             transition: all 0.3s ease;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -622,25 +622,25 @@
 
         .sys-label {
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.45rem;
+            font-size: 0.4rem;
             color: var(--j-blue);
-            letter-spacing: 2px;
-            margin-bottom: 4px;
+            letter-spacing: 1.5px;
+            margin-bottom: 2px;
             opacity: 0.7;
         }
 
         .sys-val {
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 600;
             color: var(--j-text-bright);
         }
 
         .sys-bar {
-            width: 100%; height: 3px;
+            width: 100%; height: 2px;
             background: rgba(0, 212, 255, 0.06);
             border-radius: 3px;
-            margin-top: 8px;
+            margin-top: 4px;
             overflow: hidden;
         }
 
@@ -656,14 +656,14 @@
 
         /* Weather */
         .weather-row {
-            display: flex; align-items: center; gap: 16px;
+            display: flex; align-items: center; gap: 10px;
         }
 
         .weather-icon-wrap {
-            font-size: 1.6rem;
+            font-size: 1.2rem;
             color: #ffaa00;
-            text-shadow: 0 0 12px rgba(255, 170, 0, 0.3);
-            width: 40px; height: 40px;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+            width: 32px; height: 32px;
             display: flex; align-items: center; justify-content: center;
             background: linear-gradient(145deg, rgba(255, 170, 0, 0.1) 0%, rgba(255, 170, 0, 0.03) 100%);
             border-radius: 12px;
@@ -673,34 +673,34 @@
 
         .weather-temp {
             font-family: 'Belanosima', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--j-text-bright);
         }
 
         .weather-meta {
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.55rem;
+            font-size: 0.48rem;
             color: var(--j-text);
-            line-height: 1.8;
+            line-height: 1.6;
         }
 
         .weather-meta span { color: var(--j-blue); }
 
         /* Search */
         .search-row {
-            display: flex; gap: 8px; margin-bottom: 12px;
+            display: flex; gap: 6px; margin-bottom: 8px;
         }
 
         .search-input {
             flex: 1;
             background: rgba(0, 212, 255, 0.03);
             border: 1px solid var(--j-border);
-            border-radius: 10px;
-            padding: 10px 14px;
+            border-radius: 8px;
+            padding: 7px 10px;
             color: var(--j-text-bright);
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.78rem;
+            font-size: 0.7rem;
             outline: none;
             transition: all 0.3s ease;
         }
@@ -709,12 +709,12 @@
         .search-input::placeholder { color: var(--j-text-dim); }
 
         .search-go {
-            padding: 10px 18px;
+            padding: 7px 14px;
             background: linear-gradient(135deg, var(--j-blue), var(--j-blue-dark));
-            border: none; border-radius: 10px;
+            border: none; border-radius: 8px;
             color: white;
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.6rem; font-weight: 600;
+            font-size: 0.55rem; font-weight: 600;
             letter-spacing: 1px; cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
@@ -725,14 +725,14 @@
         .search-links { display: flex; gap: 6px; flex-wrap: wrap; }
 
         .s-link {
-            display: flex; align-items: center; gap: 6px;
-            padding: 7px 14px;
+            display: flex; align-items: center; gap: 5px;
+            padding: 5px 10px;
             background: rgba(0, 212, 255, 0.03);
             border: 1px solid var(--j-border);
-            border-radius: 10px;
+            border-radius: 8px;
             color: var(--j-text); text-decoration: none;
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.7rem; font-weight: 500;
+            font-size: 0.6rem; font-weight: 500;
             transition: all 0.3s ease;
         }
 
@@ -745,12 +745,12 @@
 
         /* Apps */
         .apps-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
         }
 
         .app-item {
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            padding: 9px 3px;
+            display: flex; flex-direction: column; align-items: center; gap: 3px;
+            padding: 7px 3px;
             background: linear-gradient(145deg, rgba(0, 212, 255, 0.04) 0%, rgba(0, 212, 255, 0.01) 100%);
             border: 1px solid rgba(0, 212, 255, 0.07);
             border-radius: 10px;
@@ -758,7 +758,7 @@
             color: var(--j-text); cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.45rem; font-weight: 600;
+            font-size: 0.4rem; font-weight: 600;
             letter-spacing: 0.5px; text-transform: uppercase;
         }
 
@@ -770,7 +770,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        .app-item i { font-size: 0.9rem; transition: transform 0.3s ease; }
+        .app-item i { font-size: 0.8rem; transition: transform 0.3s ease; }
         .app-item:hover i { transform: scale(1.15); }
 
         /* ===== WELCOME SCREEN ===== */
