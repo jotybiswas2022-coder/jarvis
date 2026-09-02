@@ -283,6 +283,83 @@
 
         .msg.user .msg-time { text-align: right; }
 
+        /* Markdown Rendering */
+        .msg strong, .msg b { color: var(--j-text-bright); font-weight: 600; }
+        .msg em, .msg i { color: var(--j-text); font-style: italic; }
+        .msg code {
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 5px;
+            padding: 2px 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82em;
+            color: var(--j-cyan);
+        }
+        .msg pre {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--j-border);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+        .msg pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            color: var(--j-text-bright);
+        }
+        .msg ul, .msg ol {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        .msg li {
+            margin: 4px 0;
+            line-height: 1.7;
+        }
+        .msg li::marker { color: var(--j-blue); }
+        .msg table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.82rem;
+        }
+        .msg th {
+            background: rgba(0, 212, 255, 0.06);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--j-blue);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+        .msg td {
+            border: 1px solid rgba(0, 212, 255, 0.06);
+            padding: 8px 12px;
+            color: var(--j-text);
+        }
+        .msg tr:hover td {
+            background: rgba(0, 212, 255, 0.02);
+        }
+        .msg hr {
+            border: none;
+            border-top: 1px solid var(--j-border);
+            margin: 12px 0;
+        }
+        .msg blockquote {
+            border-left: 3px solid var(--j-blue);
+            margin: 10px 0;
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.03);
+            border-radius: 0 8px 8px 0;
+            color: var(--j-text);
+        }
+
         /* Typing indicator */
         .typing-ind {
             display: inline-flex; gap: 5px; padding: 10px 0 4px;
@@ -862,14 +939,102 @@
         return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
     }
 
+    // ========== MARKDOWN PARSER ==========
+    function parseMd(md) {
+        // Escape HTML
+        let html = md
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        // Code blocks (``` ... ```)
+        html = html.replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+
+        // Inline code
+        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+        // Bold + Italic
+        html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+        // Bold
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+        // Italic
+        html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+        // Strikethrough
+        html = html.replace(/~~(.+?)~~/g, '<s>$1</s>');
+
+        // Headers
+        html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+        html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+        html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+        // Horizontal rule
+        html = html.replace(/^---+$/gm, '<hr>');
+
+        // Blockquote
+        html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+
+        // Tables
+        html = html.replace(/^\|(.+)\|\s*\n\|[-| :]+\|\s*\n((?:\|.+\|\s*\n?)*)/gm, function(match, header, body) {
+            const ths = header.split('|').map(h => h.trim()).filter(h => h).map(h => `<th>${h}</th>`).join('');
+            const rows = body.trim().split('\n').map(row => {
+                const tds = row.replace(/^\||\|$/g, '').split('|').map(c => c.trim()).map(c => `<td>${c}</td>`).join('');
+                return `<tr>${tds}</tr>`;
+            }).join('');
+            return `<table><thead><tr>${ths}</tr></thead><tbody>${rows}</tbody></table>`;
+        });
+
+        // Unordered list
+        html = html.replace(/^(?:[-*+] (.+)(?:\n|$))+/gm, function(block) {
+            const items = block.trim().split('\n').map(line => {
+                return `<li>${line.replace(/^[-*+] /, '')}</li>`;
+            }).join('');
+            return `<ul>${items}</ul>`;
+        });
+
+        // Ordered list
+        html = html.replace(/^(?:\d+\. (.+)(?:\n|$))+/gm, function(block) {
+            const items = block.trim().split('\n').map(line => {
+                return `<li>${line.replace(/^\d+\. /, '')}</li>`;
+            }).join('');
+            return `<ol>${items}</ol>`;
+        });
+
+        // Line breaks (convert double newlines to paragraphs, single to <br>)
+        html = html.replace(/\n\n+/g, '</p><p>');
+        html = html.replace(/\n/g, '<br>');
+        html = '<p>' + html + '</p>';
+
+        // Clean empty paragraphs
+        html = html.replace(/<p><\/p>/g, '');
+        html = html.replace(/<p>(<h[1-4]>)/g, '$1');
+        html = html.replace(/(<\/h[1-4]>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<table>)/g, '$1');
+        html = html.replace(/(<\/table>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<ul>)/g, '$1');
+        html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<ol>)/g, '$1');
+        html = html.replace(/(<\/ol>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<pre>)/g, '$1');
+        html = html.replace(/(<\/pre>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<blockquote>)/g, '$1');
+        html = html.replace(/(<\/blockquote>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<hr>)/g, '$1');
+
+        return html;
+    }
+
     // ========== CHAT ==========
     function addMsg(text, type) {
         const m = document.getElementById('chatMessages');
         const d = document.createElement('div');
         d.className = `msg ${type}`;
+        const rendered = type === 'jarvis' ? parseMd(text) : text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
         d.innerHTML = type === 'jarvis'
-            ? `<div class="sender">J.A.R.V.I.S.</div>${text}<div class="msg-time">${getTimeString()}</div>`
-            : `<div class="sender">YOU</div>${text}<div class="msg-time">${getTimeString()}</div>`;
+            ? `<div class="sender">J.A.R.V.I.S.</div>${rendered}<div class="msg-time">${getTimeString()}</div>`
+            : `<div class="sender">YOU</div>${rendered}<div class="msg-time">${getTimeString()}</div>`;
         m.appendChild(d);
         m.scrollTop = m.scrollHeight;
     }
