@@ -139,7 +139,7 @@
 
         /* Chat Area */
         .chat-area {
-            flex: 1;
+            flex: 0 0 70%;
             display: flex;
             flex-direction: column;
         }
@@ -306,7 +306,7 @@
 
         /* Side Panel */
         .side-panel {
-            width: 320px;
+            flex: 0 0 30%;
             background: rgba(5, 8, 16, 0.9);
             border-left: 1px solid var(--j-border);
             padding: 24px;
