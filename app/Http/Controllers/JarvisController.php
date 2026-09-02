@@ -826,6 +826,28 @@ class JarvisController extends Controller
     {
         $message = strtolower(trim($message));
 
+        // Bangla keyword responses — reply in Bangla for Bangla input
+        $banglaResponses = [
+            'আপনি কেমন আছেন' => "সব ঠিকঠাক চলছে স্যার, পূর্ণ দক্ষতায় কাজ করছি। আপনাকে কীভাবে সাহায্য করতে পারি?",
+            'কেমন আছ' => "আমি ভালো আছি স্যার, সর্বদা আপনার সেবায়।",
+            'তুমি কে' => "আমি জার্ভিস (JARVIS) — Just A Rather Very Intelligent System। আপনার ব্যক্তিগত AI সহকারী, স্যার।",
+            'তোমার নাম' => "আমার নাম জার্ভিস (JARVIS), স্যার। আপনার ব্যক্তিগত AI সহকারী।",
+            'ধন্যবাদ' => "আপনার সেবায় সদা প্রস্তুত, স্যার।",
+            'ধন্যবাদ' => "আপনার সেবায় সদা প্রস্তুত, স্যার।",
+            'আবহাওয়া' => "আবহাওয়া জানতে চাইলে যেকোনো শহরের নাম বলুন স্যার, আমি দেখে দিচ্ছি।",
+            'সময়' => "এখন সময় " . now()->format('h:i A') . ", স্যার।",
+            'তারিখ' => "আজ " . now()->format('l, F j, Y') . ", স্যার।",
+            'কি করতে পার' => "আমি আপনার সাথে গল্প করতে পারি, আবহাওয়া জানাতে পারি, ওয়েব সার্চ করতে পারি, আর অ্যাপ খুলে দিতে পারি। সব আপনার নির্দেশে স্যার।",
+            'কে বানিয়েছে' => "আপনিই বানিয়েছেন স্যার — AI চালিত এই সিস্টেমটি তৈরি হয়েছে আপনার জন্যই।",
+            'জোক' => "AI রাস্তা পার হচ্ছিল কেন? সার্ভারের দিকে যাচ্ছিল স্যার! 🥁",
+        ];
+
+        foreach ($banglaResponses as $key => $response) {
+            if (mb_strpos($message, $key) !== false) {
+                return $response;
+            }
+        }
+
         $responses = [
             'hello' => "Good day, sir. How may I assist you today?",
             'hi' => "Hello, sir. What can I do for you?",
@@ -848,6 +870,11 @@ class JarvisController extends Controller
             if (str_contains($message, $key)) {
                 return $response;
             }
+        }
+
+        // If input is Bengali but no specific keyword matched, default to a Bangla reply
+        if (preg_match('/[\x{0980}-\x{09FF}]/u', $message)) {
+            return "বুঝতে পেরেছি স্যার। এখনি দেখছি — একটু থেমে আবার বলুন তো? আবহাওয়া, ওয়েব সার্চ, অ্যাপ খোলা আর সাধারণ কথোপকথনে আমি সাহায্য করতে পারি।";
         }
 
         return "I'm here, sir. My neural network is momentarily busy — could you rephrase that or try again in a moment? I can assist with weather, web search, app launching, and general conversation.";
