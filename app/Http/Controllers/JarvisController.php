@@ -838,7 +838,7 @@ class JarvisController extends Controller
             }
         }
 
-        return "I understand, sir. Please set your GROQ_API_KEY in .env file for AI-powered responses.";
+        return "I understand, sir. My AI response service isn't responding at the moment — please try again in a moment.";
     }
 
     private function getUptime()
