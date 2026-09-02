@@ -869,20 +869,76 @@
 
         .welcome-title {
             font-family: 'Belanosima', sans-serif;
-            font-size: 1.6rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--j-text-bright);
-            margin-bottom: 12px;
-            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--j-text-bright) 0%, var(--j-blue) 50%, var(--j-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.2)); }
+            50% { filter: drop-shadow(0 0 16px rgba(0, 212, 255, 0.4)); }
+        }
+
+        .welcome-divider {
+            width: 60px; height: 2px;
+            margin: 0 auto 16px;
+            background: linear-gradient(90deg, transparent, var(--j-blue), transparent);
+            border-radius: 2px;
+            animation: dividerPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dividerPulse {
+            0%, 100% { width: 60px; opacity: 0.6; }
+            50% { width: 100px; opacity: 1; }
         }
 
         .welcome-sub {
             font-family: 'Belanosima', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--j-text);
-            max-width: 400px;
+            max-width: 420px;
             margin: 0 auto;
-            line-height: 1.7;
+            line-height: 1.8;
+        }
+
+        .welcome-sub .highlight {
+            color: var(--j-blue);
+            font-weight: 600;
+        }
+
+        .welcome-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 20px;
+            padding: 6px 16px;
+            background: rgba(0, 212, 255, 0.04);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 20px;
+            font-family: 'Belanosima', sans-serif;
+            font-size: 0.7rem;
+            color: var(--j-text);
+            letter-spacing: 1px;
+            animation: tagFade 1.5s ease 1s both;
+        }
+
+        .welcome-tag .dot {
+            width: 5px; height: 5px;
+            background: var(--j-success);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--j-success);
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes tagFade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -927,7 +983,9 @@
                 <div class="core"></div>
             </div>
             <div class="welcome-title">Good day, sir.</div>
-            <div class="welcome-sub">I am JARVIS — your personal AI assistant. All systems are online and operational. How may I be of service?</div>
+            <div class="welcome-divider"></div>
+            <div class="welcome-sub">I am <span class="highlight">JARVIS</span> — your personal AI assistant. All systems are online and operational. How may I be of service?</div>
+            <div class="welcome-tag"><div class="dot"></div>Ready for your command</div>
         </div>
 
         <!-- Chat Messages -->
