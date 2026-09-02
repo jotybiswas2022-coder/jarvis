@@ -502,7 +502,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            overflow-y: auto;
+            overflow: hidden;
             backdrop-filter: blur(24px) saturate(1.2);
             -webkit-backdrop-filter: blur(24px) saturate(1.2);
         }
@@ -523,6 +523,10 @@
             border: 1px solid rgba(0, 212, 255, 0.1);
             border-radius: 14px;
             padding: 10px 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
