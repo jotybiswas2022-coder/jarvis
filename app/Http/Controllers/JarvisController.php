@@ -67,6 +67,18 @@ class JarvisController extends Controller
             ]);
         }
 
+        // Check if the user is asking to open an application
+        $openReply = $this->handleOpenAppIntent($message);
+        if ($openReply !== null) {
+            $conversation[] = ['role' => 'assistant', 'content' => $openReply];
+            $request->session()->put('conversation', $conversation);
+            return response()->json([
+                'success' => true,
+                'reply' => $openReply,
+                'source' => 'openapp'
+            ]);
+        }
+
         // Try OpenAI API
         $openaiKey = config('services.openai.api_key') ?? env('OPENAI_API_KEY') ?? $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY');
         $openaiReply = $this->tryOpenAIChat($conversation, $openaiKey);
@@ -212,40 +224,19 @@ class JarvisController extends Controller
 
         $app = strtolower($request->input('app'));
 
-        $apps = [
-            'notepad' => ['windows' => 'notepad.exe', 'linux' => 'gedit', 'mac' => 'open -a TextEdit'],
-            'calculator' => ['windows' => 'calc.exe', 'linux' => 'gnome-calculator', 'mac' => 'open -a Calculator'],
-            'chrome' => ['windows' => 'start chrome', 'linux' => 'google-chrome', 'mac' => 'open -a Google Chrome'],
-            'firefox' => ['windows' => 'start firefox', 'linux' => 'firefox', 'mac' => 'open -a Firefox'],
-            'cmd' => ['windows' => 'cmd.exe', 'linux' => 'gnome-terminal', 'mac' => 'open -a Terminal'],
-            'terminal' => ['windows' => 'cmd.exe', 'linux' => 'gnome-terminal', 'mac' => 'open -a Terminal'],
-            'explorer' => ['windows' => 'explorer.exe', 'linux' => 'nautilus', 'mac' => 'open .'],
-            'file manager' => ['windows' => 'explorer.exe', 'linux' => 'nautilus', 'mac' => 'open .'],
-            'vscode' => ['windows' => 'start code', 'linux' => 'code', 'mac' => 'open -a "Visual Studio Code"'],
-            'visual studio code' => ['windows' => 'start code', 'linux' => 'code', 'mac' => 'open -a "Visual Studio Code"'],
-            'paint' => ['windows' => 'mspaint.exe', 'linux' => 'gimp', 'mac' => 'open -a Preview'],
-            'spotify' => ['windows' => 'start spotify', 'linux' => 'spotify', 'mac' => 'open -a Spotify'],
-            'discord' => ['windows' => 'start discord', 'linux' => 'discord', 'mac' => 'open -a Discord'],
-            'slack' => ['windows' => 'start slack', 'linux' => 'slack', 'mac' => 'open -a Slack'],
-        ];
+        $apps = $this->getAppList();
 
         if (isset($apps[$app])) {
-            $os = PHP_OS_FAMILY === 'Windows' ? 'windows' : (PHP_OS_FAMILY === 'Darwin' ? 'mac' : 'linux');
-            $command = $apps[$app][$os] ?? null;
-
-            if ($command) {
-                if (PHP_OS_FAMILY === 'Windows') {
-                    $fullCommand = 'start "" ' . $command;
-                } else {
-                    $fullCommand = $command . ' > /dev/null 2>&1 &';
-                }
-
-                exec($fullCommand);
+            if ($this->launchApp($app)) {
                 return response()->json([
                     'success' => true,
                     'message' => "Opening {$app}, sir.",
                 ]);
             }
+            return response()->json([
+                'success' => false,
+                'message' => "I'm sorry, sir. I couldn't launch '{$app}'.",
+            ]);
         }
 
         return response()->json([
@@ -362,6 +353,106 @@ class JarvisController extends Controller
             return "🕐 The current time in Bangladesh is **{$bd->format('h:i A')}** (GMT+6), sir.";
         }
         return "📅 Today's date is **{$bd->format('l, F j, Y')}** in Bangladesh, sir.";
+    }
+
+    /**
+     * Detect an "open <app>" request and launch the app via terminal, or null.
+     */
+    private function handleOpenAppIntent($message)
+    {
+        $lower = mb_strtolower(trim($message), 'UTF-8');
+
+        // Match: "open X", "open the X", "launch X", "start X", "খুলো X", "খুলুন X", "ওপেন X"
+        if (!preg_match('/(?:^|\s)(?:open|launch|start|run|খোলো|খুলো|খুলুন|খুলে দাও|ওপেন|চালু কর)\s+(?:the\s+)?([a-zA-Z0-9 .\-_]{2,30})/iu', $lower, $m)) {
+            return null;
+        }
+
+        $raw = mb_strtolower(trim($m[1]), 'UTF-8');
+        if ($this->isStopword($raw)) {
+            return null;
+        }
+
+        $apps = $this->getAppList();
+        $appKey = null;
+        foreach ($apps as $key => $cmd) {
+            if ($raw === $key || str_contains($key, $raw) || str_contains($raw, $key)) {
+                $appKey = $key;
+                break;
+            }
+        }
+        // Only intercept if we actually have a matching app; otherwise let the AI chat handle it
+        if ($appKey === null) {
+            return null;
+        }
+
+        $launched = $this->launchApp($appKey);
+        return $launched
+            ? "🚀 Launching **{$appKey}** for you now, sir."
+            : "I'm sorry, sir. I could not launch **{$appKey}**.";
+    }
+
+    private function isStopword($w)
+    {
+        $stopwords = ['the', 'a', 'an', 'this', 'that', 'please', 'sir', 'now', 'it'];
+        return in_array($w, $stopwords);
+    }
+
+    /**
+     * Shared list of launchable apps (name => command per OS).
+     */
+    private function getAppList()
+    {
+        return [
+            'notepad' => ['windows' => 'notepad.exe', 'linux' => 'gedit', 'mac' => 'open -a TextEdit'],
+            'calculator' => ['windows' => 'calc.exe', 'linux' => 'gnome-calculator', 'mac' => 'open -a Calculator'],
+            'chrome' => ['windows' => 'start chrome', 'linux' => 'google-chrome', 'mac' => 'open -a Google Chrome'],
+            'firefox' => ['windows' => 'start firefox', 'linux' => 'firefox', 'mac' => 'open -a Firefox'],
+            'edge' => ['windows' => 'start msedge', 'linux' => 'microsoft-edge', 'mac' => 'open -a Microsoft Edge'],
+            'cmd' => ['windows' => 'cmd.exe', 'linux' => 'gnome-terminal', 'mac' => 'open -a Terminal'],
+            'terminal' => ['windows' => 'cmd.exe', 'linux' => 'gnome-terminal', 'mac' => 'open -a Terminal'],
+            'powershell' => ['windows' => 'powershell.exe', 'linux' => 'gnome-terminal', 'mac' => 'open -a Terminal'],
+            'explorer' => ['windows' => 'explorer.exe', 'linux' => 'nautilus', 'mac' => 'open .'],
+            'file manager' => ['windows' => 'explorer.exe', 'linux' => 'nautilus', 'mac' => 'open .'],
+            'vscode' => ['windows' => 'start code', 'linux' => 'code', 'mac' => 'open -a "Visual Studio Code"'],
+            'visual studio code' => ['windows' => 'start code', 'linux' => 'code', 'mac' => 'open -a "Visual Studio Code"'],
+            'paint' => ['windows' => 'mspaint.exe', 'linux' => 'gimp', 'mac' => 'open -a Preview'],
+            'spotify' => ['windows' => 'start spotify', 'linux' => 'spotify', 'mac' => 'open -a Spotify'],
+            'discord' => ['windows' => 'start discord', 'linux' => 'discord', 'mac' => 'open -a Discord'],
+            'slack' => ['windows' => 'start slack', 'linux' => 'slack', 'mac' => 'open -a Slack'],
+            'word' => ['windows' => 'start winword', 'linux' => 'libreoffice --writer', 'mac' => 'open -a "Microsoft Word"'],
+            'excel' => ['windows' => 'start excel', 'linux' => 'libreoffice --calc', 'mac' => 'open -a "Microsoft Excel"'],
+            'powerpoint' => ['windows' => 'start powerpnt', 'linux' => 'libreoffice --impress', 'mac' => 'open -a "Microsoft PowerPoint"'],
+            'ms word' => ['windows' => 'start winword', 'linux' => 'libreoffice --writer', 'mac' => 'open -a "Microsoft Word"'],
+            'ms excel' => ['windows' => 'start excel', 'linux' => 'libreoffice --calc', 'mac' => 'open -a "Microsoft Excel"'],
+            'ms powerpoint' => ['windows' => 'start powerpnt', 'linux' => 'libreoffice --impress', 'mac' => 'open -a "Microsoft PowerPoint"'],
+            'task manager' => ['windows' => 'taskmgr.exe', 'linux' => 'gnome-system-monitor', 'mac' => 'open -a "Activity Monitor"'],
+            'control panel' => ['windows' => 'control.exe', 'linux' => 'gnome-control-center', 'mac' => 'open -a "System Settings"'],
+            'settings' => ['windows' => 'start ms-settings:', 'linux' => 'gnome-control-center', 'mac' => 'open -a "System Settings"'],
+        ];
+    }
+
+    private function launchApp($app)
+    {
+        $config = $this->getAppList();
+        if (!isset($config[$app])) return false;
+
+        $os = PHP_OS_FAMILY === 'Windows' ? 'windows' : (PHP_OS_FAMILY === 'Darwin' ? 'mac' : 'linux');
+        $command = $config[$app][$os] ?? null;
+        if (!$command) return false;
+
+        try {
+            if (PHP_OS_FAMILY === 'Windows') {
+                $full = 'start "" ' . $command;
+                $descriptors = [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+                $proc = proc_open($full, $descriptors, $pipes);
+                if (is_resource($proc)) proc_close($proc);
+            } else {
+                exec($command . ' > /dev/null 2>&1 &');
+            }
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
