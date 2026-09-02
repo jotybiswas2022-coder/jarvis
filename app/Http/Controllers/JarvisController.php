@@ -43,14 +43,37 @@ class JarvisController extends Controller
 
         $request->session()->put('conversation', $conversation);
 
+        // Check if the user is asking about weather (before AI so we return live data)
+        $weatherReply = $this->handleWeatherIntent($message);
+        if ($weatherReply !== null) {
+            $conversation[] = ['role' => 'assistant', 'content' => $weatherReply];
+            $request->session()->put('conversation', $conversation);
+            return response()->json([
+                'success' => true,
+                'reply' => $weatherReply,
+                'source' => 'weather'
+            ]);
+        }
+
+        // Try OpenAI API
+        $openaiKey = config('services.openai.api_key') ?? env('OPENAI_API_KEY') ?? $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY');
+        $openaiReply = $this->tryOpenAIChat($conversation, $openaiKey);
+        if ($openaiReply) {
+            $conversation[] = ['role' => 'assistant', 'content' => $openaiReply];
+            $request->session()->put('conversation', $conversation);
+            return response()->json([
+                'success' => true,
+                'reply' => $openaiReply,
+                'source' => 'openai'
+            ]);
+        }
+
         // Try Groq API (free, fast)
         $groqKey = config('services.groq.api_key') ?? env('GROQ_API_KEY') ?? $_ENV['GROQ_API_KEY'] ?? getenv('GROQ_API_KEY');
         $groqReply = $this->tryGroqChat($conversation, $groqKey);
         if ($groqReply) {
-            // Store AI reply in session
             $conversation[] = ['role' => 'assistant', 'content' => $groqReply];
             $request->session()->put('conversation', $conversation);
-
             return response()->json([
                 'success' => true,
                 'reply' => $groqReply,
@@ -226,12 +249,11 @@ class JarvisController extends Controller
         return 'You are JARVIS (Just A Rather Very Intelligent System), an advanced AI assistant created by Tony Stark. You are helpful, witty, and slightly sarcastic like the real JARVIS from Iron Man. Respond in a mix of English and casual style. Keep responses concise but friendly. You can help with: weather, system info, web search, launching apps, and general conversation.';
     }
 
-    private function tryGroqChat($conversation, $apiKey)
+    private function tryOpenAIChat($conversation, $apiKey)
     {
         if (!$apiKey) return null;
 
         try {
-            // Build messages array with system prompt + full conversation history
             $messages = array_merge(
                 [['role' => 'system', 'content' => $this->getJarvisSystemPrompt()]],
                 $conversation
@@ -240,10 +262,10 @@ class JarvisController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type' => 'application/json',
-            ])->timeout(15)->post('https://api.groq.com/openai/v1/chat/completions', [
-                'model' => 'openai/gpt-oss-120b',
+            ])->timeout(60)->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-4o-mini',
                 'messages' => $messages,
-                'max_tokens' => 20000,
+                'max_tokens' => 4096,
                 'temperature' => 0.7,
             ]);
 
@@ -255,6 +277,163 @@ class JarvisController extends Controller
         }
 
         return null;
+    }
+
+    private function tryGroqChat($conversation, $apiKey)
+    {
+        if (!$apiKey) return null;
+
+        try {
+            $messages = array_merge(
+                [['role' => 'system', 'content' => $this->getJarvisSystemPrompt()]],
+                $conversation
+            );
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $apiKey,
+                'Content-Type' => 'application/json',
+            ])->timeout(15)->post('https://api.groq.com/openai/v1/chat/completions', [
+                'model' => 'openai/gpt-oss-120b',
+                'messages' => $messages,
+                'max_tokens' => 4096,
+                'temperature' => 0.7,
+            ]);
+
+            if ($response->successful()) {
+                return $response->json('choices.0.message.content', null);
+            }
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        return null;
+    }
+
+    /**
+     * Detect if the message asks for weather and return live data, or null.
+     */
+    private function handleWeatherIntent($message)
+    {
+        $lower = mb_strtolower(trim($message), 'UTF-8');
+
+        $enKeywords = ['weather', 'temperature', "today's temp", 'how hot', 'how cold', 'forecast'];
+        $bnKeywords = ['আবহাওয়া', 'আবহাওয়া', 'তাপমাত্রা', 'গরম', 'ঠান্ডা', 'বৃষ্টি', 'রোদ', 'কেমন জলবায়ু'];
+
+        $isWeather = false;
+        foreach (array_merge($enKeywords, $bnKeywords) as $kw) {
+            if (mb_strpos($lower, $kw) !== false) {
+                $isWeather = true;
+                break;
+            }
+        }
+        if (!$isWeather) {
+            return null;
+        }
+
+        // Try to extract a city name
+        $city = $this->extractCity($message, $lower);
+        if ($city === null) {
+            return "I can check the weather for any city, sir. Just tell me the city name — for example, \"Weather in Dhaka\" or \"ঢাকার আবহাওয়া কী?\"";
+        }
+
+        $weather = $this->getWeatherData($city);
+        if ($weather === null) {
+            return "I'm sorry, sir. I couldn't retrieve the weather for {$city} at the moment.";
+        }
+
+        return $this->formatWeatherReply($city, $weather);
+    }
+
+    /**
+     * Try to extract a city name from the message.
+     */
+    private function extractCity($message, $lower)
+    {
+        // English: "weather in X" / "X weather" / "weather of X"
+        if (preg_match('/weather\s+(?:in|of|for|at)\s+([a-zA-Z ]+)/', $lower, $m)) {
+            $c = trim($m[1]);
+            if ($this->isPlausibleCity($c)) return $c;
+        }
+        if (preg_match('/temperature\s+(?:in|of|for|at)\s+([a-zA-Z ]+)/', $lower, $m)) {
+            $c = trim($m[1]);
+            if ($this->isPlausibleCity($c)) return $c;
+        }
+        // "X weather" (city before weather)
+        if (preg_match('/([a-zA-Z ]+?)\s+weather(?: now|\?|$|,)/', $lower, $m)) {
+            $c = trim($m[1]);
+            if ($this->isPlausibleCity($c)) return $c;
+        }
+
+        // Bengali: "X এর আবহাওয়া" / "X-এর আবহাওয়া" / "X শহরের আবহাওয়া"
+        if (preg_match('/^([\x{0980}-\x{09FF}\s]+?)\s*(?:র|ের|এর|\s+শহরের|\s+শহরে)?\s*(?:আবহাওয়া|আবহাওয়া)/u', $message, $m)) {
+            $c = trim($m[1]);
+            if (mb_strlen($c, 'UTF-8') <= 15 && $c !== '') return $c;
+        }
+        if (preg_match('/^([\x{0980}-\x{09FF}\s]+?)\s*(?:তমাত্রা|তাপমাত্রা)/u', $message, $m)) {
+            $c = trim($m[1]);
+            // strip trailing Bengali possessive markers: করা, র, এর, ে, য় (e.g. চট্টগ্রামের -> চট্টগ্রাম)
+            $c = preg_replace('/(?:ের|এর|রে|য়|ে|র)$/u', '', $c);
+            if (mb_strlen($c, 'UTF-8') <= 15 && $c !== '') return $c;
+        }
+
+        return null;
+    }
+
+    private function isPlausibleCity($c)
+    {
+        $stopwords = ['now', 'today', 'tomorrow', 'tonight', 'like', 'please', 'and', 'the', 'for', 'sir'];
+        $words = preg_split('/\s+/', trim($c));
+        foreach ($words as $w) {
+            $w = trim(str_replace(['?', ',', '!'], '', $w));
+            if (!$w || in_array($w, $stopwords)) return false;
+        }
+        return count($words) <= 4;
+    }
+
+    private function getWeatherData($city)
+    {
+        $apiKey = config('services.weather.api_key', env('WEATHER_API_KEY'));
+        if (!$apiKey) {
+            return null;
+        }
+        try {
+            $response = Http::timeout(10)->get("https://api.openweathermap.org/data/2.5/weather", [
+                'q' => $city,
+                'appid' => $apiKey,
+                'units' => 'metric',
+                'lang' => 'en',
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                return [
+                    'city' => $data['name'],
+                    'country' => $data['sys']['country'] ?? '',
+                    'temp' => round($data['main']['temp']),
+                    'feels_like' => round($data['main']['feels_like']),
+                    'temp_min' => round($data['main']['temp_min']),
+                    'temp_max' => round($data['main']['temp_max']),
+                    'humidity' => $data['main']['humidity'],
+                    'pressure' => $data['main']['pressure'],
+                    'description' => $data['weather'][0]['description'],
+                    'wind_speed' => $data['wind']['speed'],
+                    'icon' => $data['weather'][0]['icon'],
+                ];
+            }
+        } catch (\Exception $e) {
+            return null;
+        }
+        return null;
+    }
+
+    private function formatWeatherReply($city, $w)
+    {
+        return "🌤️ **Weather update, sir.**\n\n"
+            . "📍 **{$w['city']}**, {$w['country']}\n"
+            . "🌡️ Temperature: **{$w['temp']}°C** (feels like {$w['feels_like']}°C)\n"
+            . "📉 Low: {$w['temp_min']}°C · 📈 High: {$w['temp_max']}°C\n"
+            . "💧 Humidity: {$w['humidity']}% · 💨 Wind: {$w['wind_speed']} m/s\n"
+            . "☁️ Conditions: {$w['description']}";
     }
 
     private function getLocalResponse($message)
