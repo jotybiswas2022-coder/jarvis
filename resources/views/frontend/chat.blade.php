@@ -786,14 +786,85 @@
         }
 
         .welcome-icon {
-            width: 80px; height: 80px;
-            margin: 0 auto 24px;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(168, 85, 247, 0.06));
-            border: 1px solid rgba(0, 212, 255, 0.12);
-            border-radius: 24px;
+            width: 90px; height: 90px;
+            margin: 0 auto 28px;
+            position: relative;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .welcome-icon .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1.5px solid transparent;
+        }
+
+        .welcome-icon .ring-1 {
+            width: 90px; height: 90px;
+            border-top-color: var(--j-blue);
+            border-bottom-color: var(--j-blue);
+            animation: wSpin 4s linear infinite;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+        }
+
+        .welcome-icon .ring-2 {
+            width: 72px; height: 72px;
+            border-left-color: var(--j-cyan);
+            border-right-color: var(--j-cyan);
+            animation: wSpin 3s linear infinite reverse;
+            box-shadow: 0 0 15px rgba(0, 255, 242, 0.1);
+        }
+
+        .welcome-icon .ring-3 {
+            width: 54px; height: 54px;
+            border-top-color: var(--j-purple);
+            border-bottom-color: var(--j-purple);
+            animation: wSpin 5s linear infinite;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.1);
+        }
+
+        .welcome-icon .core {
+            width: 22px; height: 22px;
+            background: radial-gradient(circle, #fff 0%, var(--j-blue) 40%, transparent 70%);
+            border-radius: 50%;
+            animation: wPulse 2s ease-in-out infinite;
+            box-shadow:
+                0 0 12px var(--j-blue),
+                0 0 24px var(--j-glow),
+                0 0 48px rgba(0, 212, 255, 0.2);
+            z-index: 2;
+        }
+
+        .welcome-icon .orbit {
+            position: absolute;
+            width: 80px; height: 80px;
+            animation: wSpin 8s linear infinite;
+        }
+
+        .welcome-icon .orbit-dot {
+            position: absolute;
+            width: 5px; height: 5px;
+            background: var(--j-cyan);
+            border-radius: 50%;
+            top: -2px; left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 8px var(--j-cyan);
+        }
+
+        .welcome-icon .orbit-2 {
+            width: 65px; height: 65px;
+            animation: wSpin 6s linear infinite reverse;
+        }
+
+        .welcome-icon .orbit-2 .orbit-dot {
+            background: var(--j-purple);
+            box-shadow: 0 0 8px var(--j-purple);
+            width: 4px; height: 4px;
+        }
+
+        @keyframes wSpin { 100% { transform: rotate(360deg); } }
+        @keyframes wPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 12px var(--j-blue), 0 0 24px var(--j-glow); }
+            50% { transform: scale(1.15); box-shadow: 0 0 18px var(--j-blue), 0 0 36px var(--j-glow), 0 0 60px rgba(0, 212, 255, 0.3); }
         }
 
         .welcome-title {
@@ -847,7 +918,14 @@
     <div class="chat-area">
         <!-- Welcome Screen -->
         <div class="welcome-msg" id="welcomeScreen">
-            <div class="welcome-icon">🤖</div>
+            <div class="welcome-icon">
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+                <div class="orbit"><div class="orbit-dot"></div></div>
+                <div class="orbit-2"><div class="orbit-dot"></div></div>
+                <div class="core"></div>
+            </div>
             <div class="welcome-title">Good day, sir.</div>
             <div class="welcome-sub">I am JARVIS — your personal AI assistant. All systems are online and operational. How may I be of service?</div>
         </div>
