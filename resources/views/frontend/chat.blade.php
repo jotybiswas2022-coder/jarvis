@@ -495,10 +495,10 @@
             flex: 0 0 30%;
             background: rgba(5, 8, 16, 0.5);
             border-left: 1px solid var(--j-border);
-            padding: 24px 20px;
+            padding: 16px 14px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
             overflow-y: auto;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -518,8 +518,8 @@
         .side-card {
             background: var(--j-card);
             border: 1px solid var(--j-border);
-            border-radius: 16px;
-            padding: 18px;
+            border-radius: 14px;
+            padding: 14px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
@@ -540,7 +540,7 @@
 
         .side-card-header {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
         .side-card-label {
@@ -549,8 +549,8 @@
 
         .side-card-label i {
             color: var(--j-blue);
-            font-size: 0.8rem;
-            width: 28px; height: 28px;
+            font-size: 0.7rem;
+            width: 24px; height: 24px;
             display: flex; align-items: center; justify-content: center;
             background: rgba(0, 212, 255, 0.06);
             border-radius: 8px;
@@ -559,7 +559,7 @@
 
         .side-card-label span {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
+            font-size: 0.52rem;
             color: var(--j-blue);
             letter-spacing: 2.5px;
             font-weight: 500;
@@ -584,8 +584,8 @@
         .sys-item {
             background: rgba(0, 212, 255, 0.02);
             border: 1px solid rgba(0, 212, 255, 0.05);
-            border-radius: 12px;
-            padding: 14px 10px;
+            border-radius: 10px;
+            padding: 10px 8px;
             text-align: center;
             transition: all 0.3s ease;
         }
@@ -597,16 +597,16 @@
 
         .sys-label {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.5rem;
+            font-size: 0.45rem;
             color: var(--j-blue);
-            letter-spacing: 2.5px;
-            margin-bottom: 6px;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
             opacity: 0.7;
         }
 
         .sys-val {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--j-text-bright);
         }
@@ -635,10 +635,10 @@
         }
 
         .weather-icon-wrap {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             color: #ffaa00;
-            text-shadow: 0 0 16px rgba(255, 170, 0, 0.3);
-            width: 52px; height: 52px;
+            text-shadow: 0 0 12px rgba(255, 170, 0, 0.3);
+            width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
             background: rgba(255, 170, 0, 0.06);
             border-radius: 14px;
@@ -647,16 +647,16 @@
 
         .weather-temp {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--j-text-bright);
         }
 
         .weather-meta {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--j-text);
-            line-height: 2;
+            line-height: 1.8;
         }
 
         .weather-meta span { color: var(--j-blue); }
@@ -718,18 +718,18 @@
 
         /* Apps */
         .apps-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px;
         }
 
         .app-item {
-            display: flex; flex-direction: column; align-items: center; gap: 5px;
-            padding: 12px 4px;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            padding: 9px 3px;
             background: rgba(0, 212, 255, 0.02);
             border: 1px solid rgba(0, 212, 255, 0.05);
             border-radius: 12px;
             color: var(--j-text); cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.5rem; font-weight: 500;
+            font-size: 0.45rem; font-weight: 500;
             letter-spacing: 0.5px; text-transform: uppercase;
         }
 
@@ -737,11 +737,11 @@
             background: rgba(0, 212, 255, 0.08);
             border-color: rgba(0, 212, 255, 0.2);
             color: var(--j-blue);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        .app-item i { font-size: 1.05rem; transition: transform 0.3s ease; }
+        .app-item i { font-size: 0.9rem; transition: transform 0.3s ease; }
         .app-item:hover i { transform: scale(1.15); }
 
         /* ===== WELCOME SCREEN ===== */
