@@ -695,7 +695,10 @@
         if (type === 'jarvis') d.setAttribute('data-text', text);
         m.appendChild(d);
         attachCodeCopy(d);
-        m.scrollTop = m.scrollHeight;
+        if (type === 'jarvis') d.scrollTop = 0;
+        requestAnimationFrame(() => {
+            m.scrollTop = m.scrollHeight;
+        });
     }
 
     function attachCodeCopy(container) {
