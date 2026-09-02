@@ -18,9 +18,9 @@
             --j-bg: #050810;
             --j-card: rgba(8, 15, 35, 0.6);
             --j-border: rgba(0, 212, 255, 0.08);
-            --j-text: #7a8ba3;
-            --j-text-bright: #eef2ff;
-            --j-text-dim: #3d4a5c;
+            --j-text: #c0cfe0;
+            --j-text-bright: #ffffff;
+            --j-text-dim: #6b7a90;
             --j-success: #00ff88;
             --j-purple: #a855f7;
             --j-pink: #ec4899;
