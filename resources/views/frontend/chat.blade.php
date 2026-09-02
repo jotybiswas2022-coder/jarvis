@@ -150,11 +150,24 @@
         .chat-messages::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.15); border-radius: 3px; }
 
         .msg {
-            max-width: 72%; padding: 18px 22px; border-radius: 20px;
+            max-width: 72%; padding: 18px 22px 22px; border-radius: 20px;
             font-family: 'Belanosima', 'Hind Siliguri', sans-serif;
             font-size: 0.92rem; line-height: 1.75;
+            position: relative;
             animation: msgSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        .copy-btn {
+            position: absolute; top: 12px; right: 12px;
+            width: 28px; height: 28px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0, 212, 255, 0.06); border: 1px solid rgba(0, 212, 255, 0.12);
+            color: var(--j-text-dim); font-size: 0.7rem; cursor: pointer;
+            opacity: 0; transition: all 0.3s ease;
+        }
+        .msg:hover .copy-btn { opacity: 1; }
+        .copy-btn:hover { background: rgba(0, 212, 255, 0.15); color: var(--j-blue); border-color: var(--j-blue); }
+        .copy-btn.copied { color: var(--j-success); border-color: var(--j-success); background: rgba(0, 255, 136, 0.08); opacity: 1; }
+        .msg.jarvis { padding-right: 52px; }
         @keyframes msgSlide {
             from { opacity: 0; transform: translateY(16px) scale(0.97); }
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -646,10 +659,30 @@
         d.className = `msg ${type}`;
         const rendered = type === 'jarvis' ? parseMd(text) : text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
         d.innerHTML = type === 'jarvis'
-            ? `<div class="sender">J.A.R.V.I.S.</div>${rendered}<div class="msg-time">${getTimeString()}</div>`
+            ? `<div class="sender">J.A.R.V.I.S.</div>${rendered}<div class="msg-time">${getTimeString()}</div>
+               <button class="copy-btn" onclick="copyMessage(this, '${type}')" title="Copy"><i class="fas fa-copy"></i></button>`
             : `<div class="sender">YOU</div>${rendered}<div class="msg-time">${getTimeString()}</div>`;
+        if (type === 'jarvis') d.setAttribute('data-text', text);
         m.appendChild(d);
         m.scrollTop = m.scrollHeight;
+    }
+
+    function copyMessage(btn, type) {
+        const msgEl = btn.closest('.msg');
+        let text;
+        if (type === 'jarvis') {
+            text = msgEl.getAttribute('data-text') || '';
+        } else {
+            text = msgEl.closest('.msg').innerText.replace(/YOU\s*$/, '').trim();
+        }
+        if (!text) return;
+        navigator.clipboard.writeText(text).then(() => {
+            const icon = btn.querySelector('i');
+            const old = icon.className;
+            icon.className = 'fas fa-check';
+            btn.classList.add('copied');
+            setTimeout(() => { icon.className = old; btn.classList.remove('copied'); }, 1500);
+        }).catch(() => {});
     }
 
     function addTyping() {
