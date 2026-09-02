@@ -118,7 +118,7 @@
         }
 
         /* Chat Area */
-        .chat-area { flex: 0 0 80%; display: flex; flex-direction: column; }
+        .chat-area { flex: 1; display: flex; flex-direction: column; }
         .chat-messages {
             flex: 1; overflow-y: auto; padding: 30px 40px;
             display: flex; flex-direction: column; gap: 20px;
@@ -547,83 +547,7 @@
         </div>
     </div>
 
-    <!-- Side Panel -->
-    <div class="side-panel">
-        <div class="sp-box">
-            <!-- SYSTEM -->
-            <div class="sp-head">
-                <div class="sp-head-left"><i class="fas fa-microchip"></i> <span>SYSTEM</span></div>
-                <div class="sp-badge">LIVE</div>
-            </div>
-            <div class="sp-sys-grid">
-                <div class="sp-sys-box">
-                    <div class="sp-sys-label">CPU</div>
-                    <div class="sp-sys-val" id="sysCpu">--</div>
-                </div>
-                <div class="sp-sys-box">
-                    <div class="sp-sys-label">MEMORY</div>
-                    <div class="sp-sys-val" id="sysMemory">--</div>
-                    <div class="sp-sys-bar"><div class="sp-sys-bar-fill green" id="memBar" style="width:0%"></div></div>
-                </div>
-                <div class="sp-sys-box">
-                    <div class="sp-sys-label">DISK</div>
-                    <div class="sp-sys-val" id="sysDisk">--</div>
-                    <div class="sp-sys-bar"><div class="sp-sys-bar-fill blue" id="diskBar" style="width:0%"></div></div>
-                </div>
-                <div class="sp-sys-box">
-                    <div class="sp-sys-label">HOST</div>
-                    <div class="sp-sys-val" id="sysUptime" style="font-size:0.6rem;">--</div>
-                </div>
-            </div>
 
-            <!-- Divider -->
-            <div class="sp-divider"></div>
-
-            <!-- WEATHER -->
-            <div class="sp-head">
-                <div class="sp-head-left"><i class="fas fa-cloud-sun"></i> <span>WEATHER</span></div>
-                <div class="sp-badge" id="weatherCity">--</div>
-            </div>
-            <div class="sp-weather" id="weatherContent">
-                <div class="sp-weather-icon"><i class="fas fa-cloud"></i></div>
-                <div>
-                    <div class="sp-weather-temp">--°C</div>
-                    <div class="sp-weather-meta">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Divider -->
-            <div class="sp-divider"></div>
-
-            <!-- SEARCH -->
-            <div class="sp-head">
-                <div class="sp-head-left"><i class="fas fa-search"></i> <span>SEARCH</span></div>
-            </div>
-            <div class="sp-search-row">
-                <input type="text" class="sp-search-input" id="searchInput" placeholder="Search the web...">
-                <button class="sp-search-go" onclick="performSearch()">GO</button>
-            </div>
-            <div class="sp-search-links" id="searchLinks"></div>
-
-            <!-- Divider -->
-            <div class="sp-divider"></div>
-
-            <!-- LAUNCHER -->
-            <div class="sp-head">
-                <div class="sp-head-left"><i class="fas fa-rocket"></i> <span>LAUNCHER</span></div>
-            </div>
-            <div class="sp-apps">
-                <button class="sp-app" onclick="openApp('chrome')"><i class="fab fa-chrome"></i> Chrome</button>
-                <button class="sp-app" onclick="openApp('vscode')"><i class="fas fa-code"></i> VS Code</button>
-                <button class="sp-app" onclick="openApp('terminal')"><i class="fas fa-terminal"></i> Terminal</button>
-                <button class="sp-app" onclick="openApp('notepad')"><i class="fas fa-file-alt"></i> Notepad</button>
-                <button class="sp-app" onclick="openApp('calculator')"><i class="fas fa-calculator"></i> Calc</button>
-                <button class="sp-app" onclick="openApp('explorer')"><i class="fas fa-folder"></i> Files</button>
-                <button class="sp-app" onclick="openApp('spotify')"><i class="fab fa-spotify"></i> Spotify</button>
-                <button class="sp-app" onclick="openApp('discord')"><i class="fab fa-discord"></i> Discord</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
