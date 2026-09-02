@@ -547,8 +547,8 @@
             content: '';
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 220px;
-            background: linear-gradient(to bottom, transparent 0%, var(--j-bg) 100%);
+            height: 400px;
+            background: linear-gradient(to bottom, transparent 0%, rgba(5, 8, 16, 0.4) 40%, var(--j-bg) 100%);
             z-index: 3;
             pointer-events: none;
         }
