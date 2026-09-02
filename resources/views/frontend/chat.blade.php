@@ -496,12 +496,12 @@
         /* ===== SIDE PANEL ===== */
         .side-panel {
             flex: 0 0 30%;
-            background: linear-gradient(180deg, rgba(5, 10, 25, 0.6) 0%, rgba(3, 6, 16, 0.8) 100%);
-            border-left: 1px solid rgba(0, 212, 255, 0.06);
+            background: linear-gradient(180deg, rgba(6, 12, 30, 0.7) 0%, rgba(3, 6, 16, 0.9) 100%);
+            border-left: 1.5px solid rgba(0, 212, 255, 0.08);
             padding: 16px 14px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
             overflow-y: auto;
             backdrop-filter: blur(24px) saturate(1.2);
             -webkit-backdrop-filter: blur(24px) saturate(1.2);
@@ -519,46 +519,51 @@
         }
 
         .side-card {
-            background: linear-gradient(145deg, rgba(12, 20, 48, 0.8) 0%, rgba(6, 12, 30, 0.9) 100%);
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            border-radius: 16px;
-            padding: 16px;
+            background: linear-gradient(160deg, rgba(14, 24, 55, 0.95) 0%, rgba(8, 14, 35, 0.98) 50%, rgba(5, 10, 25, 1) 100%);
+            border: 1.5px solid rgba(0, 212, 255, 0.12);
+            border-radius: 18px;
+            padding: 20px 18px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             box-shadow:
-                0 4px 20px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.03),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                0 2px 8px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                inset 2px 0 8px rgba(0, 0, 0, 0.15),
+                inset -2px 0 8px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
         .side-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 20%; right: 20%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.25), transparent);
+            top: 0; left: 15%; right: 15%;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.35), transparent);
         }
 
         .side-card::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
-            height: 60px;
-            background: linear-gradient(180deg, rgba(0, 212, 255, 0.02) 0%, transparent 100%);
-            border-radius: 16px 16px 0 0;
+            height: 80px;
+            background: linear-gradient(180deg, rgba(0, 212, 255, 0.04) 0%, transparent 100%);
+            border-radius: 18px 18px 0 0;
             pointer-events: none;
         }
 
         .side-card:hover {
-            border-color: rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.28);
             box-shadow:
-                0 8px 32px rgba(0, 0, 0, 0.5),
-                0 0 30px rgba(0, 212, 255, 0.05),
-                inset 0 1px 0 rgba(255, 255, 255, 0.04);
-            transform: translateY(-2px);
+                0 12px 40px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(0, 212, 255, 0.06),
+                0 0 80px rgba(0, 212, 255, 0.03),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
         }
 
         .side-card-header {
@@ -605,19 +610,26 @@
         }
 
         .sys-item {
-            background: linear-gradient(145deg, rgba(0, 212, 255, 0.04) 0%, rgba(0, 212, 255, 0.01) 100%);
-            border: 1px solid rgba(0, 212, 255, 0.07);
-            border-radius: 10px;
-            padding: 10px 8px;
+            background: linear-gradient(160deg, rgba(0, 212, 255, 0.06) 0%, rgba(0, 212, 255, 0.01) 100%);
+            border: 1.5px solid rgba(0, 212, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px 10px;
             text-align: center;
             transition: all 0.3s ease;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
         }
 
         .sys-item:hover {
-            background: linear-gradient(145deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.02) 100%);
-            border-color: rgba(0, 212, 255, 0.15);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 4px 12px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(160deg, rgba(0, 212, 255, 0.12) 0%, rgba(0, 212, 255, 0.03) 100%);
+            border-color: rgba(0, 212, 255, 0.2);
+            box-shadow:
+                0 6px 20px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(0, 212, 255, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
         }
 
         .sys-label {
@@ -663,12 +675,16 @@
             font-size: 1.6rem;
             color: #ffaa00;
             text-shadow: 0 0 12px rgba(255, 170, 0, 0.3);
-            width: 40px; height: 40px;
+            width: 44px; height: 44px;
             display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(145deg, rgba(255, 170, 0, 0.1) 0%, rgba(255, 170, 0, 0.03) 100%);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 170, 0, 0.12);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 2px 8px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(160deg, rgba(255, 170, 0, 0.12) 0%, rgba(255, 170, 0, 0.04) 100%);
+            border-radius: 14px;
+            border: 1.5px solid rgba(255, 170, 0, 0.15);
+            box-shadow:
+                0 4px 16px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
         }
 
         .weather-temp {
@@ -749,12 +765,15 @@
         }
 
         .app-item {
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            padding: 9px 3px;
-            background: linear-gradient(145deg, rgba(0, 212, 255, 0.04) 0%, rgba(0, 212, 255, 0.01) 100%);
-            border: 1px solid rgba(0, 212, 255, 0.07);
-            border-radius: 10px;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 2px 6px rgba(0, 0, 0, 0.15);
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            padding: 12px 4px;
+            background: linear-gradient(160deg, rgba(0, 212, 255, 0.06) 0%, rgba(0, 212, 255, 0.01) 100%);
+            border: 1.5px solid rgba(0, 212, 255, 0.08);
+            border-radius: 12px;
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.15);
             color: var(--j-text); cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: 'Belanosima', sans-serif;
@@ -763,11 +782,14 @@
         }
 
         .app-item:hover {
-            background: rgba(0, 212, 255, 0.08);
-            border-color: rgba(0, 212, 255, 0.2);
+            background: linear-gradient(160deg, rgba(0, 212, 255, 0.14) 0%, rgba(0, 212, 255, 0.04) 100%);
+            border-color: rgba(0, 212, 255, 0.25);
             color: var(--j-blue);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(0, 212, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .app-item i { font-size: 0.9rem; transition: transform 0.3s ease; }
