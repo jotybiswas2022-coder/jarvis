@@ -79,6 +79,19 @@ class JarvisController extends Controller
             ]);
         }
 
+        // Check if the user wants live web search (before AI so we can feed real data)
+        $webIntent = $this->handleWebSearchIntent($message);
+        if ($webIntent !== null) {
+            $webReply = $this->performWebSearch($webIntent);
+            $conversation[] = ['role' => 'assistant', 'content' => $webReply];
+            $request->session()->put('conversation', $conversation);
+            return response()->json([
+                'success' => true,
+                'reply' => $webReply,
+                'source' => 'web'
+            ]);
+        }
+
         // Try OpenAI API
         $openaiKey = config('services.openai.api_key') ?? env('OPENAI_API_KEY') ?? $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY');
         $openaiReply = $this->tryOpenAIChat($conversation, $openaiKey);
@@ -396,6 +409,225 @@ class JarvisController extends Controller
         $stopwords = ['the', 'a', 'an', 'this', 'that', 'please', 'sir', 'now', 'it'];
         return in_array($w, $stopwords);
     }
+
+    /**
+     * Detect a web-search request. Returns the search query, or null.
+     */
+    private function handleWebSearchIntent($message)
+    {
+        $lower = mb_strtolower(trim($message), 'UTF-8');
+
+        // Explicit search commands
+        $explicit = [
+            'search for ', 'search ', 'google ', 'look up ', 'find ', 'web search',
+            'সার্চ', 'সার্চ করুন', 'গুগল', 'খোঁজ', 'খুজে দেখ', 'গুগলে খোঁজ',
+        ];
+        foreach ($explicit as $kw) {
+            $pos = mb_strpos($lower, $kw);
+            if ($pos !== false) {
+                $query = trim(str_replace([$kw, '?', '!'], '', mb_substr($message, $pos)));
+                if (mb_strlen($query, 'UTF-8') > 1) {
+                    return $query;
+                }
+            }
+        }
+
+        // Current-information queries that need live data
+        if (preg_match('/what is the (?:latest|current|today\'s|this (?:week|month|year))\s+(.+)/i', $message, $m)) {
+            return trim($m[1]);
+        }
+        if (preg_match('/who is (?:the (?:current|new|newest) )?(.+)\s+\d{4}/i', $message, $m)) {
+            return trim($m[1]);
+        }
+        if (preg_match('/news(?:\s+(?:about|on|of)\s+(.+))?/i', $message, $m)) {
+            return trim($m[1] ?? 'top news today');
+        }
+
+        return null;
+    }
+
+    /**
+     * Perform a real web search and build a readable answer.
+     */
+    private function performWebSearch($query)
+    {
+        $tavilyKey = config('services.tavily.api_key') ?? env('TAVILY_API_KEY') ?? $_ENV['TAVILY_API_KEY'] ?? getenv('TAVILY_API_KEY');
+
+        $snippets = $this->tavilySearch($query, $tavilyKey);
+        if (empty($snippets)) {
+            // No Tavily key or it failed — fall back to free scraping
+            $snippets = $this->fetchWebSnippets($query);
+        }
+
+        // If we got real snippets, let the AI compose a clean answer from them
+        if (!empty($snippets)) {
+            $aiReply = $this->summarizeSearchResults($query, $snippets);
+            if ($aiReply) {
+                return $aiReply;
+            }
+
+            // No AI key: build a plain readable answer from snippets
+            $lines = [];
+            $n = min(5, count($snippets));
+            for ($i = 0; $i < $n; $i++) {
+                $lines[] = ($i + 1) . ". " . $snippets[$i]['snippet'] . " — " . $snippets[$i]['url'];
+            }
+            return "🔎 **Web results for** " . $query . "**, sir:**\n\n" . implode("\n", $lines);
+        }
+
+        // Give clickable search links as a final fallback
+        $encoded = urlencode($query);
+        return "I searched the web for **{$query}**, sir, but couldn't fetch clear results. Try these:\n\n"
+            . "🔍 [Google](https://www.google.com/search?q={$encoded}) · "
+            . "🔍 [Bing](https://www.bing.com/search?q={$encoded}) · "
+            . "▶️ [YouTube](https://www.youtube.com/results?search_query={$encoded})";
+    }
+
+    /**
+     * Search via Tavily API (reliable, purpose-built for AI).
+     */
+    private function tavilySearch($query, $apiKey)
+    {
+        if (!$apiKey) {
+            return [];
+        }
+        try {
+            $response = Http::withHeaders(['Authorization' => 'Bearer ' . $apiKey, 'Content-Type' => 'application/json'])
+                ->timeout(15)
+                ->post('https://api.tavily.com/search', [
+                    'api_key' => $apiKey,
+                    'query' => $query,
+                    'max_results' => 6,
+                    'include_answer' => true,
+                    'search_depth' => 'basic',
+                ]);
+
+            if (!$response->successful()) {
+                return [];
+            }
+
+            $data = $response->json();
+            $results = [];
+
+            // Tavily's direct answer (most useful)
+            if (!empty($data['answer'])) {
+                $results[] = ['title' => 'Tavily answer', 'snippet' => $data['answer'], 'url' => $data['answer_url'] ?? ''];
+            }
+
+            foreach ($data['results'] ?? [] as $r) {
+                if (isset($r['title'], $r['content'])) {
+                    $results[] = [
+                        'title' => $r['title'],
+                        'snippet' => $r['content'],
+                        'url' => $r['url'] ?? '',
+                    ];
+                }
+                if (count($results) >= 6) break;
+            }
+            return $results;
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Scrape top search snippets from DuckDuckGo (no API key needed).
+     */
+    private function fetchWebSnippets($query, $max = 6)
+    {
+        try {
+            $response = Http::withHeaders(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'])
+                ->timeout(12)
+                ->get('https://html.duckduckgo.com/html/', ['q' => $query]);
+
+            if (!$response->successful()) {
+                return [];
+            }
+
+            $html = $response->body();
+
+            // Extract result blocks: title, snippet, url
+            preg_match_all('/result__a[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>.*?result__snippet[^>]*>(.*?)<\/a>/s', $html, $matches, PREG_SET_ORDER);
+
+            $results = [];
+            foreach ($matches as $m) {
+                $url = html_entity_decode($m[1] ?? '', ENT_QUOTES);
+                // DuckDuckGo wraps external URLs
+                if (preg_match('/uddg=([^&]+)/', $url, $u)) {
+                    $url = urldecode($u[1]);
+                }
+                $title = trim(strip_tags(html_entity_decode($m[2] ?? '')));
+                $snippet = trim(strip_tags(html_entity_decode($m[3] ?? '')));
+                if ($snippet === '') {
+                    $snippet = $title;
+                }
+                $snippet = preg_replace('/\s+/', ' ', $snippet);
+                $results[] = ['title' => $title, 'snippet' => $snippet, 'url' => $url];
+                if (count($results) >= $max) break;
+            }
+            return $results;
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Use the AI (Groq, then OpenAI) to summarize scraped web snippets into an answer.
+     */
+    private function summarizeSearchResults($query, $snippets)
+    {
+        $context = "Web search results for \"{$query}\":\n";
+        foreach ($snippets as $i => $s) {
+            $context .= ($i + 1) . ". " . $s['title'] . " — " . $s['snippet'] . " (" . $s['url'] . ")\n";
+        }
+
+        $messages = [
+            ['role' => 'system', 'content' => 'You are JARVIS, a witty but helpful AI assistant. Based ONLY on the provided web search results, answer the user\'s question concisely (2-4 short sentences). Include the most relevant source URL with the answer, formatted as a markdown link. If the search results do not contain the answer, say so honestly.'],
+            ['role' => 'user', 'content' => $context . "\n\nQuestion: " . $query],
+        ];
+
+        $groqKey = config('services.groq.api_key') ?? env('GROQ_API_KEY') ?? $_ENV['GROQ_API_KEY'] ?? getenv('GROQ_API_KEY');
+        if ($groqKey) {
+            try {
+                $r = Http::withHeaders(['Authorization' => 'Bearer ' . $groqKey, 'Content-Type' => 'application/json'])
+                    ->timeout(20)->post('https://api.groq.com/openai/v1/chat/completions', [
+                        'model' => 'openai/gpt-oss-120b',
+                        'messages' => $messages,
+                        'max_tokens' => 500,
+                        'temperature' => 0.4,
+                    ]);
+                if ($r->successful()) {
+                    $content = $r->json('choices.0.message.content');
+                    if ($content) {
+                        return "🔎 **Web answer, sir.**\n\n" . $content;
+                    }
+                }
+            } catch (\Exception $e) {}
+        }
+
+        $openaiKey = config('services.openai.api_key') ?? env('OPENAI_API_KEY') ?? $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY');
+        if ($openaiKey) {
+            try {
+                $r = Http::withHeaders(['Authorization' => 'Bearer ' . $openaiKey, 'Content-Type' => 'application/json'])
+                    ->timeout(20)->post('https://api.openai.com/v1/chat/completions', [
+                        'model' => 'gpt-4o-mini',
+                        'messages' => $messages,
+                        'max_tokens' => 500,
+                        'temperature' => 0.4,
+                    ]);
+                if ($r->successful()) {
+                    $content = $r->json('choices.0.message.content');
+                    if ($content) {
+                        return "🔎 **Web answer, sir.**\n\n" . $content;
+                    }
+                }
+            } catch (\Exception $e) {}
+        }
+
+        return null;
+    }
+
+
 
     /**
      * Shared list of launchable apps (name => command per OS).

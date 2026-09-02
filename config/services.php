@@ -49,4 +49,8 @@ return [
         'api_key' => env('WEATHER_API_KEY'),
     ],
 
+    'tavily' => [
+        'api_key' => env('TAVILY_API_KEY'),
+    ],
+
 ];
