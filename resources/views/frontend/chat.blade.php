@@ -7,7 +7,7 @@
     <title>J.A.R.V.I.S. — Chat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* Bengali script → Hind Siliguri, English → Belanosima */
@@ -486,12 +486,12 @@
         .msg code {
             background: rgba(0, 212, 255, 0.08); border: 1px solid rgba(0, 212, 255, 0.1);
             border-radius: 5px; padding: 2px 6px;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.82em; color: var(--j-cyan);
+            font-family: 'Belanosima', monospace; font-size: 0.82em; color: var(--j-cyan);
         }
         .msg pre {
             background: rgba(0, 0, 0, 0.3); border: 1px solid var(--j-border);
             border-radius: 10px; padding: 14px; margin: 10px 0; overflow-x: auto;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.6;
+            font-family: 'Belanosima', monospace; font-size: 0.8rem; line-height: 1.6;
         }
         .msg pre code { background: transparent; border: none; padding: 0; color: var(--j-text-bright); }
         .msg ul, .msg ol { margin: 8px 0; padding-left: 20px; }
