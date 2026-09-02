@@ -243,7 +243,7 @@ class JarvisController extends Controller
             ])->timeout(15)->post('https://api.groq.com/openai/v1/chat/completions', [
                 'model' => 'openai/gpt-oss-120b',
                 'messages' => $messages,
-                'max_tokens' => 500,
+                'max_tokens' => 4096,
                 'temperature' => 0.7,
             ]);
 
