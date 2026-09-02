@@ -175,7 +175,7 @@
 
         /* ===== CHAT AREA ===== */
         .chat-area {
-            flex: 0 0 75%;
+            flex: 0 0 80%;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -495,7 +495,7 @@
 
         /* ===== SIDE PANEL ===== */
         .side-panel {
-            flex: 0 0 25%;
+            flex: 0 0 20%;
             background: linear-gradient(180deg, rgba(5, 10, 25, 0.6) 0%, rgba(3, 6, 16, 0.8) 100%);
             border-left: 1px solid rgba(0, 212, 255, 0.06);
             padding: 16px 14px;
