@@ -200,11 +200,7 @@
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 212, 255, 0.02));
             border: 1px solid rgba(0, 212, 255, 0.08); align-self: flex-start;
             border-bottom-left-radius: 6px;
-            max-height: 30vh; overflow-y: auto;
         }
-        .msg.jarvis::-webkit-scrollbar { width: 4px; }
-        .msg.jarvis::-webkit-scrollbar-track { background: transparent; }
-        .msg.jarvis::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.2); border-radius: 4px; }
         .msg.user {
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.04));
             border: 1px solid rgba(168, 85, 247, 0.12); align-self: flex-end;
