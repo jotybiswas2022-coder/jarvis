@@ -512,6 +512,7 @@
             max-width: 600px;
             height: 500px;
             position: relative;
+            margin-left: -240px;
         }
 
         .model-glow {
