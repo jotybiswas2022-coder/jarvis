@@ -467,7 +467,7 @@
             font-family: 'Belanosima', sans-serif; font-size: 2rem; font-weight: 700;
             background: linear-gradient(135deg, var(--j-text-bright), var(--j-blue), var(--j-cyan));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; margin-bottom: 8px; letter-spacing: 2px;
+            background-clip: text; margin: 0 0 8px; padding: 0; letter-spacing: 2px;
             animation: titleGlow 3s ease-in-out infinite;
         }
         @keyframes titleGlow {
@@ -475,7 +475,7 @@
             50% { filter: drop-shadow(0 0 16px rgba(0, 212, 255, 0.4)); }
         }
         .welcome-divider {
-            width: 60px; height: 2px; margin: 0 auto 16px;
+            width: 60px; height: 2px; margin: 0 auto 18px;
             background: linear-gradient(90deg, transparent, var(--j-blue), transparent);
             border-radius: 2px; animation: dividerPulse 2s ease-in-out infinite;
         }
@@ -485,22 +485,44 @@
         }
         .welcome-sub {
             font-family: 'Belanosima', sans-serif; font-size: 0.95rem;
-            color: var(--j-text); max-width: 420px; margin: 0 auto; line-height: 1.8;
+            color: var(--j-text); max-width: 460px; margin: 0 auto; line-height: 1.9;
         }
         .welcome-sub .highlight { color: var(--j-blue); font-weight: 600; }
-        .welcome-tag {
-            display: inline-flex; align-items: center; gap: 6px; margin-top: 20px;
-            padding: 6px 16px; background: rgba(0, 212, 255, 0.04);
-            border: 1px solid rgba(0, 212, 255, 0.1); border-radius: 20px;
-            font-family: 'Belanosima', sans-serif; font-size: 0.7rem;
-            color: var(--j-text); letter-spacing: 1px;
-            animation: tagFade 1.5s ease 1s both;
+        .welcome-tagline {
+            font-family: 'Belanosima', sans-serif; font-size: 0.85rem; font-weight: 600;
+            letter-spacing: 2.5px; color: var(--j-cyan);
+            margin: 0 0 14px; line-height: 1.6;
+            opacity: 0;
+            animation: tagFade 1.2s ease 0.2s both, taglinePulse 3s ease-in-out infinite;
         }
-        .welcome-tag .dot {
-            width: 5px; height: 5px; background: var(--j-success);
-            border-radius: 50%; box-shadow: 0 0 6px var(--j-success);
-            animation: blink 1.5s ease-in-out infinite;
+        @keyframes taglinePulse {
+            0%, 100% { text-shadow: 0 0 8px rgba(0, 255, 242, 0.12); }
+            50% { text-shadow: 0 0 18px rgba(0, 255, 242, 0.4); }
         }
+        .welcome-status {
+            display: inline-flex; flex-direction: column;
+            min-width: 300px;
+            margin-top: 22px; padding: 13px 24px;
+            background: rgba(0, 212, 255, 0.03);
+            border: 1px solid rgba(0, 212, 255, 0.1); border-radius: 12px;
+            text-align: left;
+            animation: tagFade 1.5s ease 0.6s both;
+        }
+        .w-status-item {
+            display: flex; align-items: center; gap: 11px;
+            padding: 4px 0;
+            font-family: 'Belanosima', sans-serif; font-size: 0.62rem;
+            letter-spacing: 2.5px; color: var(--j-text); text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .w-status-item .w-dot {
+            width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+            background: var(--j-success); color: var(--j-success);
+            box-shadow: 0 0 7px currentColor;
+            animation: blink 1.6s ease-in-out infinite;
+        }
+        .w-status-item .w-dot.ready { background: var(--j-blue); color: var(--j-blue); animation-delay: 0.4s; }
+        .w-status-item .w-dot.wait { background: #ffaa00; color: #ffaa00; animation-delay: 0.8s; }
         @keyframes tagFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Markdown */
@@ -572,10 +594,15 @@
                 <div class="orbit-2"><div class="orbit-dot"></div></div>
                 <div class="core"></div>
             </div>
-            <div class="welcome-title">Good day, sir.</div>
+            <div class="welcome-title">Welcome back, Joty.</div>
+            <div class="welcome-tagline">Time to cook something amazing.</div>
             <div class="welcome-divider"></div>
-            <div class="welcome-sub">I am <span class="highlight">JARVIS</span> — your personal AI assistant. All systems are online and operational. How may I be of service?</div>
-            <div class="welcome-tag"><div class="dot"></div> Ready for your command</div>
+            <div class="welcome-sub">I’m <span class="highlight">JARVIS</span> — your personal AI assistant. All systems are online, core systems are stable, and I’m ready to turn your ideas into reality.</div>
+            <div class="welcome-status">
+                <div class="w-status-item"><span class="w-dot"></span><span>Systems Online</span></div>
+                <div class="w-status-item"><span class="w-dot ready"></span><span>AI Core Ready</span></div>
+                <div class="w-status-item"><span class="w-dot wait"></span><span>Awaiting Your Command</span></div>
+            </div>
         </div>
 
         <div class="chat-messages" id="chatMessages" style="display:none;"></div>
