@@ -591,8 +591,10 @@
             /* Topbar */
             .topbar { padding: 10px 14px; }
             .topbar-left { gap: 10px; }
-            .topbar-name { font-size: 0.8rem; letter-spacing: 2.5px; }
-            .back-btn { padding: 7px 11px; font-size: 0.72rem; }
+            .topbar-name { font-size: 0.72rem; letter-spacing: 2px; }
+            .topbar-status { padding: 5px 10px; }
+            .topbar-status span { font-size: 0.5rem; letter-spacing: 1.2px; }
+            .back-btn { padding: 7px 11px; font-size: 0.68rem; }
             .topbar-logo { width: 28px; height: 28px; }
             .topbar-logo .ar1 { width: 28px; height: 28px; }
             .topbar-logo .ar2 { width: 21px; height: 21px; }
@@ -606,23 +608,28 @@
             .welcome-icon .core { width: 16px; height: 16px; }
             .welcome-icon .orbit { width: 58px; height: 58px; }
             .welcome-icon .orbit-2 { width: 46px; height: 46px; }
-            .welcome-title { font-size: 1.55rem; margin-bottom: 6px; }
-            .welcome-tagline { font-size: 0.72rem; letter-spacing: 2px; margin-bottom: 10px; }
+            .welcome-title { font-size: 1.35rem; margin-bottom: 6px; letter-spacing: 1.5px; }
+            .welcome-tagline { font-size: 0.66rem; letter-spacing: 1.8px; margin-bottom: 10px; }
             .welcome-divider { margin-bottom: 14px; }
-            .welcome-sub { font-size: 0.85rem; line-height: 1.8; max-width: 100%; }
+            .welcome-sub { font-size: 0.8rem; line-height: 1.8; max-width: 100%; }
             .welcome-status { margin-top: 18px; gap: 8px; }
-            .w-status-item { padding: 9px 13px; font-size: 0.55rem; letter-spacing: 1.5px; gap: 8px; }
+            .w-status-item { padding: 9px 13px; font-size: 0.52rem; letter-spacing: 1.3px; gap: 8px; }
             .w-status-item .w-dot { width: 6px; height: 6px; }
 
             /* Messages / Quick bar / Input */
-            .chat-messages { padding: 16px 14px; gap: 14px; }
-            .msg { max-width: 86%; font-size: 0.85rem; padding: 14px 16px 18px; }
+            .chat-messages { padding: 16px 14px; gap: 12px; }
+            .msg { max-width: 88%; font-size: 0.8rem; padding: 13px 15px 17px; }
+            .msg .sender { font-size: 0.52rem; letter-spacing: 2px; }
             .quick-bar { padding: 0 14px 10px; gap: 6px; }
-            .q-btn { padding: 7px 13px; font-size: 0.7rem; }
+            .q-btn { padding: 7px 13px; font-size: 0.64rem; }
             .input-area { padding: 10px 14px 16px; }
             .input-row { border-radius: 14px; padding: 5px 5px 5px 14px; }
-            .chat-input { padding: 10px 6px; font-size: 0.85rem; }
+            .chat-input { padding: 10px 6px; font-size: 0.8rem; }
+            .chat-input::placeholder { font-size: 0.75rem; }
             .icon-btn { width: 42px; height: 42px; border-radius: 12px; }
+            .msg-time { font-size: 0.5rem; }
+            .msg code { font-size: 0.75em; }
+            .msg pre { font-size: 0.72rem; }
         }
 
         @media (max-width: 560px) {
