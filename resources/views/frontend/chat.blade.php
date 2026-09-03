@@ -665,6 +665,16 @@
         @media (max-width: 420px) {
             .input-area::before { left: 10px; right: 10px; }
         }
+
+        /* Tablet / small laptop: breathe less, keep content comfortable */
+        @media (max-width: 1100px) {
+            .welcome-msg { padding: 40px 30px; }
+            .chat-messages { padding: 24px 26px; }
+            .quick-bar { padding: 0 26px 14px; }
+            .input-area { padding: 16px 26px 22px; }
+            .input-area::before { left: 26px; right: 26px; }
+            .msg { max-width: 78%; }
+        }
     </style>
 </head>
 <body>

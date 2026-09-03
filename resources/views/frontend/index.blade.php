@@ -1353,6 +1353,21 @@
             .model-glow { opacity: 0.9; }
             .hero-time .time { text-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
         }
+
+        /* Laptop widths: keep the 3D model fully on screen (no negative margin) */
+        @media (max-width: 1399px) and (min-width: 701px) {
+            .hero-left { margin-left: 0; }
+            .model-wrapper { margin-left: 0; max-width: 560px; }
+        }
+
+        /* Tablet / small laptop: tighter hero type and paddings */
+        @media (max-width: 1100px) and (min-width: 701px) {
+            .hero-content { padding: 0 32px; gap: 28px; }
+            .hero-title { font-size: 2.6rem; }
+            .hero-subtitle { font-size: 0.9rem; max-width: 400px; }
+            .hero-badge { padding: 7px 15px; }
+            .top-nav { padding: 16px 32px; }
+        }
     </style>
 </head>
 <body>
