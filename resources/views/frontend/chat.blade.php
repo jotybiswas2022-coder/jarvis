@@ -225,33 +225,54 @@
         }
 
         /* Quick Bar */
-        .quick-bar { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 40px 16px; }
+        .quick-bar { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 0 40px 18px; }
         .q-btn {
-            padding: 9px 18px; background: rgba(0, 212, 255, 0.03);
-            border: 1px solid rgba(0, 212, 255, 0.08); border-radius: 24px;
+            position: relative; overflow: hidden;
+            padding: 9px 18px;
+            background: linear-gradient(180deg, rgba(0, 212, 255, 0.07), rgba(0, 212, 255, 0.02));
+            border: 1px solid rgba(0, 212, 255, 0.1); border-radius: 24px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 2px 8px rgba(0, 0, 0, 0.25);
             color: var(--j-text); font-family: 'Belanosima', 'Hind Siliguri', sans-serif;
             font-size: 0.78rem; font-weight: 500; cursor: pointer;
             transition: all 0.3s ease;
         }
-        .q-btn:hover {
-            background: rgba(0, 212, 255, 0.1); border-color: rgba(0, 212, 255, 0.25);
-            color: var(--j-blue); transform: translateY(-2px);
+        .q-btn::before {
+            content: ''; position: absolute; top: 0; bottom: 0; left: -130%; width: 55%;
+            transform: skewX(-20deg); pointer-events: none;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+            transition: left 0.55s ease;
         }
+        .q-btn:hover {
+            background: linear-gradient(180deg, rgba(0, 212, 255, 0.16), rgba(0, 212, 255, 0.05));
+            border-color: rgba(0, 212, 255, 0.45); color: var(--j-blue);
+            transform: translateY(-2px);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 6px 18px rgba(0, 212, 255, 0.14);
+        }
+        .q-btn:hover::before { left: 140%; }
+        .q-btn:active { transform: translateY(0) scale(0.96); }
 
         /* Input */
         .input-area {
+            position: relative;
             padding: 20px 40px 28px; background: rgba(5, 8, 16, 0.6);
-            border-top: 1px solid var(--j-border); backdrop-filter: blur(30px);
+            backdrop-filter: blur(30px);
+        }
+        .input-area::before {
+            content: ''; position: absolute; top: 0; left: 40px; right: 40px; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+            pointer-events: none;
         }
         .input-row {
             display: flex; gap: 12px; align-items: center;
-            background: rgba(0, 212, 255, 0.03); border: 1.5px solid rgba(0, 212, 255, 0.08);
-            border-radius: 18px; padding: 6px 6px 6px 22px;
+            background: rgba(0, 212, 255, 0.03);
+            border: 1.5px solid rgba(0, 212, 255, 0.08); border-radius: 18px;
+            padding: 6px 6px 6px 22px;
+            box-shadow: inset 0 0 24px rgba(0, 212, 255, 0.02), 0 4px 18px rgba(0, 0, 0, 0.3);
             transition: all 0.4s ease;
         }
         .input-row:focus-within {
-            border-color: rgba(0, 212, 255, 0.25);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.35);
+            box-shadow: inset 0 0 24px rgba(0, 212, 255, 0.05), 0 0 34px rgba(0, 212, 255, 0.12);
         }
         .chat-input {
             flex: 1; background: transparent; border: none; padding: 14px 8px;
@@ -563,6 +584,79 @@
         .msg blockquote {
             border-left: 3px solid var(--j-blue); margin: 10px 0; padding: 8px 16px;
             background: rgba(0, 212, 255, 0.03); border-radius: 0 8px 8px 0;
+        }
+
+        /* ===== Mobile Responsive ===== */
+        @media (max-width: 640px) {
+            /* Topbar */
+            .topbar { padding: 10px 14px; }
+            .topbar-left { gap: 10px; }
+            .topbar-name { font-size: 0.8rem; letter-spacing: 2.5px; }
+            .back-btn { padding: 7px 11px; font-size: 0.72rem; }
+            .topbar-logo { width: 28px; height: 28px; }
+            .topbar-logo .ar1 { width: 28px; height: 28px; }
+            .topbar-logo .ar2 { width: 21px; height: 21px; }
+
+            /* Welcome */
+            .welcome-msg { padding: 28px 16px; }
+            .welcome-icon { width: 64px; height: 64px; margin-bottom: 18px; }
+            .welcome-icon .ring-1 { width: 64px; height: 64px; }
+            .welcome-icon .ring-2 { width: 52px; height: 52px; }
+            .welcome-icon .ring-3 { width: 40px; height: 40px; }
+            .welcome-icon .core { width: 16px; height: 16px; }
+            .welcome-icon .orbit { width: 58px; height: 58px; }
+            .welcome-icon .orbit-2 { width: 46px; height: 46px; }
+            .welcome-title { font-size: 1.55rem; margin-bottom: 6px; }
+            .welcome-tagline { font-size: 0.72rem; letter-spacing: 2px; margin-bottom: 10px; }
+            .welcome-divider { margin-bottom: 14px; }
+            .welcome-sub { font-size: 0.85rem; line-height: 1.8; max-width: 100%; }
+            .welcome-status { margin-top: 18px; gap: 8px; }
+            .w-status-item { padding: 9px 13px; font-size: 0.55rem; letter-spacing: 1.5px; gap: 8px; }
+            .w-status-item .w-dot { width: 6px; height: 6px; }
+
+            /* Messages / Quick bar / Input */
+            .chat-messages { padding: 16px 14px; gap: 14px; }
+            .msg { max-width: 86%; font-size: 0.85rem; padding: 14px 16px 18px; }
+            .quick-bar { padding: 0 14px 10px; gap: 6px; }
+            .q-btn { padding: 7px 13px; font-size: 0.7rem; }
+            .input-area { padding: 10px 14px 16px; }
+            .input-row { border-radius: 14px; padding: 5px 5px 5px 14px; }
+            .chat-input { padding: 10px 6px; font-size: 0.85rem; }
+            .icon-btn { width: 42px; height: 42px; border-radius: 12px; }
+        }
+
+        @media (max-width: 560px) {
+            /* Stack the status pills when they no longer fit side by side */
+            .welcome-status { flex-direction: column; align-items: center; }
+        }
+
+        @media (max-width: 420px) {
+            .topbar-status { padding: 5px 8px; }
+            .topbar-status span { display: none; }
+            .welcome-msg { padding: 22px 14px; }
+            .chat-messages { padding: 14px 10px; }
+            .quick-bar { padding: 0 10px 8px; }
+            .input-area { padding: 8px 10px 12px; }
+            .msg { max-width: 92%; }
+        }
+
+        /* Short viewports (mobile landscape) — keep everything reachable */
+        @media (max-height: 620px) {
+            .chat-main { overflow-y: auto; overflow-x: hidden; }
+            .welcome-msg { padding-top: 18px; }
+            .welcome-icon { margin-bottom: 14px; }
+        }
+        @media (max-height: 480px) {
+            .welcome-icon { display: none; }
+            .quick-bar { display: none; }
+        }
+
+        /* Gradient hairline on input area should follow small-screen padding */
+        @media (max-width: 640px) {
+            .input-area::before { left: 14px; right: 14px; }
+        }
+        @media (max-width: 420px) {
+            .input-area::before { left: 10px; right: 10px; }
         }
     </style>
 </head>
