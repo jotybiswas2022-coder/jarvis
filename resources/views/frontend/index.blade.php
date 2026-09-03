@@ -1271,8 +1271,8 @@
             .hero-time { position: relative; padding: 4px 0 0; }
             .hero-time .date { writing-mode: horizontal-tb; margin-top: 6px; letter-spacing: 3px; }
             .hero-content { padding: 26px 24px 44px; gap: 26px; }
-            .hero-right { order: 2; }
-            .hero-left { order: 1; margin-left: 0; }
+            /* Mobile order: time & date, then 3D model, then text (natural DOM order) */
+            .hero-left { margin-left: 0; }
             .hero-title { margin-bottom: 16px; }
             .hero-subtitle { font-size: 0.9rem; margin-bottom: 26px; }
             .model-wrapper { margin-left: 0; height: 300px; }
