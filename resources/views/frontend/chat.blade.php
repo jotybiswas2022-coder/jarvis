@@ -38,50 +38,43 @@
             flex-direction: column;
         }
 
-        /* Background - Elegant Dark Pattern */
+        /* Background - Animated Dark Gradient + Floating Particles (AI-card style) */
         .bg-elegant {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; overflow: hidden;
         }
-        .bg-elegant-base {
+        .bg-gradient-anim {
             position: absolute; inset: 0;
-            background: radial-gradient(100% 100% at 0% 0%, rgb(46, 46, 46) 0%, rgb(0, 0, 0) 100%);
-            mask: radial-gradient(125% 100% at 0% 0%, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.22) 88%, rgba(0, 0, 0, 0) 100%);
-            -webkit-mask: radial-gradient(125% 100% at 0% 0%, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.22) 88%, rgba(0, 0, 0, 0) 100%);
+            background: linear-gradient(135deg, #1f2937 0%, #000000 50%, #111827 100%);
+            background-size: 200% 200%;
+            animation: bgDrift 22s linear infinite;
         }
-        .bg-streak {
-            position: absolute; inset: 0; opacity: 0.2;
-            background: linear-gradient(rgb(0, 207, 255) 0%, rgba(0, 207, 255, 0) 100%);
-            transform: skewX(45deg);
+        @keyframes bgDrift {
+            0%   { background-position: 0% 0%; }
+            50%  { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
         }
-        .bg-streak-1 {
-            mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 20%, rgba(0,0,0,0) 36%, rgb(0,0,0) 55%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 78%, rgba(0,0,0,0) 97%);
-            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 20%, rgba(0,0,0,0) 36%, rgb(0,0,0) 55%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 78%, rgba(0,0,0,0) 97%);
-        }
-        .bg-streak-2 {
-            mask: linear-gradient(90deg, rgba(0,0,0,0) 11%, rgb(0,0,0) 25%, rgba(0,0,0,0.55) 41%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 78%, rgba(0,0,0,0) 97%);
-            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 11%, rgb(0,0,0) 25%, rgba(0,0,0,0.55) 41%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 78%, rgba(0,0,0,0) 97%);
-        }
-        .bg-streak-3 {
-            mask: linear-gradient(90deg, rgba(0,0,0,0) 9%, rgb(0,0,0) 20%, rgba(0,0,0,0.55) 28%, rgba(0,0,0,0.42) 40%, rgb(0,0,0) 48%, rgba(0,0,0,0.27) 54%, rgba(0,0,0,0.13) 78%, rgb(0,0,0) 88%, rgba(0,0,0,0) 97%);
-            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 9%, rgb(0,0,0) 20%, rgba(0,0,0,0.55) 28%, rgba(0,0,0,0.42) 40%, rgb(0,0,0) 48%, rgba(0,0,0,0.27) 54%, rgba(0,0,0,0.13) 78%, rgb(0,0,0) 88%, rgba(0,0,0,0) 97%);
-        }
-        .bg-streak-4 {
-            mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 17%, rgba(0,0,0,0.55) 26%, rgb(0,0,0) 35%, rgba(0,0,0,0) 47%, rgba(0,0,0,0.13) 69%, rgb(0,0,0) 79%, rgba(0,0,0,0) 97%);
-            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 17%, rgba(0,0,0,0.55) 26%, rgb(0,0,0) 35%, rgba(0,0,0,0) 47%, rgba(0,0,0,0.13) 69%, rgb(0,0,0) 79%, rgba(0,0,0,0) 97%);
-        }
-        .bg-streak-5 {
-            mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 20%, rgba(0,0,0,0.55) 27%, rgb(0,0,0) 42%, rgba(0,0,0,0) 48%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 74%, rgb(0,0,0) 82%, rgba(0,0,0,0.47) 88%, rgba(0,0,0,0) 97%);
-            -webkit-mask: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgb(0,0,0) 20%, rgba(0,0,0,0.55) 27%, rgb(0,0,0) 42%, rgba(0,0,0,0) 48%, rgba(0,0,0,0.13) 67%, rgb(0,0,0) 74%, rgb(0,0,0) 82%, rgba(0,0,0,0.47) 88%, rgba(0,0,0,0) 97%);
-        }
-        .bg-dots {
-            position: absolute; inset: 0; opacity: 0.15;
-            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0);
-            background-size: 24px 24px;
-        }
-        .bg-radial {
+        .bg-vignette {
             position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 20% 20%, rgba(30, 40, 60, 0.3) 0%, transparent 60%);
+            background: radial-gradient(130% 120% at 50% 35%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.62) 100%);
+        }
+        .bg-particles { position: absolute; inset: 0; overflow: hidden; }
+        .bg-particle {
+            position: absolute; bottom: -30px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            animation-name: particleRise;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        @keyframes particleRise {
+            0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+            8%   { opacity: var(--p-op, 0.35); }
+            82%  { opacity: var(--p-op, 0.35); }
+            100% { transform: translate3d(var(--p-drift, 0px), -115vh, 0) scale(0.45); opacity: 0; }
         }
 
         /* Topbar */
@@ -543,13 +536,9 @@
 </head>
 <body>
 <div class="bg-elegant">
-    <div class="bg-elegant-base"></div>
-    <div class="bg-streak bg-streak-1"></div>
-    <div class="bg-streak bg-streak-2"></div>
-    <div class="bg-streak bg-streak-3"></div>
-    <div class="bg-streak bg-streak-4"></div>
-    <div class="bg-streak bg-streak-5"></div>
-    <div class="bg-dots"></div>
+    <div class="bg-gradient-anim"></div>
+    <div class="bg-vignette"></div>
+    <div id="bgParticles" class="bg-particles"></div>
 </div>
 
 <!-- Top Bar -->
@@ -844,10 +833,30 @@
         } catch (e) { addMsg('Unable to launch app.', 'jarvis'); }
     }
 
+    function spawnBgParticles() {
+        const wrap = document.getElementById('bgParticles');
+        if (!wrap) return;
+        for (let i = 0; i < 48; i++) {
+            const p = document.createElement('div');
+            p.className = 'bg-particle';
+            const size = 1.5 + Math.random() * 3;
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.left = (Math.random() * 100).toFixed(2) + '%';
+            p.style.bottom = -(Math.random() * 30 + 5).toFixed(0) + 'px';
+            p.style.setProperty('--p-op', (0.12 + Math.random() * 0.35).toFixed(2));
+            p.style.setProperty('--p-drift', (Math.random() * 220 - 110).toFixed(0) + 'px');
+            p.style.animationDuration = (9 + Math.random() * 9).toFixed(1) + 's';
+            p.style.animationDelay = (Math.random() * 12).toFixed(1) + 's';
+            wrap.appendChild(p);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         loadWeather(); loadSystemInfo(); setInterval(loadSystemInfo, 30000);
         document.getElementById('chatInput').focus();
         setupSelectionCopy();
+        spawnBgParticles();
     });
 
     function setupSelectionCopy() {
