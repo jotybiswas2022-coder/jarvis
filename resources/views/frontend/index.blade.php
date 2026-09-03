@@ -1264,6 +1264,62 @@
 
         /* ========== CORNER DECORATIONS ========== */
         /* corners removed */
+
+        /* ===== Homepage Mobile Responsive ===== */
+        @media (max-width: 700px) {
+            .hero { overflow: visible; }
+            .hero-time { position: relative; padding: 4px 0 0; }
+            .hero-time .date { writing-mode: horizontal-tb; margin-top: 6px; letter-spacing: 3px; }
+            .hero-content { padding: 26px 24px 44px; gap: 26px; }
+            .hero-right { order: 2; }
+            .hero-left { order: 1; margin-left: 0; }
+            .hero-title { margin-bottom: 16px; }
+            .hero-subtitle { font-size: 0.9rem; margin-bottom: 26px; }
+            .model-wrapper { margin-left: 0; height: 300px; }
+            .model-wrapper::after { height: 220px; }
+        }
+
+        @media (max-width: 420px) {
+            .top-nav { padding: 14px 16px; gap: 10px; }
+            .nav-name { letter-spacing: 2px; font-size: 0.9rem; }
+            .nav-logo { width: 40px; height: 40px; }
+            .nav-logo .arc-ring-1 { width: 40px; height: 40px; }
+            .nav-logo .arc-ring-2 { width: 32px; height: 32px; }
+            .nav-logo .arc-ring-3 { width: 24px; height: 24px; }
+            .nav-logo .arc-ring-4 { width: 17px; height: 17px; }
+            .nav-logo .arc-orbit { width: 36px; height: 36px; }
+            .nav-logo .arc-orbit-2 { width: 30px; height: 30px; }
+            .nav-status span { font-size: 0.6rem; letter-spacing: 0.5px; }
+            .hero-content { padding: 16px 18px 36px; gap: 22px; }
+            .hero-badge { padding: 7px 14px; font-size: 0.6rem; letter-spacing: 1.5px; margin-bottom: 18px; }
+            .hero-title { font-size: 2rem; }
+            .hero-subtitle { font-size: 0.86rem; }
+            .hero-actions { width: 100%; flex-direction: column; gap: 12px; }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; padding: 16px 24px; font-size: 0.98rem; }
+            .model-wrapper { height: 230px; }
+            .hero-time .time { font-size: 1.5rem; }
+            .hero-time .date { font-size: 0.7rem; letter-spacing: 2px; }
+            .footer { padding: 24px 16px; }
+            .footer p { font-size: 0.62rem; letter-spacing: 1px; }
+        }
+
+        @media (max-width: 360px) {
+            .nav-status span { display: none; }
+            .hero-title { font-size: 1.7rem; }
+            .model-wrapper { height: 200px; }
+        }
+
+        /* Short landscape phones — keep hero content on screen */
+        @media (max-height: 520px) {
+            .hero { min-height: 0; }
+            .hero-content { padding: 14px 40px; gap: 14px; }
+            .hero-time { display: none; }
+            .hero-badge { margin-bottom: 12px; padding: 5px 14px; }
+            .hero-title { margin-bottom: 10px; font-size: 2rem; }
+            .hero-subtitle { margin-bottom: 12px; }
+            .btn-primary { padding: 11px 22px; }
+            .model-wrapper { height: 230px; }
+        }
     </style>
 </head>
 <body>
