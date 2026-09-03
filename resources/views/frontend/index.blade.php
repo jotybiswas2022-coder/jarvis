@@ -1328,6 +1328,31 @@
             .btn-primary { padding: 11px 22px; }
             .model-wrapper { height: 230px; }
         }
+
+        /* Mobile model <-> text space & glow balance */
+        @media (max-width: 700px) {
+            .hero-time { margin-bottom: 2px; }
+            .hero-content { padding-top: 14px; padding-bottom: 34px; gap: 24px; }
+            .model-wrapper {
+                box-shadow: 0 0 40px rgba(0, 212, 255, 0.05), 0 0 120px 20px rgba(0, 212, 255, 0.04);
+            }
+            .model-wrapper::before {
+                height: 12%;
+                background: linear-gradient(to top, transparent 0%, rgba(5, 8, 16, 0.85) 100%);
+            }
+            .model-wrapper::after {
+                height: 30%;
+                background: linear-gradient(to bottom, transparent 0%, rgba(5, 8, 16, 0.15) 40%, rgba(5, 8, 16, 0.65) 82%, #050810 100%);
+            }
+        }
+
+        @media (max-width: 420px) {
+            .hero-content { padding-top: 8px; padding-bottom: 26px; gap: 16px; }
+            .model-wrapper::before { height: 9%; }
+            .model-wrapper::after { height: 25%; }
+            .model-glow { opacity: 0.9; }
+            .hero-time .time { text-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+        }
     </style>
 </head>
 <body>
